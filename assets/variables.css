@@ -1,0 +1,27 @@
+/**
+ * variables.css
+ *
+ * Static CSS custom property defaults for the Skeleton theme.
+ * These are fallback values. At runtime, `snippets/css-variables.liquid`
+ * overrides them with live values from theme settings (settings_schema.json).
+ *
+ * Do not reference Shopify Liquid here — this is a plain CSS file.
+ */
+
+:root {
+  /* Typography */
+  --font-primary--family: 'Work Sans', sans-serif;
+  --font-primary--style: normal;
+  --font-primary--weight: 400;
+
+  /* Layout */
+  --page-width: 90rem;
+  --page-margin: 20px;
+
+  /* Colors */
+  --color-background: #ffffff;
+  --color-foreground: #333333;
+
+  /* Inputs */
+  --style-border-radius-inputs: 4px;
+}
