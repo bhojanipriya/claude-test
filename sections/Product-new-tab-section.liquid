@@ -1,0 +1,331 @@
+{% if product.metafields.custom.description != blank or  product.metafields.custom.additional_information != blank %}
+{%- style -%}
+#judgeme_product_reviews {
+    display: none;
+}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  ul.tabs {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgb(74 74 74 / 30%);
+    gap: 40px;
+    list-style-type: none;
+        padding-left: 0;
+        margin:0;
+}
+ul.tabs li ,.tab_drawer_heading {
+    color: #4A4A4A;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28.8px;
+    letter-spacing: 0;
+    cursor: pointer;
+    padding-bottom:7px;
+    position: relative;
+}
+ul.tabs li:after  {
+    content:'';
+    width:100%;
+    height:1px; 
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.tab_drawer_heading:after {
+    height:2px; 
+}
+.tab_drawer_heading{
+    display:none;
+}
+.tab_drawer_heading svg {
+    position: unset;
+    /* right: 0;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%); */
+}
+.tab_drawer_heading.d_active:first-child {
+    padding: 0;
+    border-top: 0;
+}
+.tab_drawer_heading.d_active svg {
+    transform:translateY(-50%) rotate(180deg);
+  top: 72%;
+}
+ul.tabs li.active{
+    color:#663700;
+}
+ul.tabs li.active:after{
+    background-color:#663700;
+}
+.product_tabs_section .tab_content h2{
+    color:  #663700;
+    font-size: 32px;
+    font-weight: 700; 
+    margin-bottom: 10px !important;
+    letter-spacing: 0;
+    font-family: 'DM Sans';
+    line-height: 38.4px;
+}
+.product_tabs_section .tab_content p{
+    margin:0;
+}
+.product_tabs_section .tab_content p:not(:last-child){
+    margin-bottom:10px;
+}
+.product_tabs_section .tab_content ul{
+    list-style-type: disc;
+    padding-left: 24px;
+}
+.product_tabs_section .tab_content ul li{
+    list-style-type: disc;
+    font-size: 16px;
+}
+.product_tabs_section .tab_content ul li:not(:last-child){
+    margin-bottom: 26px;
+}
+.product_tabs_section .tab_content {
+    padding-top: 20px;
+    font-weight: 500; 
+     color:#4A4A4A;
+    line-height: 26px;
+}
+.product_tabs_section .tab_content .grid__item:last-child{
+    padding-left: 14px;
+}
+.product_tabs_section .tab_content .flex {
+    margin-bottom: 0;
+}
+    .product_tabs_section .tab_content .flex {
+    gap: 26px 35px;
+}
+
+@media(min-width:990px){
+  .product_tabs_section .tab_content .flex .grid__item{
+    max-width: 50%;
+        width: 100%;
+  }
+}
+@media(max-width:989px){
+    .product_tabs_section .tab_content .grid__item:last-child {padding-left: 0;}
+    .product_tabs_section .tab_content .flex{row-gap: 26px;flex-wrap:wrap;}
+    
+
+}
+@media(max-width:749px){
+    ul.tabs { display:none;}
+    .tab_drawer_heading{display:block;padding: 20px 0 24px 0;border-top: 1px solid rgb(74 74 74 / 30%);font-size: 18px;color: #663700;line-height: 21.6px;margin: 0;}
+    .product_tabs_section .tab_content h2{font-size:20px;line-height: 24px;}
+    .product_tabs_section .tab_content ul li:not(:last-child) { margin-bottom: 0;}
+    .product_tabs_section .tab_content{padding-bottom:20px;}
+    h3.tab_drawer_heading.d_active { padding-bottom: 0;}
+    .product_tabs_section .tab_content p{ font-size: 16px; line-height: 26px;}
+    .acc-drop > .tab_drawer_heading:last-of-type { padding-bottom: 0;}
+    .tab_drawer_heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+.product_tabs_section .tab_content h2{margin-bottom:17px;}
+}
+{%- endstyle -%}
+<div class="color-{{ section.settings.color_scheme }} gradient">
+    <div class="page-width acc-drop section-{{ section.id }}-padding">
+<ul class="tabs">
+  {% if product.metafields.custom.description != blank %} <li class="active" rel="description">Description</li>{% endif %}
+    {% if product.metafields.custom.additional_information != blank %} <li rel="additional-info">Additional Information</li>{% endif %}
+    <li rel="judgeme_product_reviews">Review</li>
+  </ul>
+  <div class="tab_container">
+    {% if product.metafields.custom.description != blank %}
+    <h3 class="d_active tab_drawer_heading" rel="description">Description <svg xmlns="http://www.w3.org/2000/svg" width="23" height="14" viewBox="0 0 23 14" fill="none">
+        <path d="M13.6105 12.6504C12.4449 13.822 10.5551 13.822 9.38951 12.6504L0.661974 3.87807C-0.220658 2.99091 -0.220658 1.55253 0.661974 0.665372C1.54461 -0.22179 2.97564 -0.221791 3.85827 0.665372L11.5 8.34632L19.1417 0.665373C20.0244 -0.221789 21.4554 -0.22179 22.338 0.665372C23.2207 1.55253 23.2207 2.99091 22.338 3.87807L13.6105 12.6504Z" fill="#663700"/>
+      </svg></h3>
+    <div id="description" class="tab_content">
+         {% assign content = product.metafields.custom.description | metafield_tag %}
+        {% capture wrapped_content %}
+        {% assign sections = content | split: '<h2>' %}       
+        <div class="flex">
+        {% for section in sections %}
+        {% if section contains '</h2>' %}            
+            {% assign split_section = section | split: '</h2>' %}
+            <div class="grid__item">
+            <h2>{{ split_section[0] }}</h2>
+            {{ split_section[1] }}
+            </div>
+        {% endif %}
+        {% endfor %}
+        <div class="pdp-tab-video"> {% render 'pdp-tab-video' %}</div>
+        </div>
+        {% endcapture %}
+        {{ wrapped_content }}  
+     </div>
+     {% endif %}
+    <!-- #tab1 -->
+    {% if product.metafields.custom.additional_information != blank %}
+    <h3 class="tab_drawer_heading" rel="additional-info">Additional Information <svg xmlns="http://www.w3.org/2000/svg" width="23" height="14" viewBox="0 0 23 14" fill="none">
+        <path d="M13.6105 12.6504C12.4449 13.822 10.5551 13.822 9.38951 12.6504L0.661974 3.87807C-0.220658 2.99091 -0.220658 1.55253 0.661974 0.665372C1.54461 -0.22179 2.97564 -0.221791 3.85827 0.665372L11.5 8.34632L19.1417 0.665373C20.0244 -0.221789 21.4554 -0.22179 22.338 0.665372C23.2207 1.55253 23.2207 2.99091 22.338 3.87807L13.6105 12.6504Z" fill="#663700"/>
+      </svg></h3>
+    <div id="additional-info" class="tab_content"> {{ product.metafields.custom.additional_information | metafield_tag }} </div>
+    <h3 class="tab_drawer_heading" rel="judgeme_product_reviews">Review <svg xmlns="http://www.w3.org/2000/svg" width="23" height="14" viewBox="0 0 23 14" fill="none">
+        <path d="M13.6105 12.6504C12.4449 13.822 10.5551 13.822 9.38951 12.6504L0.661974 3.87807C-0.220658 2.99091 -0.220658 1.55253 0.661974 0.665372C1.54461 -0.22179 2.97564 -0.221791 3.85827 0.665372L11.5 8.34632L19.1417 0.665373C20.0244 -0.221789 21.4554 -0.22179 22.338 0.665372C23.2207 1.55253 23.2207 2.99091 22.338 3.87807L13.6105 12.6504Z" fill="#663700"/>
+      </svg></h3>
+      
+    {% endif %}
+  <!-- .tab_container -->
+  </div>
+</div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Hide all tab contents initially
+  const tabContents = document.querySelectorAll(".tab_content");
+  tabContents.forEach(tc => tc.style.display = "none");
+
+  // 🔹 FIX: hide judgeme on load
+  const reviewTabGlobal = document.getElementById("judgeme_product_reviews");
+  if (reviewTabGlobal) reviewTabGlobal.style.display = "none";
+
+  if (tabContents.length > 0) tabContents[0].style.display = "block";
+
+  // Calculate width for Judgeme review button
+  const stars = document.querySelector(".jdgm-prev-badge__stars");
+  const text = document.querySelector(".jdgm-prev-badge__text");
+  if (stars && text) {
+    const width_total = stars.offsetWidth + text.offsetWidth;
+    const wrapper = document.querySelector(".product__info-wrapper .jdgm-widget");
+    if (wrapper) {
+      const btn = document.createElement("span");
+      btn.className = "judgeme_product_reviews_btn";
+      btn.style.width = width_total + "px";
+      btn.textContent = "review";
+      wrapper.insertAdjacentElement("afterend", btn);
+
+      btn.addEventListener("click", function() {
+        tabContents.forEach(tc => tc.style.display = "none");
+        if (reviewTabGlobal) reviewTabGlobal.style.display = "block";
+
+        document.querySelectorAll("ul.tabs li").forEach(li => li.classList.remove("active"));
+        const activeLi = document.querySelector("ul.tabs li[rel='judgeme_product_reviews']");
+        if (activeLi) activeLi.classList.add("active");
+
+        document.querySelectorAll(".tab_drawer_heading").forEach(h => h.classList.remove("d_active"));
+        const drawerHeading = document.querySelector(".tab_drawer_heading[rel='judgeme_product_reviews']");
+        if (drawerHeading) drawerHeading.classList.add("d_active");
+
+        window.scrollTo({
+          top: reviewTabGlobal.offsetTop,
+          behavior: "smooth"
+        });
+      });
+    }
+  }
+
+  // Tab click handler
+  document.querySelectorAll("ul.tabs li").forEach(tab => {
+    tab.addEventListener("click", function() {
+      const activeTab = this.getAttribute("rel");
+
+      // 🔹 FIX: always hide judgeme when switching tabs
+      if (reviewTabGlobal) reviewTabGlobal.style.display = "none";
+
+      tabContents.forEach(tc => tc.style.display = "none");
+      const activeContent = document.getElementById(activeTab);
+      if (activeContent) activeContent.style.display = "block";
+
+      document.querySelectorAll("ul.tabs li").forEach(li => li.classList.remove("active"));
+      this.classList.add("active");
+
+      document.querySelectorAll(".tab_drawer_heading").forEach(h => h.classList.remove("d_active"));
+      const drawerHeading = document.querySelector(`.tab_drawer_heading[rel^='${activeTab}']`);
+      if (drawerHeading) drawerHeading.classList.add("d_active");
+    });
+  });
+
+  // Drawer heading click handler (UNCHANGED)
+  document.querySelectorAll(".tab_drawer_heading").forEach(heading => {
+    heading.addEventListener("click", function() {
+      const rel = this.getAttribute("rel");
+      const content = document.getElementById(rel);
+
+      if (this.classList.contains("d_active")) {
+        if (content) content.style.display = "none";
+        this.classList.remove("d_active");
+        const tabLi = document.querySelector(`ul.tabs li[rel='${rel}']`);
+        if (tabLi) tabLi.classList.remove("active");
+      } else {
+        tabContents.forEach(tc => tc.style.display = "none");
+        if (reviewTabGlobal) reviewTabGlobal.style.display = "none";
+
+        document.querySelectorAll(".tab_drawer_heading").forEach(h => h.classList.remove("d_active"));
+        document.querySelectorAll("ul.tabs li").forEach(li => li.classList.remove("active"));
+
+        if (content) content.style.display = "block";
+        this.classList.add("d_active");
+        const tabLi = document.querySelector(`ul.tabs li[rel='${rel}']`);
+        if (tabLi) tabLi.classList.add("active");
+      }
+    });
+  });
+});
+</script>
+
+
+
+{% endif %}
+{% schema %}
+{
+  "name": "Product Tabs",
+  "tag": "section",
+  "class": "section product_tabs_section", 
+  "settings": [
+    {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Color Schema",
+        "default": "scheme-1"
+      },
+      {
+        "type": "header",
+        "content": "Section Padding"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Add padding top",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Add padding bottom",
+        "default": 36
+      }
+  ],
+  "presets": [
+    {
+      "name": "Product Tabs"
+    }
+  ]
+}
+{% endschema %}

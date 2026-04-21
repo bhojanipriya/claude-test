@@ -1,0 +1,71 @@
+{%- comment -%}
+  Share Icons Snippet
+  Usage: {% render 'share-icons', article: article, block: block %}
+{%- endcomment -%}
+
+<div class="article-template__social-sharing" {{ block.shopify_attributes }}>
+   {% if template.suffix == "detail-page-2" or  template.suffix == "detail-page-3" or  template.suffix == "detail-page-4" or  template.suffix == "detail-page-5" or  template.suffix == "detail-page-6" %}
+    <p>Share:</p>
+    {% elsif template.suffix == "classic-editorial" or template.suffix == "story-driven-column" or template.suffix == "fix-title" or template.suffix == "top-headline" or template.suffix == "blog-post-with-sidebar" or template.suffix == "minimal-journal" %}
+  <h4>Share :</h4>
+  {% else %}
+    <h3>Follow Us</h3>
+  {% endif %}
+
+  {%- assign article_url = article.url | default: shop.url | prepend: shop.secure_url -%}
+
+  <ul class="share-icons-list">
+    
+    {%- assign fb_share_link = "https://www.facebook.com/sharer/sharer.php?u=" | append: article_url -%}
+    <li>
+      <a href="{{ fb_share_link }}" target="_blank" rel="noopener">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0.5" y="0.5" width="33" height="33" rx="16.5" stroke="#4A4A4A"/>
+          <path d="M21.3452 18L21.8083 15.1044H18.9128V13.2253C18.9128 12.4331 19.3173 11.6609 20.6141 11.6609H21.9304V9.19563C21.9304 9.19563 20.7359 9 19.5938 9C17.2092 9 15.6506 10.3869 15.6506 12.8975V15.1044H13V18H15.6506V25H18.9128V18H21.3452Z" fill="#4A4A4A"/>
+        </svg>
+      </a>
+    </li>
+
+    {%- assign tweet_share_link = "https://twitter.com/intent/tweet?text=" | append: article_url -%}
+    <li>
+      <a href="{{ tweet_share_link }}" target="_blank" rel="noopener">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0.5" y="0.5" width="33" height="33" rx="16.5" stroke="#4A4A4A"/>
+          <path d="M13.6 9H8L14.608 17.8112L8.36 25H10.48L15.5904 19.1208L20 25H25.6L18.7136 15.8176L24.64 9H22.52L17.7312 14.5088L13.6 9ZM20.8 23.4L11.2 10.6H12.8L22.4 23.4H20.8Z" fill="#4A4A4A"/>
+        </svg>
+      </a>
+    </li>
+    {%- assign insta_share_link = "https://www.instagram.com/accounts/login/?hl=en" | append: article_url -%}
+    <li>
+      <a href="{{ insta_share_link }}" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none">
+            <rect x="0.5" y="0.5" width="33" height="33" rx="16.5" stroke="#4A4A4A"/>
+            <path d="M17.002 12.8911C14.7332 12.8911 12.8957 14.7286 12.8957 16.9974C12.8957 19.2661 14.7332 21.1037 17.002 21.1037C19.2708 21.1037 21.1083 19.2661 21.1083 16.9974C21.1083 14.7286 19.2676 12.8911 17.002 12.8911ZM17.002 19.663C15.5301 19.663 14.3363 18.4693 14.3363 16.9974C14.3363 15.5255 15.5301 14.3317 17.002 14.3317C18.4739 14.3317 19.6676 15.5255 19.6676 16.9974C19.6676 18.4693 18.4739 19.663 17.002 19.663Z" fill="#4A4A4A"/>
+            <path d="M20.2989 9.0504C18.827 8.98165 15.1801 8.98477 13.7082 9.0504C12.4113 9.10977 11.2707 9.4254 10.3488 10.3442C8.81131 11.8848 9.00818 13.9567 9.00818 16.9974C9.00818 20.1099 8.83631 22.1349 10.3488 23.6505C11.8926 25.1943 13.9957 24.9912 17.002 24.9912C20.0833 24.9912 21.1489 24.9943 22.2396 24.5724C23.7208 23.9974 24.8396 22.6724 24.949 20.2943C25.0177 18.8224 25.0146 15.1755 24.949 13.7036C24.8177 10.8942 23.3083 9.1879 20.2989 9.0504ZM22.6271 22.6318C21.6177 23.6412 20.2177 23.5505 16.9801 23.5505C13.6457 23.5505 12.3113 23.6005 11.3332 22.6224C10.2113 21.5036 10.4144 19.7099 10.4144 16.988C10.4144 13.3036 10.0363 10.6504 13.7332 10.4629C14.5832 10.4317 14.8332 10.4223 16.9708 10.4223L17.002 10.441C20.5552 10.441 23.3427 10.0692 23.5083 13.7661C23.5458 14.6098 23.5552 14.863 23.5552 16.9974C23.5552 20.2911 23.6177 21.6349 22.6271 22.6318Z" fill="#4A4A4A"/>
+            <path d="M21.2708 13.688C21.8006 13.688 22.2301 13.2585 22.2301 12.7286C22.2301 12.1987 21.8006 11.7692 21.2708 11.7692C20.7409 11.7692 20.3114 12.1987 20.3114 12.7286C20.3114 13.2585 20.7409 13.688 21.2708 13.688Z" fill="#4A4A4A"/>
+        </svg>
+      </a>
+    </li>
+  </ul>
+</div>
+<style>
+    .article-template__social-sharing h3 {
+    color: var(--663700, #663700);
+    font-family: "DM Sans";
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 38.4px; /* 120% */
+    margin-bottom: 16px;
+}
+
+.social-media-area {
+    margin-top: 20px;
+}
+
+ul.share-icons-list {
+    margin: 0!important;
+    display: flex;
+    gap: 10px;
+}
+</style>

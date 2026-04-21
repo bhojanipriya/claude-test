@@ -1,0 +1,396 @@
+<script src="{{ 'jquery.js' | asset_url }}"></script>
+<script src="{{ 'slick.min.js' | asset_url }}"></script>
+<div class="testimonial-wrapper color-{{ section.settings.color_scheme }} {% if section.settings.decorative_image != blank %} testimonial_decorative {% endif %}">
+    <div class="page-width">
+        <div class="testimonial-slider  {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {%- unless section.settings.heading == blank -%}
+                <div class="title-wrapper-with-link title-wrapper--no-top-margin">
+                  <h2
+                    id="SectionHeading-{{ section.id }}"
+                    class="testimonial__title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                    {% if settings.animations_reveal_on_scroll %}
+                      data-cascade
+                    {% endif %}
+                  >
+                    {{ section.settings.heading }}
+                  </h2>
+                </div>
+            {%- endunless -%}
+
+            {%- unless section.settings.subheading == blank -%}
+                <h6 class="testimonial-subheading">{{ section.settings.subheading }}</h6>
+            {%- endunless -%}
+
+            <div class="slick-slider {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+                {% for block in section.blocks %}
+                    <div class="testimonial-slide">
+                        <div class="wrap">
+                            {% if block.settings.image != blank %}
+                                <img src="{{ block.settings.image | img_url: 'master' }}" alt="Featured Image 1" loading="lazy" height="" width="">
+                            {% else %}
+                                {{ 'image' | placeholder_svg_tag }}
+                            {% endif %}
+                        </div>
+                        <div class="star-rating">
+                            {% for i in (1..5) %}
+                                {% if i <= block.settings.star_rating %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none">
+                                        <path d="M13.3145 0L16.4576 10.0193L26.6292 10.0193L18.4003 16.2115L21.5434 26.2307L13.3145 20.0385L5.08546 26.2307L8.22865 16.2115L-0.000338554 10.0193L10.1713 10.0193L13.3145 0Z" fill="#008081"/>
+                                    </svg>
+                                {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" fill="none">
+                                        <path d="M13.3145 0L16.4576 10.0193L26.6292 10.0193L18.4003 16.2115L21.5434 26.2307L13.3145 20.0385L5.08546 26.2307L8.22865 16.2115L-0.000338554 10.0193L10.1713 10.0193L13.3145 0Z" fill="transparent" stroke="#008081" stroke-width="1"/>
+                                    </svg>
+                                {% endif %}
+                              {% endfor %}
+                        </div>
+                        <div class="text">"{{ block.settings.testimonial_text | truncate: 321 }}"</div>
+                        {%- unless block.settings.testimonial_tagline == blank -%}
+                            <div class="testimonial-tagline">{{ block.settings.testimonial_tagline }}</div>
+                        {%- endunless -%}
+                        <h6 class="name">{{ block.settings.author_name }}</h6>
+                    </div>
+                {% endfor %}    
+            </div>
+            <div class="desktop-arrows btn-wrap">
+            <button class="custom-prev-btn" aria-label="Previous">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20" fill="none">
+                    <path d="M3.37049 9.98295C5.69835 12.382 7.9715 14.7219 10.242 17.0645C10.4473 17.2641 10.6397 17.4774 10.8178 17.7029C11.0236 17.9738 11.1271 18.3125 11.1091 18.6561C11.0911 18.9997 10.9528 19.3249 10.7199 19.5713C10.487 19.8176 10.1754 19.9684 9.84285 19.9956C9.51034 20.0227 9.17959 19.9244 8.91203 19.719C8.75685 19.5972 8.61178 19.4623 8.47826 19.3158C5.88336 16.6394 3.29016 13.9626 0.698722 11.2853C-0.236591 10.3203 -0.232673 9.63352 0.709153 8.66045C3.33185 5.95004 5.95628 3.24186 8.58245 0.535919C9.13087 -0.0285642 9.7249 -0.146836 10.2903 0.179758C10.8309 0.491568 11.15 0.994226 11.0119 1.62322C10.9028 2.02701 10.692 2.39381 10.401 2.68633C8.25418 4.9362 6.08263 7.16188 3.92021 9.39562C3.75347 9.56362 3.59324 9.74238 3.37049 9.98295Z" fill="#F5EDDC"/>
+                </svg>
+            </button>
+            <button class="custom-next-btn" aria-label="Next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20" fill="none">
+                    <path d="M8.62951 9.98295C6.30165 12.382 4.0285 14.7219 1.75795 17.0645C1.55271 17.2641 1.36035 17.4774 1.18216 17.7029C0.976377 17.9738 0.872888 18.3125 0.890901 18.6561C0.908913 18.9997 1.04722 19.3249 1.28011 19.5713C1.513 19.8176 1.82465 19.9684 2.15715 19.9956C2.48966 20.0227 2.82041 19.9244 3.08797 19.719C3.24315 19.5972 3.38822 19.4623 3.52174 19.3158C6.11664 16.6394 8.70984 13.9626 11.3013 11.2853C12.2366 10.3203 12.2327 9.63352 11.2908 8.66045C8.66815 5.95004 6.04372 3.24186 3.41755 0.535919C2.86913 -0.0285642 2.2751 -0.146836 1.70974 0.179758C1.16914 0.491568 0.849977 0.994226 0.988059 1.62322C1.0972 2.02701 1.30801 2.39381 1.59903 2.68633C3.74582 4.9362 5.91737 7.16188 8.07979 9.39562C8.24653 9.56362 8.40676 9.74238 8.62951 9.98295Z" fill="white"/>
+                </svg>
+            </button>
+            </div>
+        </div>
+        <div class="mobile-arrows btn-wrap">
+            <button class="custom-prev-btn" aria-label="Previous">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20" fill="none">
+                    <path d="M3.37049 9.98295C5.69835 12.382 7.9715 14.7219 10.242 17.0645C10.4473 17.2641 10.6397 17.4774 10.8178 17.7029C11.0236 17.9738 11.1271 18.3125 11.1091 18.6561C11.0911 18.9997 10.9528 19.3249 10.7199 19.5713C10.487 19.8176 10.1754 19.9684 9.84285 19.9956C9.51034 20.0227 9.17959 19.9244 8.91203 19.719C8.75685 19.5972 8.61178 19.4623 8.47826 19.3158C5.88336 16.6394 3.29016 13.9626 0.698722 11.2853C-0.236591 10.3203 -0.232673 9.63352 0.709153 8.66045C3.33185 5.95004 5.95628 3.24186 8.58245 0.535919C9.13087 -0.0285642 9.7249 -0.146836 10.2903 0.179758C10.8309 0.491568 11.15 0.994226 11.0119 1.62322C10.9028 2.02701 10.692 2.39381 10.401 2.68633C8.25418 4.9362 6.08263 7.16188 3.92021 9.39562C3.75347 9.56362 3.59324 9.74238 3.37049 9.98295Z" fill="#F5EDDC"/>
+                </svg>
+            </button>
+            <button class="custom-next-btn" aria-label="Next">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20" fill="none">
+                    <path d="M8.62951 9.98295C6.30165 12.382 4.0285 14.7219 1.75795 17.0645C1.55271 17.2641 1.36035 17.4774 1.18216 17.7029C0.976377 17.9738 0.872888 18.3125 0.890901 18.6561C0.908913 18.9997 1.04722 19.3249 1.28011 19.5713C1.513 19.8176 1.82465 19.9684 2.15715 19.9956C2.48966 20.0227 2.82041 19.9244 3.08797 19.719C3.24315 19.5972 3.38822 19.4623 3.52174 19.3158C6.11664 16.6394 8.70984 13.9626 11.3013 11.2853C12.2366 10.3203 12.2327 9.63352 11.2908 8.66045C8.66815 5.95004 6.04372 3.24186 3.41755 0.535919C2.86913 -0.0285642 2.2751 -0.146836 1.70974 0.179758C1.16914 0.491568 0.849977 0.994226 0.988059 1.62322C1.0972 2.02701 1.30801 2.39381 1.59903 2.68633C3.74582 4.9362 5.91737 7.16188 8.07979 9.39562C8.24653 9.56362 8.40676 9.74238 8.62951 9.98295Z" fill="white"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+<style>
+.testimonial-wrapper{
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+.testimonial_decorative:after {
+    content: '';
+    position: absolute;
+    top:0;
+    left:0;
+    background-image: url({{ section.settings.decorative_image | img_url: 'master' }});
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 270px;
+    height: 271px;
+    z-index: 2;
+}
+.testimonial-wrapper .testimonial-background {
+    height: 100%;
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+}
+.testimonial-wrapper .title-wrapper-with-link{
+    margin-bottom: 10px;
+}
+.testimonial-wrapper .page-width {
+    z-index: 2;
+    position: relative;
+    width: 100%;
+}
+.testimonial-wrapper h2 {
+    text-align:center;
+    margin: 0 auto;
+}
+.testimonial-subheading{
+    color: {{ section.settings.subheading_color }} !important;
+    margin:0 0 30px 0;
+}
+.testimonial-slider .quote {
+    line-height: 0;
+}
+.testimonial-wrapper .testimonial-slider .quote svg path {
+    fill: #4A4A4A !important;
+}
+.testimonial-slider {
+    margin: 0 auto;
+    max-width: 1428px;
+    border-radius: 10px;
+    text-align: center;
+    position:relative;
+}
+.testimonial-slider .quote svg{
+    margin-top: -65px;
+    display: inline;
+}
+.testimonial-slider .slick-slider {
+    position: relative;
+}
+.testimonial-slider .testimonial-slide {
+    text-align: center;
+}
+.testimonial-slier .testimonial-slide .name {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 22px;
+    line-height: 35px; 
+    color: rgb(var(--color-foreground));
+    text-transform: capitalize;
+}
+.testimonial-wrapper .testimonial-slide img{
+    object-fit: cover;
+    object-position: center center;
+    transition: opacity .4s cubic-bezier(.25,.46,.45,.94);
+    display: block;
+    max-width: 100%;
+    position: relative;
+    top: 0;
+    margin: 0 auto;
+    height: 130px;
+    width: 130px;
+    margin-bottom: 30px;
+    border-radius: 130px;
+}
+.testimonial-wrapper .testimonial-slide .wrap svg{
+    display: block;
+    max-width: 100%;
+    position: relative;
+    top: 0;
+    margin: 0 auto;
+    height: 80px;
+    width: 80px;
+    margin-bottom: 10px;
+    border-radius: 80px;
+}
+.testimonial-slider .name{
+    margin-bottom:0px;
+    font-weight: 500;
+    margin-top: 0px;
+}
+.testimonial-slider .testimonial-slide .text {
+    font-weight: 500;
+    color: {{ section.settings.text_color }} !important;
+    font-size:24px;
+    font-weight: 600;
+    line-height: 38.4px;
+    padding: 0 146px;
+    letter-spacing: normal;
+}
+.testimonial-slider .star-rating {
+    display: block;
+    height: 22px;
+    margin-bottom: 30px;
+}
+.testimonial-slider .star-rating
+.testimonial-slider  .star-rating svg {
+    width: 16.75px;
+    height: 16px;
+}
+.testimonial-slider .prev,.testimonial-slider .next{
+    border-radius: 25px;
+    background-color:#000;
+    width: 60px;
+    height: 40px;
+}
+.testimonial-slider .custom-prev-btn,.testimonial-slider .custom-next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #262626; 
+    background:  var(--color-secondary-button-background);
+    box-shadow: 0px 0px 14px 0px rgba(255, 226, 192, 0.50);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.20);
+    border: 1px solid  #F5EDDC;
+    border: none;
+    padding: 10px;
+    border-radius: 0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+}
+.testimonial-slider .custom-next-btn svg path{
+    fill: #F5EDDC;
+}
+.testimonial-slider .custom-prev-btn:hover,.testimonial-slider .custom-next-btn:hover{
+    background: var(--color-secondary-button-hover-background);
+    border: 1px solid  #F5EDDC; 
+}
+.testimonial-slider .custom-prev-btn {
+    left: -20px; 
+}
+.testimonial-slider .custom-next-btn {
+    right: -20px; 
+}
+.testimonial-slider .custom-prev-btn svg,.testimonial-slider .custom-next-btn svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+}
+.testimonial-slider .star-rating svg {
+    display: inline-block;
+}
+.testimonial-wrapper .mobile-arrows{display: none;}
+.testimonial-tagline{
+    margin-bottom:30px;
+    font-size:18px;
+    font-weight: 500;
+    line-height: 29px;
+}
+@media(max-width:1440px){.testimonial-wrapper{padding-bottom: 75px; padding-left: 30px; padding-right: 30px;}}
+@media(max-width:989px){.testimonial-wrapper{padding-bottom: 50px;}}
+@media(max-width:749px){
+    .testimonial-wrapper{ min-height: 470px;}
+    .testimonial-slider .testimonial-slide .text{ margin-bottom: 30px;padding: 0 30px;}
+    .testimonial_decorative:after{ width: 143px; height: 144px;}
+    .testimonial-wrapper{ padding: 74px 30px 50px !important;}
+    .testimonial-slider .quote svg{width: 52px; height: 46px;margin-top:-23px;}
+    .testimonial-wrapper h2{margin-top:27px;margin-bottom: 30px;max-width: 70%;}
+    .testimonial-wrapper .title-wrapper-with-link{ margin-bottom: 0;}
+    .testimonial-slider .name{ font-size: 18px!important; line-height: 21.6px!important; margin-bottom: 10px;}
+    .testimonial-wrapper .desktop-arrows{display: none;}
+    .testimonial-wrapper .mobile-arrows {display: flex;justify-content: center;align-items: center;gap: 10px;margin-top: 20px;}
+    .testimonial-wrapper .mobile-arrows .slick-arrow {border-radius: 22.167px;border: 0.887px solid #262626;background:#000;padding: 8px 20px;min-width: 53px;display: flex;align-items: center;justify-content: center;}
+    .testimonial-wrapper .mobile-arrows .slick-arrow svg{width: 9px;height: 17px;}
+    .testimonial-wrapper .mobile-arrows .slick-arrow.slick-disabled{ border: 0.887px solid #F5EDDC;background: #fff;box-shadow: 0px 0px 12.413px 0px rgba(255, 226, 192, 0.50);}
+    .testimonial-wrapper .mobile-arrows .slick-arrow.slick-disabled svg path{fill: #F5EDDC;}
+    .testimonial-slider .testimonial-slide .text{font-size:14px;}
+}
+@media(max-width:480px){
+    .testimonial-wrapper{ min-height: 460px;}
+    .testimonial-wrapper h2{max-width: 312px !important;}
+    .testimonial_decorative:after{  top: -12px;}
+}
+</style>
+<script>
+$(document).ready(function(){
+    $('.testimonial-slider .slick-slider').slick({
+        prevArrow: $('.custom-prev-btn'),
+        nextArrow: $('.custom-next-btn'),
+        dots: false,
+        infinite: true,
+        speed: 400,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+       autoplaySpeed: 3000
+    });
+});
+</script>
+{% schema %}
+{
+"name": "Testimonial With slider",
+"settings": [
+    {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "default": "background-1"
+    },
+    {
+        "type": "inline_richtext",
+        "id": "heading",
+        "default": "What Our Customers Say",
+        "label": "Heading"
+    },
+    {
+        "type": "text",
+        "id": "subheading",
+        "label": "Subheading",
+        "default": "Subheading"
+    },
+    {
+        "type": "color",
+        "id": "subheading_color",
+        "label": "Subheading Color",
+        "default": "#008081"
+    },
+    {
+        "type": "header",
+        "content": "Decorative Image"
+    },
+    {
+        "type": "image_picker",
+        "id":"decorative_image",
+        "label": "Select Image"
+    }
+],
+"blocks": [
+    {
+    "type": "testimonial",
+    "name": "Testimonial",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        },
+        {
+            "type": "range",
+            "id": "star_rating",
+            "label": "Star Rating",
+            "default": 3,
+            "min": 1,
+            "max": 5,
+            "step": 1
+        },
+        {
+            "type": "textarea",
+            "id": "testimonial_text",
+            "label": "Testimonial Text",
+            "default": "Testimonial Text"
+        },
+        {
+            "type": "textarea",
+            "id": "testimonial_tagline",
+            "label": "Tagline",
+            "default": "Testimonial Tagline",
+            "info": "Optional smaller text displayed below the main quote"
+        },
+        {
+            "type": "text",
+            "id": "author_name",
+            "label": "Author Name",
+            "default": "Author Name"
+        }
+    ]
+    }
+],
+"presets": [
+    {
+    "name": "Testimonial With slider",
+    "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "star_rating": 5,
+            "testimonial_text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            "author_name": "Author Name"
+          }
+        }
+      ]
+    }
+]
+}
+{% endschema %}

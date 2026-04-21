@@ -1,0 +1,1073 @@
+
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div class="section color-{{ section.settings.color_scheme }}">
+  <div
+    class="
+      spacing-style
+      layout-panel-flex
+      layout-panel-flex--column
+      section-content-wrapper
+      mobile-column
+    "
+    style="
+      {% render 'layout-panel-style', settings: section.settings %}
+      {% render 'spacing-style', settings: section.settings %}
+    "
+  >
+    {%- if article.image -%}
+      {%- content_for 'block', id: 'blog-post-image', type: '_blog-post-featured-image' %}
+    {%- endif -%}
+      <div class="blog-post-main-wrapper classicEditorial">
+          <div class="blog-post-left">
+            <div class="fixtitle-main">
+            <div class="fixtitle-left">
+                {%- content_for 'block', id: 'blog-post-details', type: '_blog-post-info-text' %}   
+                {%- content_for 'block', id: 'blog-post-title', type: 'text' %}   
+            </div>
+            <div class="fixtitle-right">
+                {%- content_for 'block', id: 'blog-post-content', type: '_blog-post-content' %}
+            </div>
+            </div>
+            
+            <div class="tags_social-media">
+              {% if article.tags.size > 0 %}
+                  <div class="article-tags">
+                    <h4 class="tags-label">Tags :</h4>
+
+                    <ul class="tags-list">
+                      {% for tag in article.tags %}
+                        <li class="tag-item">
+                          <a href="{{ blog.url }}/tagged/{{ tag | handle }}">
+                            {{ tag }}
+                          </a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                {% endif %}
+              <div class="social-media-area">
+                  {% render 'share-icons', article: article %}
+              </div>
+            </div>
+            <div class="blog-prev-next-nav">
+    
+                  {%- liquid
+                    assign current_article_index = -1
+                
+                    for a in blog.articles
+                      if a.id == article.id
+                        assign current_article_index = forloop.index0
+                        break
+                      endif
+                    endfor
+                
+                    assign prev_index = current_article_index | minus: 1
+                    assign next_index = current_article_index | plus: 1
+                
+                    assign prev_article = blog.articles[prev_index]
+                    assign next_article = blog.articles[next_index]
+                
+                    assign is_newest = false
+                    if current_article_index == 0
+                      assign is_newest = true
+                    endif
+                
+                    assign last_index = blog.articles.size | minus: 1
+                    assign is_oldest = false
+                    if current_article_index == last_index
+                      assign is_oldest = true
+                    endif
+                  -%}
+                
+                  {%- if is_newest == false and prev_article -%}
+                    <a class="blog-nav-btn" href="{{ prev_article.url }}">
+                 <svg class="read-prev-svg"xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+                    <path d="M2.02229 5.98977C3.41901 7.42921 4.7829 8.83316 6.14523 10.2387C6.26837 10.3585 6.38379 10.4864 6.49071 10.6218C6.61417 10.7843 6.67627 10.9875 6.66546 11.1937C6.65465 11.3998 6.57167 11.595 6.43193 11.7428C6.2922 11.8906 6.10521 11.981 5.90571 11.9973C5.70621 12.0136 5.50775 11.9547 5.34722 11.8314C5.25411 11.7583 5.16707 11.6774 5.08696 11.5895C3.53001 9.98363 1.97409 8.37754 0.419233 6.77118C-0.141955 6.19218 -0.139604 5.78011 0.425492 5.19627C1.99911 3.57002 3.57377 1.94511 5.14947 0.321552C5.47852 -0.0171385 5.83494 -0.0881017 6.17416 0.107855C6.49852 0.294941 6.69001 0.596536 6.60716 0.973933C6.54168 1.21621 6.41519 1.43628 6.24058 1.6118C4.95251 2.96172 3.64958 4.29713 2.35213 5.63737C2.25208 5.73817 2.15595 5.84543 2.02229 5.98977Z" fill="#663700"/>
+                </svg>
+                <span class="ml-10 prev-blog">Previous</span>
+              </a>
+                  {%- else -%}
+                    <span class="blog-nav-btn disabled" aria-disabled="true" style="opacity:0.4; pointer-events:none;">
+                
+                <svg class="read-prev-svg"xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+                    <path d="M2.02229 5.98977C3.41901 7.42921 4.7829 8.83316 6.14523 10.2387C6.26837 10.3585 6.38379 10.4864 6.49071 10.6218C6.61417 10.7843 6.67627 10.9875 6.66546 11.1937C6.65465 11.3998 6.57167 11.595 6.43193 11.7428C6.2922 11.8906 6.10521 11.981 5.90571 11.9973C5.70621 12.0136 5.50775 11.9547 5.34722 11.8314C5.25411 11.7583 5.16707 11.6774 5.08696 11.5895C3.53001 9.98363 1.97409 8.37754 0.419233 6.77118C-0.141955 6.19218 -0.139604 5.78011 0.425492 5.19627C1.99911 3.57002 3.57377 1.94511 5.14947 0.321552C5.47852 -0.0171385 5.83494 -0.0881017 6.17416 0.107855C6.49852 0.294941 6.69001 0.596536 6.60716 0.973933C6.54168 1.21621 6.41519 1.43628 6.24058 1.6118C4.95251 2.96172 3.64958 4.29713 2.35213 5.63737C2.25208 5.73817 2.15595 5.84543 2.02229 5.98977Z" fill="#663700"/>
+                </svg>
+                <span class="ml-10">Previous</span></span>
+                  {%- endif -%}
+                
+                  {%- if is_oldest == false and next_article -%}
+                    <a class="blog-nav-btn" href="{{ next_article.url }}"><span class="mr-10">Next</span> <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+                        <path d="M4.66934 5.98977C3.26469 7.42921 1.89305 8.83316 0.522982 10.2387C0.399134 10.3585 0.283062 10.4864 0.175539 10.6218C0.0513706 10.7843 -0.011076 10.9875 -0.000206947 11.1937C0.0106621 11.3998 0.0941181 11.595 0.234645 11.7428C0.375173 11.8906 0.563223 11.981 0.76386 11.9973C0.964496 12.0136 1.16408 11.9547 1.32553 11.8314C1.41916 11.7583 1.5067 11.6774 1.58726 11.5895C3.15305 9.98363 4.71781 8.37754 6.28151 6.77118C6.84589 6.19218 6.84352 5.78011 6.27522 5.19627C4.69266 3.57002 3.10905 1.94511 1.5244 0.321552C1.19347 -0.0171385 0.83503 -0.0881017 0.493889 0.107855C0.167682 0.294941 -0.0249004 0.596536 0.0584197 0.973933C0.124276 1.21621 0.251482 1.43628 0.427087 1.6118C1.72248 2.96172 3.03281 4.29713 4.33764 5.63737C4.43825 5.73817 4.53493 5.84543 4.66934 5.98977Z" fill="#663700"/>
+                        </svg>
+                </a>
+                  {%- else -%}
+                    <span class="blog-nav-btn disabled" aria-disabled="true" style="opacity:0.4; pointer-events:none;"><span class="mr-10">Next</span> <svg xmlns="http://www.w3.org/2000/svg" width="7" height="12" viewBox="0 0 7 12" fill="none">
+                        <path d="M4.66934 5.98977C3.26469 7.42921 1.89305 8.83316 0.522982 10.2387C0.399134 10.3585 0.283062 10.4864 0.175539 10.6218C0.0513706 10.7843 -0.011076 10.9875 -0.000206947 11.1937C0.0106621 11.3998 0.0941181 11.595 0.234645 11.7428C0.375173 11.8906 0.563223 11.981 0.76386 11.9973C0.964496 12.0136 1.16408 11.9547 1.32553 11.8314C1.41916 11.7583 1.5067 11.6774 1.58726 11.5895C3.15305 9.98363 4.71781 8.37754 6.28151 6.77118C6.84589 6.19218 6.84352 5.78011 6.27522 5.19627C4.69266 3.57002 3.10905 1.94511 1.5244 0.321552C1.19347 -0.0171385 0.83503 -0.0881017 0.493889 0.107855C0.167682 0.294941 -0.0249004 0.596536 0.0584197 0.973933C0.124276 1.21621 0.251482 1.43628 0.427087 1.6118C1.72248 2.96172 3.03281 4.29713 4.33764 5.63737C4.43825 5.73817 4.53493 5.84543 4.66934 5.98977Z" fill="#663700"/>
+                        </svg>
+                    </span>
+                  {%- endif -%}
+                
+            </div>
+          </div>
+          <div class="blog-post-right">
+            <div class="read-nxt-desktop">
+            <div class="blog-read-next">
+              {%- liquid
+                assign current_article_index = -1
+
+                for a in blog.articles
+                  if a.id == article.id
+                    assign current_article_index = forloop.index0
+                    break
+                  endif
+                endfor
+
+                assign last_index = blog.articles.size | minus: 1
+                assign is_oldest = false
+                if current_article_index == last_index
+                  assign is_oldest = true
+                endif
+
+                if is_oldest
+                  assign prev_index_1 = current_article_index | minus: 1
+                  assign prev_index_2 = current_article_index | minus: 2
+                  
+
+                  assign article_1 = blog.articles[prev_index_1]
+                  assign article_2 = blog.articles[prev_index_2]
+                else
+                  assign next_index_1 = current_article_index | plus: 1
+                  assign next_index_2 = current_article_index | plus: 2
+
+                  assign article_1 = blog.articles[next_index_1]
+                  assign article_2 = blog.articles[next_index_2]
+                endif
+              -%}
+
+              {%- if article_1 or article_2 -%}
+                {% comment %} <h3 class="Read-next-title">
+                  {%- if is_oldest -%}
+                    Read Previous
+                  {%- else -%}
+                    Read Next
+                  {%- endif -%}
+                </h3> {% endcomment %}
+
+                <ul>
+                  {%- if article_1 != blank -%}
+                    <li>
+                      <a href="{{ article_1.url }}" class="read-next-link">
+                        <h4 class="read-next-title">
+                          {{ article_1.title }}
+                        </h4>
+                        
+                      </a>
+                    </li>
+                  {%- endif -%}
+
+                  {%- if article_2 != blank -%}
+                    <li>
+                      <a href="{{ article_2.url }}" class="read-next-link">
+                        <h4 class="read-next-title">
+                          {{ article_2.title }}
+                        </h4>
+                      </a>
+                    </li>
+                  {%- endif -%}
+                </ul>
+              {%- endif -%}
+            </div>
+          </div>
+         
+          </div>
+      </div>
+    {% comment %} Dynamic area for @app blocks only, at the bottom {% endcomment %}
+    {% content_for 'blocks' %}
+
+    {% if blog.comments_enabled? %}
+      <div class="blog-post-comments-container">
+        <h2 class="h3 c-count">{{- 'blogs.article.comments_heading' | t: count: article.comments_count -}}</h2>
+
+        <div class="blog-post-comments">
+          {% paginate article.comments by 10 %}
+            {% for comment in article.comments %}
+              <div class="blog-post-comment">
+                {{ comment.content }}
+                <div class="blog-post-comment__author">
+                  <span class="blog-post-comment__author-name">{{- comment.author -}}</span>
+                  <span>{{- 'blogs.article.comment_author_separator' | t -}}</span>
+                  <span class="blog-post-comment__date">
+                    {{- comment.created_at | time_tag: format: 'date' -}}
+                  </span>
+                </div>
+              </div>
+            {% endfor %}
+
+            <div class="blog-post-comments-pagination">
+              {{- paginate | default_pagination -}}
+            </div>
+          {% endpaginate %}
+        </div>
+
+        {% render 'blog-comment-form', article: article, section_id: section.id %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const input = document.querySelector(".blog-search-input");
+    const resultsBox = document.querySelector(".blog-search-results");
+  
+    async function searchBlogs(query) {
+      if (!query.trim()) {
+        resultsBox.style.display = "none";
+        resultsBox.innerHTML = "";
+        return;
+      }
+  
+      const url = `/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=article&resources[limit]=5`;
+  
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const articles = data.resources.results.articles || [];
+  
+        if (articles.length === 0) {
+          resultsBox.innerHTML = `<div class="no-results">No blog posts found</div>`;
+          resultsBox.style.display = "block";
+          return;
+        }
+  
+        let html = "<ul>";
+        articles.forEach(article => {
+          html += `
+            <li>
+              <a href="${article.url}">
+                ${article.image ? `<img src="${article.image}" alt="${article.title}">` : ""}
+                <span class="article-title">${article.title}</span>
+              </a>
+            </li>`;
+        });
+        html += "</ul>";
+        html += `
+          <div class="view-all">
+            <a href="/search?q=${encodeURIComponent(query)}&type=article">
+              View all results <span><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.175 8.59251H1C0.447716 8.59251 0 8.1448 0 7.59251C0 7.04023 0.447715 6.59251 1 6.59251H12.175L7.28753 1.70504C6.89503 1.31254 6.89785 0.675322 7.29381 0.286316C7.68483 -0.097851 8.31242 -0.0950742 8.70003 0.292538L15.2929 6.8854C15.6834 7.27593 15.6834 7.90909 15.2929 8.29962L8.70003 14.8925C8.31241 15.2801 7.68483 15.2829 7.29381 14.8987C6.89785 14.5097 6.89503 13.8725 7.28753 13.48L12.175 8.59251Z" fill="#663700"/>
+            </svg></span>
+                      </a>
+          </div>`;
+  
+        resultsBox.innerHTML = html;
+        resultsBox.style.display = "block";
+  
+      } catch (error) {
+        console.error("Error fetching blog search results:", error);
+      }
+    }
+  
+    input.addEventListener("input", function () {
+      const query = this.value;
+      searchBlogs(query);
+    });
+  
+    // Hide dropdown when clicked outside
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".blog-search-box-desktop")) {
+        resultsBox.style.display = "none";
+      }
+    });
+  });
+  document.querySelector('.blog-search-input').addEventListener('keypress', function(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault(); // Prevents the form from being submitted
+  }
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  document.querySelectorAll('.video_icon').forEach(function (icon) {
+
+    icon.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const parent = icon.closest('.video_block');
+      if (!parent) return;
+
+      parent.classList.add('video-open');
+
+      const iframe = parent.querySelector('iframe');
+      const video = parent.querySelector('video');
+
+      if (iframe && !iframe.src.includes('autoplay=1')) {
+        iframe.src += '?autoplay=1';
+      }
+
+      if (video) {
+        video.play();
+      }
+    });
+
+  });
+
+  // Close when clicking outside
+  document.addEventListener('click', function () {
+    document.querySelectorAll('.video_block.video-open').forEach(function (block) {
+
+      const iframe = block.querySelector('iframe');
+      const video = block.querySelector('video');
+
+      if (iframe) {
+        block.querySelector('iframe').src =
+          iframe.src.replace('?autoplay=1', '');
+      }
+
+      if (video) {
+        video.pause();
+      }
+
+      block.classList.remove('video-open');
+    });
+  });
+
+});
+
+
+</script>
+{% stylesheet %}
+  .blog-post-comments-container {
+    width: 100%;
+    max-width: var(--normal-content-width);
+    margin: 0 auto;
+  }
+
+  .blog-post-comments {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-3xl);
+  }
+
+  .blog-post-comment__author {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-2xs);
+    margin-top: var(--margin-md);
+    font-size: var(--font-size--body-sm);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .blog-post-comments-pagination {
+    display: flex;
+    justify-content: center;
+    gap: var(--gap-2xs);
+  }
+
+  .blog-post-comments-pagination,
+  .blog-post-comments-pagination a {
+    color: var(--color-foreground);
+  }
+
+  .blog-post-comments-pagination .current {
+    color: var(--color-foreground);
+  }
+
+  .blog-post-comments-pagination .current,
+  .blog-post-comments-pagination a {
+    display: block;
+    padding: var(--padding-2xs) var(--padding-xs);
+  }
+
+  .blog-post-comments-pagination .current,
+  .blog-post-comments-pagination a:hover {
+    border-bottom: 1px solid var(--color-foreground);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.blog_post",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "select",
+      "id": "content_direction",
+      "label": "t:settings.direction",
+      "options": [
+        {
+          "value": "column",
+          "label": "t:options.vertical"
+        }
+      ],
+      "default": "column",
+      "visible_if": "{{ section.settings.gap < 0 }}"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:settings.gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": []
+}
+{% endschema %}
+<style>
+   main[data-template="article"] .section.color-scheme-1{
+    background:#fff;
+  }
+
+   {% comment %} main[data-template="article"] .section.color-scheme-1 .section-content-wrapper{padding-top:0;} {% endcomment %}
+
+  .blog-post-main-wrapper {
+    display: block;
+    gap: 30px;
+    width:100%;
+        max-width: 100%;
+    margin: 0 auto;
+}
+.fixtitle-main {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+}
+
+.fixtitle-main .fixtitle-left {
+    max-width: 621px;
+    width: 100%;
+}
+
+.fixtitle-main .fixtitle-right {
+    max-width: calc(100% - 621px);
+    width: 100%;
+}
+p.image-two-block
+{
+margin: 30px 0;
+    display: grid;
+    gap: 30px;
+    width: 100%;
+    grid-template-columns: auto auto;
+}
+.img-text-flex.flex1 .blog-image {
+    max-width: 340px;
+    width: 100%;
+}
+.img-text-flex.flex2 .blog-image {
+    max-width: 472px;
+    width: 100%;
+}
+.blog-post-left {
+    max-width: 100%;
+    width: 100%;
+    {% comment %} border-bottom: 1px solid #4A4A4A; {% endcomment %}
+}
+
+.blog-post-right {
+    max-width: 100%;
+    width: 100%;
+}
+  .classicEditorial .blog-post-content{
+    max-width:100%;
+    margin:0;
+}
+.blog-search-results ul,.blog-post-main-wrapper ul {
+    padding: 0;
+    margin:0;
+    list-style: none;
+}
+.blog-search-box-desktop form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #4a4a4a;
+    border-radius: 10px;
+    height: 59px;
+    padding: 0px 20px;
+}
+
+.blog-search-box-desktop form button.blog-search-btn {
+    width: 22px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor:pointer;
+}
+
+.blog-search-box-desktop form input.blog-local-search.blog-search-input {
+    width: calc(100% - 22px);
+    border: 0px;
+    font-size: 18px;
+        font-family: 'DM Sans';
+    line-height: 21px;
+    color: #4A4A4A;
+    background: transparent!important;
+    outline: none;
+    box-shadow: none;
+}
+.read-nxt-desktop {
+    margin-top: 0px;
+        border-bottom: 1px solid #4A4A4A;
+}
+h3.Read-next-title {
+    font-size: 34px;
+    line-height: 44px;
+    margin: 0;
+    color:#663700;
+}
+.blog-read-next ul{margin-top:0px;margin-bottom:0px;    display: flex;
+    width: 100%;
+    justify-content: space-between; gap:20px;}
+.blog-read-next ul li a {
+    display: flex;
+    gap: 10px;
+    align-items:center;
+}
+
+.blog-read-next ul li a .read-next-image-wrap {
+    max-width: 114px;
+}
+
+.blog-read-next ul li a .read-next-image-wrap img {
+    width: 100%;
+    height: 100%;
+    border-radius:6px;
+        aspect-ratio: 16 / 15.3;
+    object-fit: cover;
+}
+
+.blog-read-next ul li a p {
+    width: calc(100% - 114px);
+    margin: 0;
+    line-height: 22.4px;
+        color: #663700;
+    font-family: 'DM Sans';
+    font-size: 18px;
+    font-weight: 500;
+}
+.blog-read-next li {
+    margin-bottom: 20px;
+    max-width:50%;
+    width:100%;
+}
+.classicEditorial .blog-read-next li{ margin-bottom: 50px;}
+.blog-read-next li:last-child {
+    margin-bottom: 0;
+}
+.blog-read-next li:last-child a {
+    justify-content: end;
+    text-align: right;
+}
+.blog-search-box-desktop {
+    position: relative;
+}
+.blog-prev-next-nav span{
+  display: flex;
+    align-items: center;
+}
+.blog-prev-next-nav a,.blog-prev-next-nav {
+    display: flex;
+    align-items: center;
+    font-family: "DM Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 21.6px;
+    color: #663700;
+}
+.blog-prev-next-nav{
+justify-content:space-between;
+margin-top:30px;
+}
+.classicEditorial .blog-prev-next-nav{margin-top:50px;margin-bottom:10px;}
+.blog-post-main-wrapper .blog-search-results {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 350px;
+  overflow-y: auto;
+  z-index: 50;
+  display: none;
+}
+ 
+.blog-post-main-wrapper .blog-search-results ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+ 
+.blog-post-main-wrapper .blog-search-results li {
+  border-bottom: 1px solid #f3f3f3;
+}
+ 
+.blog-post-main-wrapper .blog-search-results a {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: #222;
+  transition: background 0.2s ease;
+}
+ 
+.blog-post-main-wrapper .blog-search-results a:hover {
+  background: #f8f8f8;
+}
+ 
+.blog-post-main-wrapper .blog-search-results img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+ 
+.blog-post-main-wrapper .blog-search-results .article-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.3;
+
+}
+ 
+.blog-post-main-wrapper .blog-search-results .no-results {
+  padding: 12px;
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  font-weight: 400;
+}
+ 
+.blog-post-main-wrapper .blog-search-results .view-all {
+  text-align: center;
+  padding: 10px;
+  background: #fafafa;
+  display:none;
+}
+ 
+.blog-post-main-wrapper .blog-search-results .view-all a {
+  color: #663700;
+  text-decoration: none;
+  font-weight: 500;
+      display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.blog-post-main-wrapper .blog-search-results .view-all a span{line-height: 0;}
+ 
+.blog-post-main-wrapper .blog-search-results .view-all a:hover {
+  text-decoration: underline;
+} 
+p.image-two-block
+{
+margin: 30px 0;
+    display: grid;
+    gap: 30px;
+    width: 100%;
+    grid-template-columns: auto auto;
+    border-radius: 10px;
+}
+.img-text-flex.flex1 .blog-image {
+    max-width: 340px;
+    width: 100%;
+}
+.img-text-flex.flex2 .blog-image {
+    max-width: 472px;
+    width: 100%;
+}
+
+span.ml-10 {
+    margin-left: 10px;
+}
+span.mr-10 {
+    margin-right: 10px;
+}
+main[data-template="article.fix-title"] 
+.section
+.blog-post-featured-image,
+main[data-template="article.fix-title"] 
+.section 
+.blog-post-featured-image img {
+    position: relative;
+    width: calc(100vw - 5px);
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+.blog-post-main-wrapper .blog-post-date-wrapper span{color: #4A4A4A;
+    font-size: 16px;
+    line-height: 21.6px;}
+
+.blog-post-date-wrapper span time,.blog-post-date-wrapper span {
+    {% comment %} color: #663700; {% endcomment %}
+    font-weight: 500;
+    font-size:18px;
+    line-height: 21.6px;
+}
+main[data-template="article.classic-editorial"] .featured-blog-posts .blog-post-details .blog-post-date-wrapper span {
+    color: #fff !important;
+}
+main[data-template="article"] .blog-post-left .h3 {
+    margin: 20px 0px;
+}
+.blog-post-left iframe {
+    margin: 30px 0px 5px 0px;
+        border-radius: 10px;
+}
+.blog-read-next ul li a p.read-next-title span {
+    display: block;
+    color: #4A4A4A;
+    font-size: 16px;
+    margin-bottom: 5px;
+        line-height: 25.6px;
+}
+.blog-post-main-wrapper .rte p.video_block {
+  position: relative;
+   height: 428px; 
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 30px 0;  
+}
+.blog-post-main-wrapper .rte p.video_block::before {
+  padding-bottom: 490px;
+   padding-bottom: 40.76%;
+  position: relative;
+  content: '';
+  display: block;
+  width:100%
+}
+.blog-post-main-wrapper .rte p.video_block img{
+  width: 100%;
+  margin: 0;
+  height: 100%;
+  max-width: 100%; 
+  position: absolute;
+  top: 0;
+}
+.blog-post-main-wrapper .rte p.video_block iframe,.blog-post-main-wrapper .rte p.video_block video{
+  display: none;
+  width: 100%;
+  height: 100%!important;
+  position: absolute;
+  top: 0;
+}
+.blog-post-main-wrapper .rte p.video_block img.video_icon {
+  position: absolute;
+  width: auto;
+  height: auto;
+  top: 50%;
+  bottom: auto;
+  left: 0;
+  right: 0;
+  margin: auto;
+  cursor: pointer;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.blog-post-main-wrapper .rte p.video_block.video-open img{
+  display: none;
+}
+.blog-post-main-wrapper .rte p.video_block.video-open iframe,.blog-post-main-wrapper .rte p.video_block.video-open video{
+display: block;
+}
+.video_block {
+  position: relative;
+}
+
+/* iframe blocks clicks — disable it initially */
+.video_block iframe {
+  pointer-events: none;
+}
+
+/* enable iframe only after click */
+.video_block.video-open iframe {
+  pointer-events: auto;
+}
+
+/* play icon */
+.video_icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  cursor: pointer;
+}
+main[data-template="article.fix-title"] .blog-post-featured-image__image {
+    aspect-ratio: 16 / 2.92 !important;
+}
+ .blog-post-main-wrapper p{font-weight:500!important;}
+ .section-content-wrapper:has(.blog-post-main-wrapper) {
+    gap: 50px;
+}
+.classicEditorial .article-template__social-sharing {
+    display: flex;
+    align-items:center;
+}
+
+.classicEditorial .article-template__social-sharing h4,.classicEditorial .tags-label{
+    margin: 0;
+    color: #663700;
+    margin-right: 10px;
+    font-family: "DM Sans", sans-serif;
+}
+.classicEditorial .tags-label{
+    max-width: 75px;
+    width: 100%;
+}
+.classicEditorial .article-tags {
+    display: flex;
+    align-items: center;
+    max-width: calc(100% - 220px);
+    width: 100%;
+}
+.tags_social-media .social-media-area {
+    margin: 0;
+        width: 100%;
+    max-width: 211px;
+}
+.tags_social-media {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    border-bottom: 1px solid #4A4A4A;
+    padding-bottom: 50px;
+}
+.tags_social-media ul.tags-list li.tag-item a {
+    color: #000;
+    border: 1px solid #000;
+    padding: 5px 10px;
+    font-size: 16px;
+    line-height: 25.6px;
+    border-radius: 20px;
+}
+.article-tags ul.tags-list {
+    display: flex;
+    gap: 10px;
+    max-width: calc(100% - 80px);
+    flex-wrap: wrap;
+    width: 100%;
+}
+main[data-template="article.fix-title"] .featured-blog-posts .section-resource-list::before
+{display:none!important;}
+main[data-template="article.fix-title"] .dynamic-button-wrapper a {
+    margin: 0;
+    background-color: transparent!important;
+    padding: 0;
+    color: #663700!important;
+}
+main[data-template="article.fix-title"] .dynamic-button-wrapper a svg path{
+    fill: #663700!important;
+}
+main[data-template="article.fix-title"] .dynamic-button-wrapper {
+    position: absolute;
+    bottom: calc(100% - 140px);
+    right: 5%;
+}
+@media(max-width:1366px){
+.fixtitle-main .fixtitle-left {
+    max-width: 400px;
+}
+.fixtitle-main .fixtitle-right {
+    max-width: calc(100% - 400px);
+}
+}
+
+ @media (max-width: 1199px) {
+    .blog-post-main-wrapper .rte p.video_block {
+        height: 295px;
+    }
+}
+ @media(max-width:991px){
+  .blog-post-main-wrapper .rte p.video_block {
+      height: 230px;
+  }
+  .blog-post-main-wrapper .rte p.video_block img.video_icon{max-width:60px;}
+    main[data-template="article.fix-title"] .dynamic-button-wrapper {
+    bottom: calc(100% - 90px);
+  }
+}
+
+  @media(max-width:1366px){
+  .fixtitle-main .fixtitle-left {
+      max-width: 300px;
+  }
+  .fixtitle-main .fixtitle-right {
+      max-width: calc(100% - 300px);
+  }
+  }
+
+@media(max-width:749px){
+  .blog-post-main-wrapper .rte p.video_block {
+    height: 220px;
+  }
+  .blog-post-main-wrapper {
+      display: block;
+      gap: 30px;
+  }
+  .section-content-wrapper:has(.blog-post-main-wrapper) {
+    gap: 30px;
+  }
+  .blog-post-left,.blog-post-right {
+      max-width: 100%;
+  }
+  .blog-post-right{margin-top:50px;}
+  p.image-two-block {
+      margin: 20px 0;
+      display: block;
+  }
+  p.image-two-block img:first-child {
+      margin-bottom: 20px;
+  }
+  .blog-post-left {
+      padding: 20px;
+  }
+  .classicEditorial .blog-post-left{padding:0px;}
+  .blog-post-left iframe {
+      margin: 20px 0px 5px 0px;
+  }
+  main[data-template="article"] .blog-post-featured-image__image {
+      aspect-ratio: 16 / 12.24 !important;
+  }
+  .blog-post-main-wrapper .rte p.video_block img.video_icon{max-width:40px;}
+  p.image-two-block img {
+    aspect-ratio: 16 / 8.76;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  .blog-prev-next-nav a, .blog-prev-next-nav {
+      font-size: 16px;
+    }
+    .blog-post-main-wrapper .h3 h1 {
+      font-size: 20px;
+      line-height: 24px;
+  }
+  h3.Read-next-title {
+      font-size: 20px;
+      line-height: 24px;
+  }
+  .blog-read-next ul li a p.read-next-title span{font-size:14px;}
+  .blog-read-next ul li a p{font-size:16px!important;}
+  .blog-read-next ul li a .read-next-image-wrap {
+      max-width: 93px;
+  }
+  .blog-read-next ul li a p {
+      width: calc(100% - 93px);
+    }
+    .blog-post-date-wrapper span {
+      font-size: 16px;
+      line-height: 21.6px;
+  }
+  .tags_social-media{display:block;}
+  .classicEditorial .article-tags {
+      margin-bottom: 30px;
+      max-width:100%;
+  }
+  .classicEditorial .tags-label {
+      max-width: 60px;
+  }
+  .tags_social-media {
+      margin-top: 30px;
+      padding-bottom: 30px;
+  }
+  .classicEditorial .blog-prev-next-nav {
+      margin-top: 30px;
+      margin-bottom: 0px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid #4A4A4A;
+  }
+    .classicEditorial .blog-post-right {
+        margin-top: 0px;
+    }
+    .classicEditorial .read-nxt-desktop{display:none;}
+    .section-wrapper:has(.leaveComment) {
+      padding: 0px 30px;
+  }
+  main[data-template="article.fix-title"] .blog-post-featured-image__image {
+    aspect-ratio: 16 / 15.135;
+  }
+    .fixtitle-main {
+        display: block;
+    }
+    .fixtitle-main .fixtitle-left,.fixtitle-main .fixtitle-right {
+            max-width: 100%;
+        }
+        main[data-template="article.fix-title"] .dynamic-button-wrapper {
+        bottom: calc(100% - 80px);
+        right: 0%;
+    }
+    main[data-template="article.fix-title"] .fixtitle-main {
+      display:block;
+    flex-direction: column!important;
+    } 
+    main[data-template="article.fix-title"] .fixtitle-main .fixtitle-left,main[data-template="article.fix-title"] .fixtitle-main .fixtitle-right{
+        max-width: 100%;
+    }
+    
+}
+@media(max-width:575px){
+    .blog-post-main-wrapper .rte p.video_block {
+        height: 200px;
+    }
+}
+</style>

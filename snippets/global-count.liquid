@@ -1,0 +1,33 @@
+{%- doc -%}
+  Intended for use in a block similar to the button block.
+
+
+  @param {object} [block] - The block
+
+  @example
+{% render 'global-count', block: block %}
+{%- enddoc -%}
+
+{% assign block_settings = block.settings %}
+
+<div class="stat-items-wrapper">
+  <div class="stat-item {{ block.id }}">
+    <div class="stat-number">
+      {{ block.settings.stat_number }}{{ block.settings.stat_suffix }}
+    </div>
+    <div class="stat-title">
+      {{ block.settings.stat_title }}
+    </div>
+  </div>
+</div>
+{% stylesheet %}
+  .link {
+    text-decoration: none;
+    text-decoration-color: currentcolor;
+
+    &:hover {
+      color: var(--color-primary-hover);
+      text-decoration-color: transparent;
+    }
+  }
+{% endstylesheet %}

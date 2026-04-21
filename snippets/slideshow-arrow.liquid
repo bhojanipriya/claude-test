@@ -1,0 +1,52 @@
+{%- doc -%}
+  Renders a slideshow arrow control
+
+  @param {string} action - { 'previous' | 'next' } The action to perform when the arrow is clicked.
+  @param {string} [icon_style] - { 'arrow' | 'chevron' } The style of the icon, defaults to 'arrow'.
+  @param {string} [icon_shape] - { 'none' | 'circle' | 'square' } The shape of the icon background, defaults to 'none'.
+  @param {string} [icon_size] - { 'small' | 'medium' | 'large' } The size of the icon, defaults to 'medium'.
+
+  @example
+  {%- render 'slideshow-arrow', action: 'previous' -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign icon_name = 'arrow'
+  assign style = icon_style | default: 'arrow'
+  assign shape = icon_shape | default: 'none'
+
+  if icon_style contains 'chevron'
+    assign icon_name = 'caret'
+  endif
+
+  if icon_style contains 'large'
+    assign icon_size = 'large'
+  endif
+-%}
+
+<button
+  class="
+    slideshow-control slideshow-control--{{ action }}
+    {% if icon_size %} slideshow-control--{{ icon_size }}{% endif %}
+    {% if shape != 'none' %} slideshow-control--shape-{{ shape }}{% endif %}
+    slideshow-control--style-{{ style }}
+    button button-unstyled button-unstyled--transparent
+    {% if action == 'previous' %} flip-x{% endif %}
+  "
+  {% # theme-check-disable %}
+  aria-label="{{ 'accessibility.slideshow_' | append: action | t }}"
+  {% # theme-check-enable %}
+  on:click="/{{ action }}"
+  ref="{{ action }}"
+>
+  <span class="svg-wrapper icon-{{ icon_name }}">
+    {%- if icon_name == 'caret' -%}
+      {{- 'icon-caret.svg' | inline_asset_content -}}
+    {%- else -%}
+      {% comment %} {{- 'icon-arrow.svg' | inline_asset_content -}} {% endcomment %}
+        <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.74084 9.98295C5.41298 12.382 3.13983 14.7219 0.869283 17.0645C0.664037 17.2641 0.471676 17.4774 0.293484 17.7029C0.0877056 17.9738 -0.0157843 18.3125 0.00222874 18.6561C0.0202408 18.9997 0.158548 19.3249 0.391438 19.5713C0.624327 19.8176 0.935973 19.9684 1.26848 19.9956C1.60098 20.0227 1.93174 19.9244 2.1993 19.719C2.35448 19.5972 2.49955 19.4623 2.63306 19.3158C5.22797 16.6394 7.82117 13.9626 10.4126 11.2853C11.3479 10.3203 11.344 9.63352 10.4022 8.66045C7.77948 5.95004 5.15505 3.24186 2.52888 0.535919C1.98045 -0.0285642 1.38643 -0.146836 0.821069 0.179758C0.280463 0.491568 -0.0386953 0.994226 0.0993872 1.62322C0.208528 2.02701 0.419339 2.39381 0.710361 2.68633C2.85715 4.9362 5.0287 7.16188 7.19112 9.39562C7.35786 9.56362 7.51808 9.74238 7.74084 9.98295Z" fill="white"/>
+</svg>
+    {%- endif -%}
+  </span>
+</button>

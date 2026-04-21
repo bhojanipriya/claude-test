@@ -1,0 +1,1031 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product-information",
+      "blocks": {
+        "media-gallery": {
+          "type": "_product-media-gallery",
+          "static": true,
+          "settings": {
+            "media_presentation": "grid",
+            "media_columns": "two",
+            "image_gap": 4,
+            "large_first_image": true,
+            "icons_style": "arrow",
+            "slideshow_controls_style": "thumbnails",
+            "slideshow_mobile_controls_style": "dots",
+            "thumbnail_position": "left",
+            "thumbnail_width": 144,
+            "aspect_ratio": "1",
+            "constrain_to_viewport": true,
+            "media_fit": "contain",
+            "media_radius": 10,
+            "extend_media": false,
+            "zoom": false,
+            "video_loop": false,
+            "hide_variants": false,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "product-details": {
+          "type": "_product-details",
+          "static": true,
+          "settings": {
+            "width": "custom",
+            "custom_width": 77,
+            "width_mobile": "custom",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "details_position": "flex-start",
+            "gap": 15,
+            "inherit_color_scheme": true,
+            "color_scheme": "scheme-1",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_icgrde": {
+              "type": "group",
+              "name": "Header",
+              "settings": {
+                "custom_class": "product_title",
+                "odd_content_bg": "",
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 15,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "text_xrnftG": {
+                  "type": "text",
+                  "name": "Product title",
+                  "settings": {
+                    "custom_class_text": "",
+                    "text": "<h1>{{ closest.product.title }}</h1>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "h3",
+                    "font": "var(--font-primary--family)",
+                    "font_size": "",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground-heading)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "judge_me_reviews_preview_badge_NWPPjQ": {
+                  "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+                  "settings": {}
+                },
+                "price_tVjtKg": {
+                  "type": "price",
+                  "settings": {
+                    "show_sale_price_first": true,
+                    "show_installments": false,
+                    "show_tax_info": false,
+                    "type_preset": "h4",
+                    "width": "100%",
+                    "alignment": "left",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "color": "var(--color-foreground-heading)",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "count_down_timer_MU9tAD": {
+                  "type": "count-down-timer",
+                  "name": "Count Down Timer",
+                  "settings": {},
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "text_xrnftG",
+                "judge_me_reviews_preview_badge_NWPPjQ",
+                "price_tVjtKg",
+                "count_down_timer_MU9tAD"
+              ]
+            },
+            "divider_VJhene": {
+              "type": "_divider",
+              "name": "t:names.divider",
+              "disabled": true,
+              "settings": {
+                "thickness": 1,
+                "corner_radius": "square",
+                "width_percent": 100,
+                "padding-block-start": 0,
+                "padding-block-end": 0
+              },
+              "blocks": {}
+            },
+            "product_description_pihF8m": {
+              "type": "product-description",
+              "name": "t:names.product_description",
+              "settings": {
+                "hide_desktop": false,
+                "text": "{{ closest.product.description }}",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "custom",
+                "font": "var(--font-body--family)",
+                "font_size": "0.875rem",
+                "line_height": "loose",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "variant_picker_R3rGDr": {
+              "type": "variant-picker",
+              "settings": {
+                "variant_style": "buttons",
+                "show_swatches": false,
+                "alignment": "left",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "seal_subscriptions_subscription_widget_Ahk67b": {
+              "type": "shopify://apps/seal-subscriptions/blocks/subscription-widget/13b25004-a140-4ab7-b5fe-29918f759699",
+              "settings": {
+                "product": "{{closest.product}}"
+              }
+            },
+            "buy_buttons_eYQEYi": {
+              "type": "buy-buttons",
+              "settings": {
+                "stacking": true,
+                "show_pickup_availability": false,
+                "gift_card_form": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "quantity": {
+                  "type": "quantity",
+                  "static": true,
+                  "settings": {},
+                  "blocks": {}
+                },
+                "add-to-cart": {
+                  "type": "add-to-cart",
+                  "static": true,
+                  "settings": {
+                    "arrow_view": true,
+                    "style_class": "button"
+                  },
+                  "blocks": {}
+                },
+                "accelerated-checkout": {
+                  "type": "accelerated-checkout",
+                  "static": true,
+                  "settings": {},
+                  "blocks": {}
+                }
+              },
+              "block_order": []
+            },
+            "text_aEtTtq": {
+              "type": "text",
+              "name": "Product description",
+              "disabled": true,
+              "settings": {
+                "custom_class_text": "",
+                "text": "{{ closest.product.description }}",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "estimated_delivery_CmrAD9": {
+              "type": "estimated-delivery",
+              "name": "Estimated Delivery",
+              "settings": {},
+              "blocks": {}
+            },
+            "icon_with_text_HnT8bV": {
+              "type": "icon-with-text",
+              "name": "Icon with text",
+              "settings": {
+                "icon": "shopify://shop_images/Icon_52.svg",
+                "heading": "Free Shipping & Returns"
+              },
+              "blocks": {}
+            },
+            "product_feature_FHgqMJ": {
+              "type": "product-feature",
+              "name": "Product Feature",
+              "settings": {},
+              "blocks": {}
+            },
+            "share_icons_8KqAqq": {
+              "type": "share-icons",
+              "name": "Share Icons",
+              "settings": {},
+              "blocks": {}
+            },
+            "frequently_bought_together_8LyxQr": {
+              "type": "frequently-bought-together",
+              "name": "Bought Together",
+              "settings": {},
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "group_icgrde",
+            "divider_VJhene",
+            "product_description_pihF8m",
+            "variant_picker_R3rGDr",
+            "seal_subscriptions_subscription_widget_Ahk67b",
+            "buy_buttons_eYQEYi",
+            "text_aEtTtq",
+            "estimated_delivery_CmrAD9",
+            "icon_with_text_HnT8bV",
+            "product_feature_FHgqMJ",
+            "share_icons_8KqAqq",
+            "frequently_bought_together_8LyxQr"
+          ]
+        }
+      },
+      "settings": {
+        "content_width": "content-center-aligned",
+        "desktop_media_position": "left",
+        "equal_columns": true,
+        "limit_details_width": false,
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 100,
+        "padding-block-end": 100
+      }
+    },
+    "product_new_tab_section_jRU4Qi": {
+      "type": "Product-new-tab-section",
+      "name": "Product Tabs",
+      "settings": {
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "image_with_text_pdp_TyrcUf": {
+      "type": "image-with-text-pdp",
+      "blocks": {
+        "ingredient_HrwgLw": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "shopify://shop_images/PI1.png",
+            "title": "Ingredient Name"
+          }
+        },
+        "ingredient_wEpztU": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "shopify://shop_images/PI2.png",
+            "title": "Ingredient Name"
+          }
+        },
+        "ingredient_X4fpyK": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "shopify://shop_images/PI3.png",
+            "title": "Ingredient Name"
+          }
+        },
+        "ingredient_6gDY7d": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "shopify://shop_images/PI4.png",
+            "title": "Ingredient Name"
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_HrwgLw",
+        "ingredient_wEpztU",
+        "ingredient_X4fpyK",
+        "ingredient_6gDY7d"
+      ],
+      "name": "Amari Layered Section",
+      "settings": {
+        "heading": "About AMARI",
+        "description": "<p>AMARI Eau de Parfum was created for those who appreciate understated luxury and timeless sophistication. Designed as a modern classic, AMARI blends carefully selected notes to deliver a refined scent experience that feels confident, warm, and unforgettable.</p><p>Fragrance plays a powerful role in how we express ourselves. The right perfume doesn’t just complement your style—it enhances mood, presence, and memory. AMARI is crafted to balance depth and freshness, making it suitable for everyday wear while remaining distinctive enough for special occasions.</p>",
+        "ingredients_heading": "Main Ingredients",
+        "product_image": "shopify://shop_images/amariperfume.png"
+      }
+    },
+    "fragrance_tabs_chqdir": {
+      "type": "fragrance-tabs",
+      "blocks": {
+        "tab_AFKcEc": {
+          "type": "tab",
+          "settings": {
+            "title": "How to Use",
+            "icon_1": "shopify://shop_images/getthefragrance_0e457421-9ef2-4470-bbe2-9bd6b466d4af.svg",
+            "heading_1": "Get The Fragrance",
+            "text_1": "Hold The Bottle Upright 10-15 Cm Away From Your Body",
+            "icon_2": "shopify://shop_images/SPRAY.svg",
+            "heading_2": "Spray The Fragrance",
+            "text_2": "Gently Spray It On Your Pulse Points Like Neck & Wrists",
+            "icon_3": "shopify://shop_images/LEAVE.svg",
+            "heading_3": "Leave The Fragrance",
+            "text_3": "Do Not Spray It On Your Face Or Eyes Or Other Sensitive Areas"
+          }
+        },
+        "tab_NF68yG": {
+          "type": "tab",
+          "settings": {
+            "title": "Why AMARI?",
+            "icon_1": "shopify://shop_images/getthefragrance_0e457421-9ef2-4470-bbe2-9bd6b466d4af.svg",
+            "heading_1": "2nd asdasdasd",
+            "text_1": "asdasdasd",
+            "icon_2": "shopify://shop_images/SPRAY.svg",
+            "heading_2": "Why AMARI?",
+            "text_2": "asdasdasdas",
+            "icon_3": "shopify://shop_images/LEAVE.svg",
+            "heading_3": "Fragrance Benefits",
+            "text_3": "asdasdasdasd"
+          }
+        },
+        "tab_aBwfqE": {
+          "type": "tab",
+          "settings": {
+            "title": "Fragrance Benefits",
+            "icon_1": "shopify://shop_images/getthefragrance_0e457421-9ef2-4470-bbe2-9bd6b466d4af.svg",
+            "heading_1": "3rd asdasdasd",
+            "text_1": "asdasdasd",
+            "icon_2": "shopify://shop_images/SPRAY.svg",
+            "heading_2": "asdasd",
+            "text_2": "asdasdasdas",
+            "icon_3": "shopify://shop_images/LEAVE.svg",
+            "heading_3": "asdasd",
+            "text_3": "asdasdasdasd"
+          }
+        }
+      },
+      "block_order": [
+        "tab_AFKcEc",
+        "tab_NF68yG",
+        "tab_aBwfqE"
+      ],
+      "name": "Fragrance Tabs",
+      "settings": {}
+    },
+    "section_yDFehQ": {
+      "type": "section",
+      "blocks": {
+        "video_pfpc73": {
+          "type": "video",
+          "name": "t:names.video",
+          "settings": {
+            "source": "uploaded",
+            "video": "shopify://files/videos/0_Sunny_Closeup_3840x2160.mp4",
+            "video_url": "",
+            "video_autoplay": false,
+            "disable_controls": false,
+            "video_loop": true,
+            "alt": "",
+            "custom_width": 100,
+            "custom_width_mobile": 100,
+            "aspect_ratio": "auto",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 10,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "image_dYGRP6": {
+          "type": "image",
+          "disabled": true,
+          "settings": {
+            "image_width_percent": 100,
+            "link": "",
+            "image_ratio": "square",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "group_KLJXhw": {
+          "type": "group",
+          "settings": {
+            "custom_class": "",
+            "odd_content_bg": "",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 20,
+            "width": "custom",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": false,
+            "color_scheme": "scheme-1",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 10,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 50,
+            "padding-block-end": 50,
+            "padding-inline-start": 50,
+            "padding-inline-end": 50
+          },
+          "blocks": {
+            "text_qqJEht": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "custom_class_text": "",
+                "text": "<h2>Raw Instinct</h2>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h3",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground-heading)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_gYyhXf": {
+              "type": "text",
+              "settings": {
+                "custom_class_text": "",
+                "text": "<p>Follow the intense Invigorate your senses with a citrusy punch of freshness and a dash of spice that oozes warmth and adventure. Dive right into this captivating fusion of fresh and robust notes, as you get ready to elevate your day.</p>",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_qqJEht",
+            "text_gYyhXf"
+          ]
+        }
+      },
+      "block_order": [
+        "video_pfpc73",
+        "image_dYGRP6",
+        "group_KLJXhw"
+      ],
+      "name": "t:names.image_with_text",
+      "settings": {
+        "custom_class": "",
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 32,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-187a3278-30e0-40aa-8395-f5152d9c296e",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 100,
+        "padding-block-end": 100
+      }
+    },
+    "hero_YUkgpz": {
+      "type": "hero",
+      "blocks": {
+        "text_VFE8U8": {
+          "type": "text",
+          "settings": {
+            "custom_class_text": "",
+            "text": "<h2>The Art of Presence</h2>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "h1",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_Qpq3Jz": {
+          "type": "text",
+          "settings": {
+            "custom_class_text": "art-of-presence-text",
+            "text": "<p>Unleash a bold first impression with a fragrance that awakens your senses instantly.<br/>A refined burst of freshness meets deep, confident undertones—crafted to energize your presence the moment it touches the air. The fine mist disperses effortlessly, creating a powerful yet elegant aura that lingers without overpowering.<br/><br/>Designed for those who move with confidence, Amari transforms a single spray into an expression of strength, sophistication, and instinctive style.</p>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_VFE8U8",
+        "text_Qpq3Jz"
+      ],
+      "name": "t:names.hero",
+      "settings": {
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/bgsprey.png",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "custom",
+        "section_height_custom": 61,
+        "color_scheme": "scheme-5",
+        "toggle_overlay": true,
+        "overlay_color": "#00000026",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 100,
+        "padding-block-end": 100
+      }
+    },
+    "testimonial_DN7RDP": {
+      "type": "testimonial",
+      "blocks": {
+        "testimonial_b7qeDa": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Image_38_b58811b7-0cc4-4b19-a130-922a5fe6ae72.png",
+            "star_rating": 5,
+            "testimonial_text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            "author_name": "Author Name"
+          }
+        },
+        "testimonial_FGBQrx": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Image_38_b58811b7-0cc4-4b19-a130-922a5fe6ae72.png",
+            "star_rating": 5,
+            "testimonial_text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            "author_name": "Author Name"
+          }
+        },
+        "testimonial_QH3JqJ": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Image_38_b58811b7-0cc4-4b19-a130-922a5fe6ae72.png",
+            "star_rating": 5,
+            "testimonial_text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            "author_name": "Author Name"
+          }
+        },
+        "testimonial_mAcqa4": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Image_38_b58811b7-0cc4-4b19-a130-922a5fe6ae72.png",
+            "star_rating": 5,
+            "testimonial_text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            "author_name": "Author Name"
+          }
+        },
+        "testimonial_MdBJx3": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify://shop_images/Image_38_b58811b7-0cc4-4b19-a130-922a5fe6ae72.png",
+            "star_rating": 5,
+            "testimonial_text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+            "author_name": "Author Name"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_b7qeDa",
+        "testimonial_FGBQrx",
+        "testimonial_QH3JqJ",
+        "testimonial_mAcqa4",
+        "testimonial_MdBJx3"
+      ],
+      "name": "Testimonial With slider",
+      "settings": {
+        "heading": "What Our Customers Say"
+      }
+    },
+    "product_recommendations_9UpaPP": {
+      "type": "product-recommendations",
+      "blocks": {
+        "text_aM6PiP": {
+          "type": "text",
+          "name": "t:names.header",
+          "settings": {
+            "custom_class_text": "",
+            "text": "<h3>You may also like</h3>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "static-product-card": {
+          "type": "_product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product_card_gap": 0,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_card_gallery_G9jGNE": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_card_media",
+              "settings": {
+                "image_ratio": "portrait",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 10,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "product_title_YP4ay6": {
+              "type": "product-title",
+              "name": "t:names.product_title",
+              "settings": {
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "center",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1.5rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 10,
+                "padding-block-end": 10,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "price_rFjXGR": {
+              "type": "price",
+              "name": "t:names.product_price",
+              "settings": {
+                "show_sale_price_first": true,
+                "show_installments": false,
+                "show_tax_info": false,
+                "type_preset": "custom",
+                "width": "100%",
+                "alignment": "center",
+                "font": "var(--font-accent--family)",
+                "font_size": "1.125rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "color": "var(--color-foreground-heading)",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "custom_liquid_ejqjNr": {
+              "type": "custom-liquid",
+              "name": "t:names.custom_liquid",
+              "settings": {
+                "custom_liquid": "{% if product.metafields.shopify.color != blank %}\n  {{ product.metafields.shopify.color.value }}\n{% endif %}"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "product_card_gallery_G9jGNE",
+            "product_title_YP4ay6",
+            "price_rFjXGR",
+            "custom_liquid_ejqjNr"
+          ]
+        }
+      },
+      "block_order": [
+        "text_aM6PiP"
+      ],
+      "name": "t:names.product_recommendations",
+      "settings": {
+        "product": "crochet-layered-bralette",
+        "buy_button_text": "",
+        "buy_button_url": "",
+        "recommendation_type": "related",
+        "layout_type": "grid",
+        "carousel_on_mobile": true,
+        "max_products": 4,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 12,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 50,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 100
+      }
+    },
+    "product_faq_U7Kfb6": {
+      "type": "product-faq",
+      "blocks": {
+        "faq_xzCeY3": {
+          "type": "faq",
+          "settings": {
+            "question": "What is Lorem Ipsum?",
+            "answer": "<p><strong>Lorem Ipsum</strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br/><br/></p>"
+          }
+        },
+        "faq_J6cNwE": {
+          "type": "faq",
+          "settings": {
+            "question": "What is Lorem Ipsum?",
+            "answer": "<p><strong>Lorem Ipsum</strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br/><br/></p>"
+          }
+        },
+        "faq_LcyXid": {
+          "type": "faq",
+          "settings": {
+            "question": "What is Lorem Ipsum?",
+            "answer": "<p><strong>Lorem Ipsum</strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br/><br/></p>"
+          }
+        },
+        "faq_R3m4M8": {
+          "type": "faq",
+          "settings": {
+            "question": "What is Lorem Ipsum?",
+            "answer": "<p><strong>Lorem Ipsum</strong>is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_xzCeY3",
+        "faq_J6cNwE",
+        "faq_LcyXid",
+        "faq_R3m4M8"
+      ],
+      "name": "Product FAQ",
+      "settings": {
+        "heading": "Faqs",
+        "first_open": true,
+        "heading_color": "#663700",
+        "text_color": "#4a4a4a",
+        "active_color": "#663700",
+        "border_color": "#cccccc",
+        "active_border_color": "#663700",
+        "add_side_img": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "product_new_tab_section_jRU4Qi",
+    "image_with_text_pdp_TyrcUf",
+    "fragrance_tabs_chqdir",
+    "section_yDFehQ",
+    "hero_YUkgpz",
+    "testimonial_DN7RDP",
+    "product_recommendations_9UpaPP",
+    "product_faq_U7Kfb6"
+  ]
+}

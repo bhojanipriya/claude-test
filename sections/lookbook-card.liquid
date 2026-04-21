@@ -1,0 +1,1460 @@
+{% comment %}
+  Visual Lookbook Section — Horizon Theme
+  =========================================
+  Merged: lookbook-card.liquid (base) + hotspot pin system from lookbook-brand.liquid
+  Updated to match Figma node 11426:8451 pixel-perfectly.
+
+  Figma design values:
+    Ghost title:  "VISUAL LOOKBOOK", Playfair Display SemiBold, 120px, #EFEFEA
+    Handle:       "@AMARSWIM", Instrument Sans Medium, 40px, #008081
+    Tagline:      "Curated moments of sun & sea", Playfair Display Medium, 18px, #333
+    Header box:   white bg, 1px border #EFEFEA, 5px padding, width 368px
+    Card rotations: polaroid 1.84°/2.26°, tall –2.73°/–2.59°, frameless 2.59°
+    Polaroid footer bg: #F0F0EC, padding 20px 10px
+    Tall footer bg: #A09E85, padding 30px 10px
+    Quote text: Playfair Display SemiBold Italic, 18px, white
+    Brand label: Instrument Sans Regular, 16px, #008081 (uppercase)
+    Collection: Playfair Display SemiBold Italic, 18px, #333
+    "Shop The Look" badge: white bg, Instrument Sans Medium, 14px, #008081
+    Pin button: 32px circle, white bg, border rgba(foreground,0.15)
+    Popup: white bg, border-radius 8px, width 240px
+
+  Card layout rules (from Figma):
+    polaroid  = cards 1 & 4 — white 7px frame, shorter AR 3:3.8, #F0F0EC footer
+    tall      = cards 2 & 5 — white 7px frame, taller AR 3:4.5, #A09E85 quote footer
+    frameless = cards 3 & 6 — flush image, tallest AR 3:5.2, quote overlaid on image
+{% endcomment %}
+
+{%- comment -%} Horizon background layer {%- endcomment -%}
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+
+<section
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} spacing-style vlb-section {{ section.settings.custom_class }}"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+
+  {%- comment -%}======== HEADER ========{%- endcomment -%}
+  <div
+    class="vlb-header"
+    style="
+      {% if section.settings.header_box_enable %}
+      background: {{ section.settings.header_box_bg }};
+      border: {{ section.settings.header_box_border_width }}px solid {{ section.settings.header_box_border }};
+      padding: {{ section.settings.header_box_padding }}px;
+      {% endif %}
+    "
+  >
+
+    {%- comment -%} Title 1 — Ghost / watermark background title {%- endcomment -%}
+    {%- if section.settings.title1_text != blank -%}
+      <span
+        class="vlb-title1"
+        aria-hidden="true"
+        style="
+          font-family: {{ section.settings.title1_font }};
+          font-size: {{ section.settings.title1_font_size }};
+          font-weight: {{ section.settings.title1_font_weight }};
+          text-transform: {{ section.settings.title1_case }};
+          color: {{ section.settings.title1_color }};
+          line-height: {% if section.settings.title1_line_height == 'tight' %}1.1{% elsif section.settings.title1_line_height == 'loose' %}1.8{% else %}1.3{% endif %};
+          letter-spacing: {% if section.settings.title1_letter_spacing == 'tight' %}-0.05em{% elsif section.settings.title1_letter_spacing == 'loose' %}0.1em{% else %}0em{% endif %};
+          text-wrap: {{ section.settings.title1_wrap }};
+          text-align: {{ section.settings.title1_alignment }};
+        "
+      >{{ section.settings.title1_text }}</span>
+    {%- endif -%}
+
+    {%- comment -%} Title 2 — Handle / Instagram {%- endcomment -%}
+    {%- if section.settings.title2_text != blank -%}
+      <span
+        class="vlb-title2"
+        style="
+          font-family: {{ section.settings.title2_font }};
+          font-size: {{ section.settings.title2_font_size }};
+          font-weight: {{ section.settings.title2_font_weight }};
+          text-transform: {{ section.settings.title2_case }};
+          color: {{ section.settings.title2_color }};
+          line-height: {% if section.settings.title2_line_height == 'tight' %}1.1{% elsif section.settings.title2_line_height == 'loose' %}1.8{% else %}1.3{% endif %};
+          letter-spacing: {% if section.settings.title2_letter_spacing == 'tight' %}-0.05em{% elsif section.settings.title2_letter_spacing == 'loose' %}0.1em{% else %}0em{% endif %};
+          text-wrap: {{ section.settings.title2_wrap }};
+          text-align: {{ section.settings.title2_alignment }};
+        "
+      >{{ section.settings.title2_text }}</span>
+    {%- endif -%}
+
+    {%- comment -%} Title 3 — Tagline / subtext {%- endcomment -%}
+    {%- if section.settings.title3_text != blank -%}
+      <span
+        class="vlb-title3"
+        style="
+          font-family: {{ section.settings.title3_font }};
+          font-size: {{ section.settings.title3_font_size }};
+          font-weight: {{ section.settings.title3_font_weight }};
+          text-transform: {{ section.settings.title3_case }};
+          color: {{ section.settings.title3_color }};
+          line-height: {% if section.settings.title3_line_height == 'tight' %}1.1{% elsif section.settings.title3_line_height == 'loose' %}1.8{% else %}1.3{% endif %};
+          letter-spacing: {% if section.settings.title3_letter_spacing == 'tight' %}-0.05em{% elsif section.settings.title3_letter_spacing == 'loose' %}0.1em{% else %}0em{% endif %};
+          text-wrap: {{ section.settings.title3_wrap }};
+          text-align: {{ section.settings.title3_alignment }};
+        "
+      >{{ section.settings.title3_text }}</span>
+    {%- endif -%}
+
+  </div>
+
+  {%- comment -%}======== CARD GRID ========{%- endcomment -%}
+  <div class="vlb-grid">
+
+    {%- assign card_num = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'lookbook_card' -%}
+        {%- assign card_num = card_num | plus: 1 -%}
+        {%- assign layout = block.settings.card_layout -%}
+        {%- assign has_footer = false -%}
+        {%- if block.settings.card_brand != blank or block.settings.card_collection != blank -%}
+          {%- assign has_footer = true -%}
+        {%- endif -%}
+
+        {%- comment -%} Check if any hotspot pins are set for this card {%- endcomment -%}
+        {%- assign has_pins = false -%}
+        {%- for i in (1..5) -%}
+          {%- assign prod_key = 'pin_product_' | append: i -%}
+          {%- if block.settings[prod_key] != blank -%}
+            {%- assign has_pins = true -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        <div
+          class="vlb-card vlb-card--{{ layout }}"
+          data-card="{{ card_num }}"
+          {{ block.shopify_attributes }}
+        >
+
+          {%- comment -%}── TOP DIV: Image + optional hotspot pins ──{%- endcomment -%}
+          <div class="vlb-card__top vlb-card__top--{{ layout }}">
+
+            {%- comment -%} "Shop The Look" badge (Figma: white bg, Instrument Sans Med 14px, #008081) {%- endcomment -%}
+            {%- if block.settings.card_badge != blank -%}
+              <span class="vlb-card__badge">{{ block.settings.card_badge }}</span>
+            {%- endif -%}
+
+            <div class="vlb-card__img-wrap">
+              {%- if block.settings.card_image != blank -%}
+                <img
+                  src="{{ block.settings.card_image | image_url: width: 900 }}"
+                  alt="{{ block.settings.card_image.alt | default: block.settings.card_collection | escape }}"
+                  width="{{ block.settings.card_image.width }}"
+                  height="{{ block.settings.card_image.height }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+
+              {%- comment -%}
+                Frameless layout: quote overlaid on image (italic bar, bottom of photo)
+              {%- endcomment -%}
+              {%- if block.settings.card_quote != blank and layout == 'frameless' -%}
+                <span class="vlb-card__quote">{{ block.settings.card_quote }}</span>
+              {%- endif -%}
+
+              {%- comment -%}
+                ── HOTSPOT PINS (merged from lookbook-brand.liquid) ──
+                Figma: 32px circle button, white bg, subtle border, pulse ring animation
+                Popup: 240px wide card with product image (80x96px), vendor, title, price
+                Up to 5 pins per card, positions set via schema (% values)
+              {%- endcomment -%}
+              {%- if has_pins -%}
+                {%- for i in (1..5) -%}
+                  {%- assign prod_key  = 'pin_product_' | append: i -%}
+                  {%- assign pin_x_key = 'pin_x_'       | append: i -%}
+                  {%- assign pin_y_key = 'pin_y_'        | append: i -%}
+                  {%- assign prod = block.settings[prod_key] -%}
+                  {%- if prod != blank -%}
+                    {%- assign px = block.settings[pin_x_key] | default: 50 -%}
+                    {%- assign py = block.settings[pin_y_key]  | default: 50 -%}
+                    <div
+                      class="vlb-pin"
+                      style="left: {{ px }}%; top: {{ py }}%;"
+                      data-pin="{{ i }}"
+                    >
+                      <button
+                        class="vlb-pin__btn"
+                        aria-label="View {{ prod.title | escape }}"
+                        aria-expanded="false"
+                        type="button"
+                      >
+                        <span class="vlb-pin__pulse" aria-hidden="true"></span>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                          <path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                      </button>
+
+                      {%- comment -%} Popup card — mirrors lookbook-brand popup design {%- endcomment -%}
+                      <div class="vlb-pin__popup" role="dialog" aria-label="{{ prod.title | escape }}">
+                        <button class="vlb-pin__popup-close" type="button" aria-label="Close">
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 1l8 8M9 1L1 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                          </svg>
+                        </button>
+                        <a href="{{ prod.url }}" class="vlb-pin__popup-link">
+                          <div class="vlb-pin__popup-media">
+                            {%- if prod.featured_image -%}
+                              <img
+                                src="{{ prod.featured_image | image_url: width: 160 }}"
+                                alt="{{ prod.featured_image.alt | default: prod.title | escape }}"
+                                class="vlb-pin__popup-img"
+                                width="80"
+                                height="96"
+                                loading="lazy"
+                              >
+                            {%- endif -%}
+                          </div>
+                          <div class="vlb-pin__popup-body">
+                            {%- if prod.vendor != blank -%}
+                              <p class="vlb-pin__popup-vendor">{{ prod.vendor }}</p>
+                            {%- endif -%}
+                            <p class="vlb-pin__popup-title">{{ prod.title }}</p>
+                            <div class="vlb-pin__popup-price">
+                              {%- if prod.compare_at_price > prod.price -%}
+                                <span class="vlb-pin__price-now vlb-pin__price-now--sale">{{ prod.price | money }}</span>
+                                <span class="vlb-pin__price-was">{{ prod.compare_at_price | money }}</span>
+                              {%- else -%}
+                                <span class="vlb-pin__price-now">{{ prod.price | money }}</span>
+                              {%- endif -%}
+                            </div>
+                            <span class="vlb-pin__popup-cta button button--secondary">Shop now</span>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+
+            </div>
+          </div>
+          {%- comment -%}── END TOP DIV ──{%- endcomment -%}
+
+          {%- comment -%}
+            ── BOTTOM DIV ──
+            polaroid → brand + collection, bg #F0F0EC, padding 20px 10px
+            tall     → quote text,         bg #A09E85, padding 30px 10px
+            frameless → not rendered
+          {%- endcomment -%}
+          {%- if layout == 'polaroid' and has_footer -%}
+            <div class="vlb-card__bottom vlb-card__bottom--polaroid">
+              <div class="vlb-card__bottom-inner">
+                {%- if block.settings.card_brand != blank -%}
+                  <p class="vlb-card__brand">{{ block.settings.card_brand }}</p>
+                {%- endif -%}
+                {%- if block.settings.card_collection != blank -%}
+                  <p class="vlb-card__collection">{{ block.settings.card_collection }}</p>
+                {%- endif -%}
+              </div>
+            </div>
+
+          {%- elsif layout == 'tall' and block.settings.card_quote != blank -%}
+            <div class="vlb-card__bottom vlb-card__bottom--tall">
+              <div class="vlb-card__bottom-inner">
+                <p class="vlb-card__quote-text">{{ block.settings.card_quote }}</p>
+              </div>
+            </div>
+          {%- endif -%}
+
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+  </div>
+
+</section>
+
+{% # theme-check-disable ValidBlockTarget %}
+{% stylesheet %}
+/* ====================================================
+   VISUAL LOOKBOOK — Horizon Theme Section
+   Pixel-perfect to Figma node 11426:8451
+   Merged with hotspot pin system from lookbook-brand.liquid
+   ==================================================== */
+
+/* ── Section wrapper ── */
+.vlb-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════════
+   HEADER
+   Figma: white bg, 1px #EFEFEA border, 5px padding, 368px wide
+   Ghost title sits behind, 120px Playfair Display SemiBold, #EFEFEA
+   Handle: Instrument Sans Medium, 40px, #008081
+   Tagline: Playfair Display Medium, 18px, #333
+   ══════════════════════════════════════════════ */
+.vlb-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: fit-content;
+  min-width: 368px;
+  margin: 100px auto 0;
+  padding: 5px 8px;
+  background: #ffffff;
+  border: 1px solid #EFEFEA;
+  /* overflow visible so ghost title bleeds outside the box */
+  overflow: visible;
+}
+
+/* Ghost title — absolute, behind the box */
+.vlb-title1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  display: block;
+  width: max-content;
+  z-index: 0;
+  /* Figma: 120px, Playfair Display SemiBold, #EFEFEA, letter-spacing normal */
+}
+
+/* Handle — Figma: Instrument Sans Medium, 40px, #008081 */
+.vlb-title2 {
+  position: relative;
+  display: block;
+  z-index: 1;
+  line-height: 1.2;
+}
+
+/* Tagline — Figma: Playfair Display Medium, 18px, #333 */
+.vlb-title3 {
+  position: relative;
+  display: block;
+  z-index: 1;
+  margin-top: 4px;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════
+   GRID — 3 columns, align-items: end so cards of
+   different heights bottom-align (Figma layout)
+   ══════════════════════════════════════════════ */
+.vlb-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  column-gap: 30px;
+  row-gap: 30px;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.section--full-width .vlb-grid {
+  max-width: var(--page-width, 1200px);
+  margin-inline: auto;
+  padding-inline: 30px;
+}
+
+.section--page-width .vlb-grid {
+  padding-inline: 0;
+}
+
+/* ══════════════════════════════════════════════
+   BASE CARD
+   ══════════════════════════════════════════════ */
+.vlb-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  box-shadow: 2px 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.vlb-card--frameless {
+  box-shadow: 3px 6px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ══════════════════════════════════════════════
+   TOP DIV — Image section
+   ══════════════════════════════════════════════ */
+.vlb-card__top {
+  position: relative;
+  display: block;
+}
+
+/* Figma: 7px white frame on sides + top, open at bottom */
+.vlb-card__top--polaroid {
+  background: #ffffff;
+  padding: 7px 7px 0;
+}
+
+.vlb-card__top--tall {
+  background: #ffffff;
+  padding: 7px 7px 0;
+}
+
+.vlb-card__top--frameless {
+  background: transparent;
+  padding: 0;
+}
+
+/* Figma aspect ratios per layout */
+.vlb-card__top--polaroid .vlb-card__img-wrap {
+  aspect-ratio: 3 / 3.8;
+  overflow: hidden;
+  position: relative;
+}
+
+.vlb-card__top--tall .vlb-card__img-wrap {
+  aspect-ratio: 3 / 4.5;
+  overflow: hidden;
+  position: relative;
+}
+
+.vlb-card__top--frameless .vlb-card__img-wrap {
+  aspect-ratio: 3 / 5.2;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Image hover zoom */
+.vlb-card__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.45s ease;
+}
+.vlb-card:hover .vlb-card__img-wrap img {
+  transform: scale(1.04);
+}
+.vlb-card__img-wrap .placeholder-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ── "Shop The Look" badge (Figma: white bg, Instrument Sans Med 14px, #008081) ── */
+.vlb-card__badge {
+  position: absolute;
+  left: 16px;
+  bottom: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(180, 180, 180, 0.45);
+  border-radius: 3px;
+  padding: 3px 9px;
+  font-family: var(--font-body--family);
+  font-size: 14px;                 /* Figma: 14px Instrument Sans Medium */
+  font-weight: 500;
+  color: #008081;
+  letter-spacing: 0;
+  z-index: 5;
+  white-space: nowrap;
+  line-height: 22.4px;             /* Figma: line-height 22.4px */
+}
+
+/* ── Frameless quote bar overlaid on image ── */
+.vlb-card__quote {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(160, 158, 133, 0.88);  /* matches tall footer #A09E85 */
+  padding: 8px 14px;
+  font-family: var(--font-heading--family);
+  font-size: 11px;
+  font-style: italic;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  z-index: 5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ══════════════════════════════════════════════
+   BOTTOM DIV — Label / quote box
+   ══════════════════════════════════════════════ */
+.vlb-card__bottom {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vlb-card__bottom-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* Polaroid: Figma bg #F0F0EC, padding 20px 10px */
+.vlb-card__bottom--polaroid {
+  background: #F0F0EC;
+  padding: 20px 10px;
+}
+
+/* Tall: Figma bg #A09E85, padding 30px 10px */
+.vlb-card__bottom--tall {
+  background: #A09E85;
+  padding: 30px 10px;
+}
+
+/* Figma: Playfair Display SemiBold Italic, 18px, #fff */
+.vlb-card__quote-text {
+  font-family: var(--font-heading--family);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  margin: 0;
+  line-height: 29px;
+  letter-spacing: 0;
+}
+
+/* Figma: Instrument Sans Regular 16px, #008081, uppercase */
+.vlb-card__brand {
+  font-family: var(--font-body--family);
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  color: #008081;
+  margin: 0;
+  line-height: 25.6px;
+}
+
+.vlb-card__bottom--tall .vlb-card__brand {
+  color: #ffffff;
+}
+
+/* Figma: Playfair Display SemiBold Italic, 18px, #333 */
+.vlb-card__collection {
+  font-family: var(--font-heading--family);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 600;
+  color: #333333;
+  margin: 0;
+  line-height: 29px;
+}
+
+.vlb-card__bottom--tall .vlb-card__collection {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ══════════════════════════════════════════════
+   CARD ROTATIONS — pixel-matched from Figma
+   card 1: rotate(1.842deg)  card 2: rotate(-2.73deg)  card 3: rotate(2.59deg)
+   card 4: rotate(2.26deg)   card 5: rotate(2.59deg)   card 6: rotate(-2.73deg)
+   ══════════════════════════════════════════════ */
+.vlb-card[data-card="1"] { transform: rotate(1.842deg); }
+.vlb-card[data-card="2"] { transform: rotate(-2.73deg); }
+.vlb-card[data-card="3"] { transform: rotate(2.59deg); }
+.vlb-card[data-card="4"] { transform: rotate(2.26deg); }
+.vlb-card[data-card="5"] { transform: rotate(2.59deg); }
+.vlb-card[data-card="6"] { transform: rotate(-2.73deg); }
+
+/* ══════════════════════════════════════════════
+   HOTSPOT PINS
+   Merged from lookbook-brand.liquid
+   Figma: 32px circle, white bg, rgba(foreground,0.15) border
+   Pulse ring animation matches Figma micro-interaction
+   ══════════════════════════════════════════════ */
+.vlb-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.vlb-pin__btn {
+  position: relative;
+  z-index: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgb(var(--color-background, 255 255 255));
+  border: 1.5px solid rgba(var(--color-foreground, 0 0 0), 0.15);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(var(--color-foreground, 0 0 0));
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+  transition: background 0.2s, color 0.2s, transform 0.2s, border-color 0.2s;
+  padding: 0;
+}
+
+.vlb-pin__btn:hover,
+.vlb-pin--active .vlb-pin__btn {
+  background: #008081;
+  color: #ffffff;
+  border-color: #008081;
+  transform: scale(1.12);
+}
+
+/* Pulse ring */
+.vlb-pin__pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 128, 129, 0.45);
+  animation: vlb-pulse 2.2s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes vlb-pulse {
+  0%   { transform: scale(0.7); opacity: 1; }
+  70%  { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(0.7); opacity: 0; }
+}
+
+/* ══════════════════════════════════════════════
+   PIN POPUP
+   Figma: 240px, white bg, border-radius 8px, subtle border + shadow
+   ══════════════════════════════════════════════ */
+.vlb-pin__popup {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: 240px;
+  background: rgb(var(--color-background, 255 255 255));
+  border: 1px solid rgba(var(--color-foreground, 0 0 0), 0.1);
+  border-radius: 8px;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.16);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  z-index: 20;
+  overflow: hidden;
+}
+
+/* Flip popup above → below when pin is near top */
+.vlb-pin--flip .vlb-pin__popup {
+  bottom: auto;
+  top: calc(100% + 14px);
+  transform: translateX(-50%) translateY(-8px);
+}
+
+/* Edge adjustments */
+.vlb-pin--edge-left .vlb-pin__popup  { left: auto; right: -16px; transform: translateY(8px); }
+.vlb-pin--edge-right .vlb-pin__popup { left: -16px; transform: translateY(8px); }
+
+/* Active states */
+.vlb-pin--active .vlb-pin__popup { opacity: 1; pointer-events: auto; }
+.vlb-pin--active:not(.vlb-pin--edge-left):not(.vlb-pin--edge-right) .vlb-pin__popup               { transform: translateX(-50%) translateY(0); }
+.vlb-pin--active.vlb-pin--flip:not(.vlb-pin--edge-left):not(.vlb-pin--edge-right) .vlb-pin__popup { transform: translateX(-50%) translateY(0); }
+.vlb-pin--active.vlb-pin--edge-left .vlb-pin__popup,
+.vlb-pin--active.vlb-pin--edge-right .vlb-pin__popup { transform: translateY(0); }
+
+/* Popup close button */
+.vlb-pin__popup-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(var(--color-foreground, 0 0 0), 0.07);
+  border: none;
+  cursor: pointer;
+  color: rgb(var(--color-foreground, 0 0 0));
+  transition: background 0.2s;
+  z-index: 2;
+  padding: 0;
+}
+.vlb-pin__popup-close:hover { background: rgba(var(--color-foreground, 0 0 0), 0.14); }
+
+/* Popup inner link */
+.vlb-pin__popup-link {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  text-decoration: none;
+  color: rgb(var(--color-foreground, 0 0 0));
+  align-items: flex-start;
+}
+
+/* Figma: product image 80x96px */
+.vlb-pin__popup-media {
+  width: 80px;
+  height: 96px;
+  flex-shrink: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  background: rgba(var(--color-foreground, 0 0 0), 0.05);
+}
+.vlb-pin__popup-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vlb-pin__popup-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 20px;
+}
+
+.vlb-pin__popup-vendor {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground, 0 0 0), 0.5);
+  margin: 0;
+}
+
+.vlb-pin__popup-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0;
+  color: rgb(var(--color-foreground, 0 0 0));
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.vlb-pin__popup-price {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 0;
+  font-size: 13px;
+}
+.vlb-pin__price-now         { font-weight: 700; color: rgb(var(--color-foreground, 0 0 0)); }
+.vlb-pin__price-now--sale   { color: rgb(var(--color-sale-price, var(--color-foreground, 0 0 0))); }
+.vlb-pin__price-was         { font-size: 11px; color: rgba(var(--color-foreground, 0 0 0), 0.45); text-decoration: line-through; }
+
+.vlb-pin__popup-cta.button {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 12px;
+  padding: 7px 12px;
+  line-height: 1;
+  width: auto;
+  text-align: center;
+}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .vlb-grid {
+    column-gap: 14px;
+    row-gap: 20px;
+  }
+  .section--full-width .vlb-grid {
+    padding-inline: 20px;
+  }
+}
+
+@media (max-width: 749px) {
+  .vlb-grid {
+    column-gap: 10px;
+    row-gap: 14px;
+    margin-top: 28px;
+  }
+  .section--full-width .vlb-grid,
+  .section--page-width .vlb-grid {
+    padding-inline: 14px;
+  }
+  /* Remove rotations on mobile for clean layout */
+  .vlb-card[data-card="1"],
+  .vlb-card[data-card="2"],
+  .vlb-card[data-card="3"],
+  .vlb-card[data-card="4"],
+  .vlb-card[data-card="5"],
+  .vlb-card[data-card="6"] {
+    transform: none;
+  }
+  .vlb-pin__popup { width: 200px; }
+  .vlb-pin__btn { width: 28px; height: 28px; }
+}
+
+@media (max-width: 540px) {
+  .vlb-grid { grid-template-columns: repeat(2, 1fr); }
+  .vlb-header {
+    min-width: auto;
+    width: calc(100% - 40px);
+    margin-top: 60px;
+    padding-top: 36px;
+  }
+}
+{% endstylesheet %}
+
+<script>
+(function () {
+  function initSection(section) {
+    var pins = section.querySelectorAll('.vlb-pin');
+
+    function closeAll(except) {
+      pins.forEach(function (p) {
+        if (p !== except) {
+          p.classList.remove('vlb-pin--active');
+          var b = p.querySelector('.vlb-pin__btn');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    function setEdge(pin) {
+      var wrap = pin.closest('.vlb-card__img-wrap');
+      if (!wrap) return;
+      var pr = pin.getBoundingClientRect();
+      var wr = wrap.getBoundingClientRect();
+      pin.classList.remove('vlb-pin--flip', 'vlb-pin--edge-left', 'vlb-pin--edge-right');
+      if ((pr.top - wr.top) < 180) pin.classList.add('vlb-pin--flip');
+      var relL = pr.left - wr.left;
+      if (relL < 130) pin.classList.add('vlb-pin--edge-right');
+      else if (wr.right - pr.right < 130) pin.classList.add('vlb-pin--edge-left');
+    }
+
+    pins.forEach(function (pin) {
+      var btn   = pin.querySelector('.vlb-pin__btn');
+      var close = pin.querySelector('.vlb-pin__popup-close');
+
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = pin.classList.contains('vlb-pin--active');
+        closeAll(pin);
+        if (!open) {
+          setEdge(pin);
+          pin.classList.add('vlb-pin--active');
+          btn.setAttribute('aria-expanded', 'true');
+        } else {
+          pin.classList.remove('vlb-pin--active');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      if (close) {
+        close.addEventListener('click', function (e) {
+          e.stopPropagation();
+          pin.classList.remove('vlb-pin--active');
+          pin.querySelector('.vlb-pin__btn').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    document.addEventListener('click', function () { closeAll(null); });
+    section.addEventListener('click', function (e) { e.stopPropagation(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeAll(null);
+    });
+  }
+
+  function boot() {
+    document.querySelectorAll('.vlb-section').forEach(function (s) {
+      initSection(s);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+
+{% # theme-check-enable ValidBlockTarget %}
+{% schema %}
+{
+  "name": "Visual Lookbook",
+  "class": "section-wrapper",
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "lookbook_card",
+      "name": "Lookbook Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "card_layout",
+          "label": "Card Layout",
+          "info": "polaroid = cards 1 & 4 | tall = cards 2 & 5 | frameless = cards 3 & 6",
+          "options": [
+            { "value": "polaroid",  "label": "Polaroid — white frame + footer" },
+            { "value": "tall",      "label": "Tall — white frame + quote footer" },
+            { "value": "frameless", "label": "Frameless — flush image" }
+          ],
+          "default": "polaroid"
+        },
+        {
+          "type": "image_picker",
+          "id": "card_image",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "card_badge",
+          "label": "Badge / Tag (overlaid on photo)",
+          "info": "e.g. 'Shop The Look' — leave blank to hide. Figma: white bg, teal text, 14px"
+        },
+        {
+          "type": "text",
+          "id": "card_quote",
+          "label": "Quote Caption",
+          "info": "Tall: shows in footer bar. Frameless: overlaid at base of image. Leave blank to hide."
+        },
+        {
+          "type": "text",
+          "id": "card_brand",
+          "label": "Brand Label (polaroid footer)",
+          "info": "e.g. 'THE BRAND' — uppercase, teal"
+        },
+        {
+          "type": "text",
+          "id": "card_collection",
+          "label": "Collection Name (polaroid footer)",
+          "info": "e.g. 'The Sol Collection' — italic"
+        },
+        {
+          "type": "header",
+          "content": "Hotspot Pins (up to 5)"
+        },
+        {
+          "type": "paragraph",
+          "content": "Add shoppable product pins on the card image. Set product and % position for each pin."
+        },
+        { "type": "header", "content": "Pin 1" },
+        { "type": "product", "id": "pin_product_1", "label": "Product" },
+        { "type": "range", "id": "pin_x_1", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 28 },
+        { "type": "range", "id": "pin_y_1", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position",   "default": 42 },
+        { "type": "header", "content": "Pin 2" },
+        { "type": "product", "id": "pin_product_2", "label": "Product" },
+        { "type": "range", "id": "pin_x_2", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 62 },
+        { "type": "range", "id": "pin_y_2", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position",   "default": 60 },
+        { "type": "header", "content": "Pin 3" },
+        { "type": "product", "id": "pin_product_3", "label": "Product" },
+        { "type": "range", "id": "pin_x_3", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 45 },
+        { "type": "range", "id": "pin_y_3", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position",   "default": 78 },
+        { "type": "header", "content": "Pin 4" },
+        { "type": "product", "id": "pin_product_4", "label": "Product" },
+        { "type": "range", "id": "pin_x_4", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 20 },
+        { "type": "range", "id": "pin_y_4", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position",   "default": 68 },
+        { "type": "header", "content": "Pin 5" },
+        { "type": "product", "id": "pin_product_5", "label": "Product" },
+        { "type": "range", "id": "pin_x_5", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 72 },
+        { "type": "range", "id": "pin_y_5", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position",   "default": 28 }
+      ]
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_class",
+      "label": "Custom CSS Class"
+    },
+    {
+      "type": "header",
+      "content": "Title 1 — Background Ghost Title"
+    },
+    {
+      "type": "text",
+      "id": "title1_text",
+      "label": "Text",
+      "default": "VISUAL LOOKBOOK",
+      "info": "Figma: 120px Playfair Display SemiBold, #EFEFEA watermark behind header box"
+    },
+    {
+      "type": "select",
+      "id": "title1_font",
+      "label": "Font",
+      "options": [
+        { "value": "var(--font-body--family)",       "label": "Body"       },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)",    "label": "Heading"    },
+        { "value": "var(--font-accent--family)",     "label": "Accent"     }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "title1_font_size",
+      "label": "Size",
+      "options": [
+        { "value": "3rem",    "label": "48px" },
+        { "value": "4.5rem",  "label": "72px" },
+        { "value": "5.5rem",  "label": "88px" },
+        { "value": "7.5rem",  "label": "120px" },
+        { "value": "9.5rem",  "label": "152px" },
+        { "value": "11.5rem", "label": "184px" }
+      ],
+      "default": "7.5rem"
+    },
+    {
+      "type": "select",
+      "id": "title1_font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "400", "label": "400" },
+        { "value": "500", "label": "500" },
+        { "value": "600", "label": "600" },
+        { "value": "700", "label": "700" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "select",
+      "id": "title1_line_height",
+      "label": "Line Height",
+      "options": [
+        { "value": "tight",  "label": "Tight"  },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose",  "label": "Loose"  }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "title1_letter_spacing",
+      "label": "Letter Spacing",
+      "options": [
+        { "value": "tight",  "label": "Tight"  },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose",  "label": "Loose"  }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "title1_case",
+      "label": "Case",
+      "options": [
+        { "value": "none",      "label": "Default"   },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "select",
+      "id": "title1_wrap",
+      "label": "Wrap",
+      "options": [
+        { "value": "pretty",  "label": "Pretty"  },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap",  "label": "None"    }
+      ],
+      "default": "nowrap"
+    },
+    {
+      "type": "text_alignment",
+      "id": "title1_alignment",
+      "label": "Alignment",
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "title1_color",
+      "label": "Color",
+      "default": "#EFEFEA"
+    },
+    {
+      "type": "header",
+      "content": "Title 2 — Handle \/ Instagram"
+    },
+    {
+      "type": "text",
+      "id": "title2_text",
+      "label": "Text",
+      "default": "@AMARSWIM",
+      "info": "Figma: Instrument Sans Medium 40px, #008081"
+    },
+    {
+      "type": "select",
+      "id": "title2_font",
+      "label": "Font",
+      "options": [
+        { "value": "var(--font-body--family)",       "label": "Body"       },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)",    "label": "Heading"    },
+        { "value": "var(--font-accent--family)",     "label": "Accent"     }
+      ],
+      "default": "var(--font-subheading--family)"
+    },
+    {
+      "type": "select",
+      "id": "title2_font_size",
+      "label": "Size",
+      "options": [
+        { "value": "1.5rem",  "label": "24px" },
+        { "value": "2rem",    "label": "32px" },
+        { "value": "2.5rem",  "label": "40px" },
+        { "value": "3rem",    "label": "48px" },
+        { "value": "3.5rem",  "label": "56px" }
+      ],
+      "default": "2.5rem"
+    },
+    {
+      "type": "select",
+      "id": "title2_font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "400", "label": "400" },
+        { "value": "500", "label": "500" },
+        { "value": "600", "label": "600" },
+        { "value": "700", "label": "700" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "title2_line_height",
+      "label": "Line Height",
+      "options": [
+        { "value": "tight",  "label": "Tight"  },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose",  "label": "Loose"  }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "title2_letter_spacing",
+      "label": "Letter Spacing",
+      "options": [
+        { "value": "tight",  "label": "Tight"  },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose",  "label": "Loose"  }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "title2_case",
+      "label": "Case",
+      "options": [
+        { "value": "none",      "label": "Default"   },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "title2_wrap",
+      "label": "Wrap",
+      "options": [
+        { "value": "pretty",  "label": "Pretty"  },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap",  "label": "None"    }
+      ],
+      "default": "pretty"
+    },
+    {
+      "type": "text_alignment",
+      "id": "title2_alignment",
+      "label": "Alignment",
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "title2_color",
+      "label": "Color",
+      "default": "#008081"
+    },
+    {
+      "type": "header",
+      "content": "Header Box Style"
+    },
+    {
+      "type": "checkbox",
+      "id": "header_box_enable",
+      "label": "Enable header box",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "header_box_bg",
+      "label": "Background color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "header_box_border",
+      "label": "Border color",
+      "default": "#EFEFEA"
+    },
+    {
+      "type": "range",
+      "id": "header_box_border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "header_box_padding",
+      "label": "Padding",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Title 3 — Tagline \/ Subtext"
+    },
+    {
+      "type": "text",
+      "id": "title3_text",
+      "label": "Text",
+      "default": "Curated moments of sun & sea",
+      "info": "Figma: Playfair Display Medium, 18px, #333"
+    },
+    {
+      "type": "select",
+      "id": "title3_font",
+      "label": "Font",
+      "options": [
+        { "value": "var(--font-body--family)",       "label": "Body"       },
+        { "value": "var(--font-subheading--family)", "label": "Subheading" },
+        { "value": "var(--font-heading--family)",    "label": "Heading"    },
+        { "value": "var(--font-accent--family)",     "label": "Accent"     }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "title3_font_size",
+      "label": "Size",
+      "options": [
+        { "value": "0.75rem",  "label": "12px" },
+        { "value": "0.875rem", "label": "14px" },
+        { "value": "1rem",     "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem",  "label": "20px" }
+      ],
+      "default": "1.125rem"
+    },
+    {
+      "type": "select",
+      "id": "title3_font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "400", "label": "400" },
+        { "value": "500", "label": "500" },
+        { "value": "600", "label": "600" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "title3_line_height",
+      "label": "Line Height",
+      "options": [
+        { "value": "tight",  "label": "Tight"  },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose",  "label": "Loose"  }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "title3_letter_spacing",
+      "label": "Letter Spacing",
+      "options": [
+        { "value": "tight",  "label": "Tight"  },
+        { "value": "normal", "label": "Normal" },
+        { "value": "loose",  "label": "Loose"  }
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "select",
+      "id": "title3_case",
+      "label": "Case",
+      "options": [
+        { "value": "none",      "label": "Default"   },
+        { "value": "uppercase", "label": "Uppercase" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "select",
+      "id": "title3_wrap",
+      "label": "Wrap",
+      "options": [
+        { "value": "pretty",  "label": "Pretty"  },
+        { "value": "balance", "label": "Balance" },
+        { "value": "nowrap",  "label": "None"    }
+      ],
+      "default": "nowrap"
+    },
+    {
+      "type": "text_alignment",
+      "id": "title3_alignment",
+      "label": "Alignment",
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "title3_color",
+      "label": "Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Width",
+      "options": [
+        { "value": "page-width", "label": "Page" },
+        { "value": "full-width", "label": "Full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Visual Lookbook",
+      "category": "Custom",
+      "settings": {
+        "title1_text":           "VISUAL LOOKBOOK",
+        "title1_font":           "var(--font-heading--family)",
+        "title1_font_size":      "7.5rem",
+        "title1_font_weight":    "600",
+        "title1_line_height":    "normal",
+        "title1_letter_spacing": "normal",
+        "title1_case":           "uppercase",
+        "title1_wrap":           "nowrap",
+        "title1_alignment":      "center",
+        "title1_color":          "#EFEFEA",
+        "title2_text":           "@AMARSWIM",
+        "title2_font":           "var(--font-subheading--family)",
+        "title2_font_size":      "2.5rem",
+        "title2_font_weight":    "500",
+        "title2_line_height":    "normal",
+        "title2_letter_spacing": "normal",
+        "title2_case":           "none",
+        "title2_wrap":           "pretty",
+        "title2_alignment":      "center",
+        "title2_color":          "#008081",
+        "title3_text":           "Curated moments of sun & sea",
+        "title3_font":           "var(--font-heading--family)",
+        "title3_font_size":      "1.125rem",
+        "title3_font_weight":    "500",
+        "title3_line_height":    "normal",
+        "title3_letter_spacing": "normal",
+        "title3_case":           "none",
+        "title3_wrap":           "nowrap",
+        "title3_alignment":      "center",
+        "title3_color":          "#333333",
+        "section_width":         "page-width",
+        "color_scheme":          "scheme-1"
+      },
+      "blocks": [
+        {
+          "type": "lookbook_card",
+          "settings": {
+            "card_layout":     "polaroid",
+            "card_badge":      "Shop The Look",
+            "card_brand":      "THE BRAND",
+            "card_collection": "The Sol Collection"
+          }
+        },
+        {
+          "type": "lookbook_card",
+          "settings": {
+            "card_layout": "tall",
+            "card_quote":  "\"Salt in the air, sand in my hair.\""
+          }
+        },
+        {
+          "type": "lookbook_card",
+          "settings": {
+            "card_layout": "frameless"
+          }
+        },
+        {
+          "type": "lookbook_card",
+          "settings": {
+            "card_layout":     "polaroid",
+            "card_badge":      "Shop The Look",
+            "card_brand":      "THE BRAND",
+            "card_collection": "The Sol Collection"
+          }
+        },
+        {
+          "type": "lookbook_card",
+          "settings": {
+            "card_layout": "tall"
+          }
+        },
+        {
+          "type": "lookbook_card",
+          "settings": {
+            "card_layout": "frameless",
+            "card_quote":  "\"Salt in the air, sand in my hair.\""
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+{% # theme-check-enable ValidBlockTarget %}

@@ -1,0 +1,1079 @@
+{% comment %}
+  Blog Sidebar Block
+{% endcomment %}
+
+<div
+  class="blog-sidebar-block"
+  style="
+    background-color: {{ block.settings.sidebar_bg }};
+    border-radius: {{ block.settings.sidebar_radius }}px;
+  "
+>
+
+  {%- comment -%}
+  =========================
+  1. RECENT BLOGS
+  =========================
+  {%- endcomment -%}
+  {% if block.settings.show_recent_blogs %}
+    <div
+      class="sidebar-card sidebar-recent-blogs"
+      style="
+        background-color: {{ block.settings.recent_bg }};
+        border-radius: {{ block.settings.recent_radius }}px;
+      "
+    >
+      {% if block.settings.recent_title != blank %}
+        <h3 class="recent-title">
+          {{ block.settings.recent_title }}
+        </h3>
+      {% endif %}
+
+      {% assign blog_handle = block.settings.blog_handle %}
+      {% if blogs[blog_handle] %}
+        {% for article in blogs[blog_handle].articles limit: 2 %}
+          <div class="recent-blog-item">
+            <a
+                href="{{ article.url }}"
+                class="blog-title"
+                style="font-size: {{ block.settings.blog_meta_size }}px;"
+              >
+            {% if article.image %}
+              <img
+                src="{{ article.image | image_url }}"
+                alt="{{ article.title }}"
+                loading="lazy"
+              >
+            {% endif %}
+        </a>
+            <div class="recent-blog-content">
+              {% if block.settings.show_blog_date %}
+                <span
+                  class="blog-date"
+                  style="font-size: {{ block.settings.blog_meta_size }}px;"
+                >
+                  {{ article.published_at | date: "%B, %Y" }}
+                </span>
+              {% endif %}
+
+              <a
+                href="{{ article.url }}"
+                class="blog-title"
+                style="font-size: {{ block.settings.blog_meta_size }}px;"
+              >
+                {{ article.title }}
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {%- comment -%}
+  =========================
+  2. COMBO CARD
+  =========================
+  {%- endcomment -%}
+{% if block.settings.show_combo %}
+  {% assign combo_collection = collections[block.settings.combo_collection] %}
+  {% assign combo_image = block.settings.combo_image %}
+
+  {% if combo_collection %}
+    <a
+      href="{{ combo_collection.url }}"
+      class="sidebar-combo-link"
+      aria-label="{{ combo_collection.title }}"
+    >
+  {% endif %}
+
+  <div
+    class="sidebar-card sidebar-combo"
+    style="
+      background-color: {{ block.settings.combo_bg }};
+      border-radius: {{ block.settings.combo_radius }}px;
+    "
+  >
+    {% if combo_image %}
+      <img
+        src="{{ combo_image | image_url: width: 500 }}"
+        alt="{{ block.settings.combo_title | escape }}"
+      >
+    {% elsif combo_collection and combo_collection.image %}
+      <img
+        src="{{ combo_collection.image | image_url: width: 500 }}"
+        alt="{{ combo_collection.title | escape }}"
+      >
+    {% endif %}
+
+    <div class="combo-content">
+      {% if block.settings.combo_title != blank %}
+        <h3>
+          {{ block.settings.combo_title }}
+        </h3>
+      {% endif %}
+
+      {% if block.settings.combo_subtitle != blank %}
+        <p style="font-size: {{ block.settings.combo_subtitle_size }}px;">
+          {{ block.settings.combo_subtitle }}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if combo_collection %}
+    </a>
+  {% endif %}
+{% endif %}
+
+
+  {%- comment -%}
+  =========================
+  3. MOST POPULAR
+  =========================
+  {%- endcomment -%}
+    <!-- will implement later -->
+    {% if block.settings.show_popular %}
+  
+  {% render 'freuqntly-buy-blog' %}
+{% endif %}
+
+
+  {%- comment -%}
+  =========================
+  4. FOLLOW US
+  =========================
+  {%- endcomment -%}
+  {% if block.settings.show_follow_us %}
+    <div class="sidebar-card sidebar-follow">
+      <h3 class="blog-follow-us-title">{{ block.settings.follow_us_title }}</h3>
+      <div
+  class="social-icons__wrapper footer-utilities__icons"
+  {{ block.shopify_attributes }}
+>
+  {% liquid
+    assign social_links = 'facebook_url,instagram_url,youtube_url,tiktok_url,twitter_url,threads_url,linkedin_url,bluesky_url,snapchat_url,pinterest_url,tumblr_url,vimeo_url,custom_url' | split: ','
+  %}
+
+  {% for link_key in social_links %}
+    {% liquid
+      assign link_url = block.settings[link_key]
+      assign render_icon = true
+
+      if link_url != blank
+        # Map setting names to platform names for display and icon purposes
+        case link_key
+          when 'facebook_url'
+            assign platform = 'facebook'
+          when 'instagram_url'
+            assign platform = 'instagram'
+          when 'youtube_url'
+            assign platform = 'youtube'
+          when 'tiktok_url'
+            assign platform = 'tiktok'
+          when 'twitter_url'
+            assign platform = 'twitter'
+          when 'threads_url'
+            assign platform = 'threads'
+          when 'linkedin_url'
+            assign platform = 'linkedin'
+          when 'bluesky_url'
+            assign platform = 'bluesky'
+          when 'snapchat_url'
+            assign platform = 'snapchat'
+          when 'pinterest_url'
+            assign platform = 'pinterest'
+          when 'tumblr_url'
+            assign platform = 'tumblr'
+          when 'vimeo_url'
+            assign platform = 'vimeo'
+          when 'custom_url'
+            # For custom URLs, extract domain from URL for platform identification
+            assign platform = link_url | split: '//' | last | remove: 'www.' | split: '.' | first
+            # Special handling for specific platforms
+            case platform
+              when 'x'
+                assign platform = 'twitter'
+              else
+                assign render_icon = false
+            endcase
+        endcase
+
+        # Check if URL has a profile path (more than just the domain)
+        assign url_parts = link_url | split: '//' | last | split: '/'
+        assign has_profile = false
+
+        if url_parts.size > 1 and url_parts[1] != ''
+          assign has_profile = true
+        endif
+
+        unless render_icon
+          assign has_profile = true
+        endunless
+      endif
+    %}
+
+    {% comment %}
+      Only render the social icon if:
+      1. In editor mode (always show, but may be disabled)
+      2. On storefront AND has a valid profile link
+    {% endcomment %}
+    {% if link_url != blank %}
+      {% if request.design_mode or has_profile %}
+        <div
+          class="social-icons__icon-wrapper{% unless has_profile %} social-icons__icon-wrapper--disabled{% endunless %}"
+        >
+          <a
+            href="{{ link_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="{{ platform | capitalize }}"
+            {% unless has_profile %}
+              {% if request.design_mode %}
+                onclick="return false;"
+                aria-disabled="true"
+              {% endif %}
+            {% endunless %}
+          >
+            <span class="social-icons__icon-label">{{ platform | capitalize }}</span>
+            {% if render_icon %}
+             {%- render 'icon', icon: platform -%}
+
+            {% endif %}
+          </a>
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+</div>
+    </div>
+  {% endif %}
+
+  {%- comment -%}
+  =========================
+  5. FEATURED PRODUCT
+  =========================
+  {%- endcomment -%}
+  {% if block.settings.show_featured_product %}
+    <div class="sidebar-card sidebar-featured">
+      <!-- featured product later -->
+    </div>
+  {% endif %}
+</div>
+<style>
+    /* ===============================
+  BLOG SIDEBAR WRAPPER
+================================ */
+.blog-sidebar-block {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width:527px;
+  width:100%;
+}
+
+/* ===============================
+  RECENT BLOGS
+================================ */
+
+.recent-blog-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  align-items:center;
+}
+
+.recent-blog-item:last-child {
+  margin-bottom: 0;
+}
+
+.recent-blog-item img {
+  width: 114px;
+  height: 109px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.recent-blog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+
+/* ===============================
+  COMBO CARD
+================================ */
+.sidebar-combo {
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar-combo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: inherit;
+}
+.combo-content {
+position: absolute;
+z-index: 2;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+
+
+/* ===============================
+  MOST POPULAR (PLACEHOLDER)
+================================ */
+.sidebar-popular {
+  background: #ffffff;
+}
+.sidebar-card.sidebar-recent-blogs{
+padding:20px;
+}
+/* ===============================
+  FOLLOW US
+================================ */
+.blog-sidebar-block .social-icons__icon-wrapper a{
+border:1px solid {{ block.settings.follow_us_icon_color }};
+}
+.blog-sidebar-block .social-icons__icon-wrapper a svg path{
+fill:{{ block.settings.follow_us_icon_color }};
+}
+.blog-sidebar-block .blog-follow-us-title{
+color:{{ block.settings.follow_us_color }};
+font-family: 'DM Sans';
+font-weight: 700;
+font-size: 24px;
+line-height: 28.8px;
+letter-spacing: 0px;
+margin-bottom:26px;
+}
+.blog-sidebar-block .social-icons__wrapper{
+gap:10px !important;
+justify-content:start;
+}
+.sidebar-popular {
+  margin-top: 24px;
+}
+
+.sidebar-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #663700;
+  margin-bottom: 16px;
+}
+.blog-sidebar-block .social-icons__icon-wrapper{
+height:100%;
+}
+
+
+/* Custom css */
+.has-sidebar .blog-posts-container.columns-2{ height: fit-content; }
+.has-sidebar .recent-blog-item a.blog-title{flex-shrink: 0;}
+.blog-sidebar-block .recent-title{
+font-size: {{ block.settings.recent_title_size }}px;
+line-height:{{ block.settings.recent_title_lineheight }}px;
+letter-spacing:{{ block.settings.recent_title_letter_spacing }}px;
+color:{{ block.settings.recent_title_color }};
+font-weight:{{ block.settings.recent_title_fw }};
+margin-bottom:30px;
+font-family: 'DM Sans';
+}
+.blog-sidebar-block .recent-blog-content .blog-date{
+font-size: {{ block.settings.date_label_size }}px;
+line-height:{{ block.settings.date_label_lineheight }}px;
+letter-spacing:{{ block.settings.date_label_letter_spacing }}px;
+color:{{ block.settings.date_label_color }};
+font-weight:{{ block.settings.date_label_fw }};
+margin-bottom:0px;
+font-family: 'DM Sans';
+}
+.blog-sidebar-block .recent-blog-content .blog-title{
+font-size: {{ block.settings.blog_title_size }}px;
+line-height:{{ block.settings.blog_title_lineheight }}px;
+letter-spacing:{{ block.settings.blog_title_letter_spacing }}px;
+color:{{ block.settings.blog_title_color }};
+font-weight:{{ block.settings.blog_title_fw }};
+margin-bottom:0px;
+font-family: 'DM Sans';
+text-decoration:none;
+}
+.blog-sidebar-block .combo-content{
+ padding: 70px 16px;
+ text-align: center;
+ background:{{  block.settings.combo_card_content_bg }};
+ opacity:{{ block.settings.bg_opacity }}%;
+ max-width:286px;
+ width:100%;
+}
+.blog-sidebar-block .combo-content h3{
+font-size: {{ block.settings.combo_title_size }}px;
+line-height:{{ block.settings.combo_title_lineheight }}px;
+letter-spacing:{{ block.settings.combo_title_letter_spacing }}px;
+color:{{ block.settings.combo_title_color }};
+font-weight:{{ block.settings.combo_title_fw }};
+margin-bottom:0px;
+}
+.blog-sidebar-block .combo-content p{
+font-size: {{ block.settings.combo_subheading_size }}px;
+line-height:{{ block.settings.combo_subheading_lineheight }}px;
+letter-spacing:{{ block.settings.combo_subheading_letter_spacing }}px;
+color:{{ block.settings.combo_subheading_color }};
+font-weight:{{ block.settings.combo_subheading_fw }} !important;
+margin-bottom:0px;
+margin-top:10px;
+}
+@media (max-width:749px){
+.blog-sidebar-block .recent-title{
+font-size: {{ block.settings.recent_title_size_mobile }}px;
+line-height:{{ block.settings.recent_title_lineheight_mobile }}px;
+}
+.blog-sidebar-block .recent-blog-content .blog-date{
+font-size: {{ block.settings.date_label_size_mobile }}px;
+line-height:{{ block.settings.date_label_lineheight_mobile }}px;
+}
+.blog-sidebar-block .recent-blog-content .blog-title{
+font-size: {{ block.settings.blog_title_size_mobile }}px;
+line-height:{{ block.settings.blog_title_lineheight_mobile }}px;
+}
+.blog-sidebar-block .combo-content h3{
+font-size: {{ block.settings.combo_title_size_mobile }}px;
+line-height:{{ block.settings.combo_title_lineheight_mobile }}px;
+}
+.blog-sidebar-block .combo-content p{
+font-size: {{ block.settings.combo_subheading_size_mobile }}px !important;
+line-height:{{ block.settings.combo_subheading_lineheight_mobile }}px !important;
+}
+}
+@media (max-width:575px){
+.recent-blog-item img {
+  width: 80px;
+  height: 76.50px;
+}
+.blog-sidebar-block .social-icons__wrapper{
+margin:26px 0px 0px 0px;
+}
+}
+@media (max-width:375px){
+.blog-sidebar-block .combo-content{
+max-width:200px;
+width:100%;
+padding: 40px 15px;
+}
+}
+</style>
+{% schema %}
+{
+  "name": "Blog Sidebar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Recent Blogs"
+    },
+    {
+  "type": "checkbox",
+  "id": "enable_recent_blogs",
+  "label": "Show Recent Blogs Settings",
+  "default": true
+},
+    {
+      "type": "checkbox",
+      "id": "show_recent_blogs",
+      "label": "Show Recent Blogs",
+      "default": true,
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+    {
+      "type": "blog",
+      "id": "blog_handle",
+      "label": "Select Blog"
+    },
+    {
+      "type": "text",
+      "id": "recent_title",
+      "label": "Main Title",
+      "default": "Recent Blogs",
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+    {
+      "type": "range",
+      "id": "recent_title_size",
+      "label": "Main Title Font Size Desktop",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "default": 18,
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+    {
+      "type": "range",
+      "id": "recent_title_size_mobile",
+      "label": "Main Title Font Size Mobile",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "default": 18,
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+        {
+  "type": "number",
+  "id": "recent_title_lineheight",
+  "label": "Main Title Line Height(px)",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+    {
+  "type": "number",
+  "id": "recent_title_lineheight_mobile",
+  "label": "Main Title Line Height Mobile(px)",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+ {
+  "type": "number",
+  "id": "recent_title_fw",
+  "label": "Main Title Font Weight",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+    {
+  "type": "number",
+  "id": "recent_title_letter_spacing",
+  "label": "Main Title Letter Spacing(px)",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+{
+  "type": "color",
+  "id": "recent_title_color",
+  "label": "Main Title Text Color",
+  "default":"#663700",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+    {
+      "type": "checkbox",
+      "id": "show_blog_date",
+      "label": "Show Blog Date",
+      "default": true,
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+
+    {
+      "type": "range",
+      "id": "date_label_size",
+      "label": "Date Label Font Size Desktop",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "default": 18,
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+    {
+      "type": "range",
+      "id": "date_label_size_mobile",
+      "label": "Date Label Font Size Mobile",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "default": 18,
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+        {
+  "type": "number",
+  "id": "date_label_lineheight",
+  "label": "Date Label Line Height(px)",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+    {
+  "type": "number",
+  "id": "date_label_lineheight_mobile",
+  "label": "Date Label Line Height Mobile(px)",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+ {
+  "type": "number",
+  "id": "date_label_fw",
+  "label": "Date Label Font Weight",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+    {
+  "type": "number",
+  "id": "date_label_letter_spacing",
+  "label": "Date Label Letter Spacing(px)",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+{
+  "type": "color",
+  "id": "date_label_color",
+  "label": "Date Label Text Color",
+  "default":"#4A4A4A",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+
+ {
+      "type": "range",
+      "id": "blog_title_size",
+      "label": "Blog Title Font Size Desktop",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "default": 18,
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+    {
+      "type": "range",
+      "id": "blog_title_size_mobile",
+      "label": "Blog Title Font Size Mobile",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "default": 18,
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+        {
+  "type": "number",
+  "id": "blog_title_lineheight",
+  "label": "Blog Title Line Height(px)",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+    {
+  "type": "number",
+  "id": "blog_title_lineheight_mobile",
+  "label": "Blog Title Line Height Mobile(px)",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+ {
+  "type": "number",
+  "id": "blog_title_fw",
+  "label": "Blog Title Font Weight",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+    {
+  "type": "number",
+  "id": "blog_title_letter_spacing",
+  "label": "Blog Title Letter Spacing(px)",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+{
+  "type": "color",
+  "id": "blog_title_color",
+  "label": "Blog Title Text Color",
+  "default":"#663700",
+  "visible_if": "{{ block.settings.enable_recent_blogs }}"
+},
+    {
+      "type": "color",
+      "id": "recent_bg",
+      "label": "Background Color",
+      "default": "#F5EDDC",
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+    {
+      "type": "range",
+      "id": "recent_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 30,
+      "default": 10,
+      "visible_if": "{{ block.settings.enable_recent_blogs }}"
+    },
+
+    {
+      "type": "header",
+      "content": "Combo Card"
+    },
+    {
+  "type": "checkbox",
+  "id": "enable_combo_card",
+  "label": "Show Combo Card Settings",
+  "default": true
+},
+    {
+      "type": "checkbox",
+      "id": "show_combo",
+      "label": "Show Combo Card",
+      "default": true,
+      "visible_if": "{{ block.settings.enable_combo_card }}"
+    },
+    {
+      "type": "collection",
+      "id": "combo_collection",
+      "label": "Select Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "combo_image",
+      "label": "Custom Image (Overrides collection image)",
+      "visible_if": "{{ block.settings.enable_combo_card }}"
+    },
+        {
+      "type": "text",
+      "id": "combo_card_content_bg",
+      "label": "Content Layer Background Color (HEX)",
+      "default":"#663700BF",
+      "visible_if": "{{ block.settings.enable_combo_card }}"
+    },
+     {
+  "type": "number",
+  "id": "bg_opacity",
+  "label": "Combo Card Background Opacity(%)",
+  "default":75,
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+    {
+      "type": "text",
+      "id": "combo_title",
+      "label": "Title",
+      "default": "30% Off",
+      "visible_if": "{{ block.settings.enable_combo_card }}"
+    },
+    {
+      "type": "textarea",
+      "id": "combo_subtitle",
+      "label": "Subheading",
+      "default": "Complete Care. One Combo.",
+      "visible_if": "{{ block.settings.enable_combo_card }}"
+    },
+    {
+      "type": "range",
+      "id": "combo_title_size",
+      "label": "Offer Heading Font Size Desktop",
+      "min": 14,
+      "max": 50,
+      "step": 1,
+      "default": 18,
+      "visible_if": "{{ block.settings.enable_combo_card }}"
+    },
+    {
+      "type": "range",
+      "id": "combo_title_size_mobile",
+      "label": "Offer Heading Font Size Mobile",
+      "min": 14,
+      "max": 50,
+      "step": 1,
+      "default": 18,
+     "visible_if": "{{ block.settings.enable_combo_card }}"
+    },
+        {
+  "type": "number",
+  "id": "combo_title_lineheight",
+  "label": "Offer Heading Line Height(px)",
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+    {
+  "type": "number",
+  "id": "combo_title_lineheight_mobile",
+  "label": "Offer Heading Line Height Mobile(px)",
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+ {
+  "type": "number",
+  "id": "combo_title_fw",
+  "label": "Offer Heading Font Weight",
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+    {
+  "type": "number",
+  "id": "combo_title_letter_spacing",
+  "label": "Offer Heading Letter Spacing(px)",
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+{
+  "type": "color",
+  "id": "combo_title_color",
+  "label": "Offer Heading Text Color",
+  "default":"#F5EDDC",
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+
+
+
+
+
+
+{
+      "type": "range",
+      "id": "combo_subheading_size",
+      "label": "Offer Sub Heading Font Size Desktop",
+      "min": 14,
+      "max": 50,
+      "step": 1,
+      "default": 18,
+      "visible_if": "{{ block.settings.enable_combo_card }}"
+    },
+    {
+      "type": "range",
+      "id": "combo_subheading_size_mobile",
+      "label": "Offer Sub Heading Font Size Mobile",
+      "min": 14,
+      "max": 50,
+      "step": 1,
+      "default": 18,
+     "visible_if": "{{ block.settings.enable_combo_card }}"
+    },
+        {
+  "type": "number",
+  "id": "combo_subheading_lineheight",
+  "label": "Offer Sub Heading Line Height(px)",
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+    {
+  "type": "number",
+  "id": "combo_subheading_lineheight_mobile",
+  "label": "Offer Sub Heading Line Height Mobile(px)",
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+ {
+  "type": "number",
+  "id": "combo_subheading_fw",
+  "label": "Offer Sub Heading Font Weight",
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+    {
+  "type": "number",
+  "id": "combo_subheading_letter_spacing",
+  "label": "Offer Sub Heading Letter Spacing(px)",
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+{
+  "type": "color",
+  "id": "combo_subheading_color",
+  "label": "Offer Sub Heading Text Color",
+  "default":"#F5EDDC",
+  "visible_if": "{{ block.settings.enable_combo_card }}"
+},
+
+
+
+
+
+
+
+    {
+      "type": "range",
+      "id": "combo_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 30,
+      "default": 20,
+      "visible_if": "{{ block.settings.enable_combo_card }}"
+    },
+
+    {
+      "type": "header",
+      "content": "Most Popular Products"
+    },
+    {
+  "type": "checkbox",
+  "id": "most_popular_products",
+  "label": "Show Most Popular Products Settings",
+  "default": true
+},
+
+    {
+      "type": "checkbox",
+      "id": "show_popular",
+      "label": "Show Most Popular Products",
+      "default": true,
+      "visible_if": "{{ block.settings.most_popular_products }}"
+    },
+    
+    {
+       "type": "product_list",
+       "id": "fbt_products",
+       "label": "Select 2 Products",
+       "limit": 2
+    },
+    {
+       "type": "text",
+       "id": "popular_title",
+       "label": "Main Title",
+       "default":"Most Popular",
+       "visible_if": "{{ block.settings.most_popular_products }}"
+    },
+    {
+       "type": "color",
+       "id": "popular_title_color",
+       "label": "Main Title Color",
+       "default":"#663700",
+       "visible_if": "{{ block.settings.most_popular_products }}"
+    },
+    {
+       "type": "color",
+       "id": "card_border_color",
+       "label": "Product card Border Color",
+       "default":"#663700",
+       "visible_if": "{{ block.settings.most_popular_products }}"
+    },
+    {
+       "type": "range",
+       "id": "card_border_radius",
+       "label": "Product card Border Radius(px)",
+       "min": 0,
+       "max": 100,
+       "step": 1,
+       "default":20,
+       "visible_if": "{{ block.settings.most_popular_products }}"
+    },
+     {
+       "type": "color",
+       "id": "product_title_color_mpp",
+       "label": "Product Title Color",
+       "default":"#663700",
+       "visible_if": "{{ block.settings.most_popular_products }}"
+    },
+    {
+       "type": "color",
+       "id": "mpp_price_color",
+       "label": "Product Price Color",
+       "default":"#663700",
+       "visible_if": "{{ block.settings.most_popular_products }}"
+    },
+    {
+       "type": "color",
+       "id": "add_button_bg",
+       "label": "Add Button Background Color",
+       "default":"#4A4A4A",
+       "visible_if": "{{ block.settings.most_popular_products }}"
+    },
+    {
+       "type": "range",
+       "id": "add_btn_radius",
+       "label": "Add Button Radius(px)",
+       "min": 0,
+       "max": 30,
+       "step": 1,
+       "default":10,
+       "visible_if": "{{ block.settings.most_popular_products }}"
+    },
+    {
+  "type": "range",
+  "id": "star_rating_mpp",
+  "label": "Star rating",
+  "min": 0,
+  "max": 5,
+  "step": 1,
+  "default": 5,
+  "visible_if": "{{ block.settings.most_popular_products }}"
+},
+{
+      "type": "header",
+      "content": "Follow Us"
+    },
+        {
+  "type": "checkbox",
+  "id": "follow_us_setting",
+  "label": "Show Follow Us Settings",
+  "default": true
+},
+    {
+      "type": "checkbox",
+      "id": "show_follow_us",
+      "label": "Show Follow Us",
+      "default": true,
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+    "type": "text",
+    "id": "follow_us_title",
+    "label": "Social Media Icon Title",
+    "default":"Follow Us",
+    "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+     {
+       "type": "color",
+       "id": "follow_us_color",
+       "label": "Title Color",
+       "default":"#663700",
+      "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+       "type": "color",
+       "id": "follow_us_icon_color",
+       "label": "Icon Color",
+       "default":"#4A4A4A",
+      "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "t:options.facebook",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "t:options.instagram",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "t:options.youtube",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "t:options.tiktok",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "twitter_url",
+      "label": "t:options.twitter",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "threads_url",
+      "label": "t:options.threads",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "linkedin_url",
+      "label": "t:options.linkedin",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "bluesky_url",
+      "label": "t:options.bluesky",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "snapchat_url",
+      "label": "t:options.snapchat",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "t:options.pinterest",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "tumblr_url",
+      "label": "t:options.tumblr",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "vimeo_url",
+      "label": "t:options.vimeo",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    },
+    {
+      "type": "url",
+      "id": "custom_url",
+      "label": "t:settings.custom_link",
+       "visible_if": "{{ block.settings.follow_us_setting }}"
+    }
+  ]
+}
+{% endschema %}
+
+

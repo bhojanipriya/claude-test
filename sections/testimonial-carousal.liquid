@@ -1,0 +1,937 @@
+<script src="{{ 'jquery.js' | asset_url }}"></script>
+<script src="{{ 'slick.min.js' | asset_url }}"></script>
+
+<div class="testimonial-wrapper color-{{ section.settings.color_scheme }}{% if section.settings.decorative_image != blank %} testimonial_decorative{% endif %}">
+
+  {% comment %} — Watermark — {% endcomment %}
+  {%- unless section.settings.watermark_text == blank -%}
+    <p class="testimonial__watermark" aria-hidden="true">{{ section.settings.watermark_text | escape }}</p>
+  {%- endunless -%}
+
+  <div class="page-width testimonial__inner">
+
+    {% comment %} — Eyebrow + Heading + View All — {% endcomment %}
+    <div class="testimonial__header">
+      {%- unless section.settings.eyebrow == blank -%}
+        <p class="testimonial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endunless -%}
+      <div class="testimonial__heading-row">
+        {%- unless section.settings.heading == blank -%}
+          <h2 class="testimonial__title {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {{ section.settings.heading }}
+          </h2>
+        {%- endunless -%}
+        {%- unless section.settings.view_all_label == blank or section.settings.view_all_url == blank -%}
+          <a href="{{ section.settings.view_all_url }}" class="testimonial__view-all">
+            {{ section.settings.view_all_label | escape }}
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M1 11L11 1M11 1H1M11 1V11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        {%- endunless -%}
+      </div>
+    </div>
+
+    {% comment %} — Slider — {% endcomment %}
+    <div class="testimonial-slider-wrap">
+
+
+      <div class="testimonial-slick-slider">
+        {% for block in section.blocks %}
+          <div class="testimonial-card" {{ block.shopify_attributes }}>
+
+            {% comment %} ── Top: image + author info + badge ── {% endcomment %}
+            <div class="testimonial-card__top">
+              {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: '220x330', crop: 'center' }}" alt="{{ block.settings.author_name | escape }}" loading="lazy" width="109" height="163" class="testimonial-card__avatar">
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'testimonial-card__avatar testimonial-card__avatar--placeholder' }}
+              {% endif %}
+
+              <div class="testimonial-card__author-info">
+                <span class="testimonial-card__author-name">{{ block.settings.author_name }}</span>
+                {%- unless block.settings.author_role == blank -%}
+                  <span class="testimonial-card__author-role">{{ block.settings.author_role | escape }}</span>
+                {%- endunless -%}
+                <div class="testimonial-card__stars">
+                  {% for i in (1..5) %}
+                    {% if i <= block.settings.star_rating %}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 27 27" fill="none"><path d="M13.3145 0L16.4576 10.0193L26.6292 10.0193L18.4003 16.2115L21.5434 26.2307L13.3145 20.0385L5.08546 26.2307L8.22865 16.2115L-0.000338554 10.0193L10.1713 10.0193L13.3145 0Z" fill="{{ section.settings.star_color }}"/></svg>
+                    {% else %}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 27 27" fill="none"><path d="M13.3145 0L16.4576 10.0193L26.6292 10.0193L18.4003 16.2115L21.5434 26.2307L13.3145 20.0385L5.08546 26.2307L8.22865 16.2115L-0.000338554 10.0193L10.1713 10.0193L13.3145 0Z" fill="transparent" stroke="{{ section.settings.star_color }}" stroke-width="1"/></svg>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+
+              {%- unless block.settings.badge_image == blank -%}
+                <div class="testimonial-card__badge">
+                  <img src="{{ block.settings.badge_image | img_url: '160x160' }}" alt="{{ block.settings.badge_alt | default: 'Badge' | escape }}" loading="lazy" width="80" height="80">
+                </div>
+              {%- endunless -%}
+            </div>
+
+            {% comment %} ── Body: quote icon (watermark) + heading + text ── {% endcomment %}
+            <div class="testimonial-card__body">
+            {%- if section.settings.show_quote_icon -%}
+              {%- comment -%} Opening quote — top-left {%- endcomment -%}
+              <div class="testimonial-card__quote-icon testimonial-card__quote-icon--open" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45" fill="none">
+                  <g clip-path="url(#clip-open-{{ block.id }})">
+                    <path d="M45 21.115H34.0855C34.272 29.0695 36.5282 29.9725 39.3618 30.2302L40.4545 30.3657V39.1125L39.195 39.045C35.4948 38.8368 31.4039 38.1697 28.6745 34.8004C26.282 31.8468 25.2273 27.0213 25.2273 19.6138V5.8877H45V21.115Z" fill="{{ section.settings.quote_icon_color }}"/>
+                    <path d="M19.7715 5.8877V21.115H9.00262C9.18921 29.0695 11.3724 29.9725 14.206 30.2302L15.226 30.3657V39.1125L14.0392 39.045C10.339 38.8368 6.21148 38.1697 3.48217 34.8004C1.08989 31.8468 -0.00124168 27.0213 -0.00124168 19.6138V5.8877H19.7715Z" fill="{{ section.settings.quote_icon_color }}"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip-open-{{ block.id }}">
+                      <rect width="45" height="45" fill="white" transform="matrix(-1 0 0 1 45 0)"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+            {%- endif -%}
+
+            {%- unless block.settings.testimonial_heading == blank -%}
+              <p class="testimonial-card__text-heading">{{ block.settings.testimonial_heading | escape }}</p>
+            {%- endunless -%}
+
+            <p class="testimonial-card__text">{{ block.settings.testimonial_text }}</p>
+
+            {%- unless block.settings.testimonial_tagline == blank -%}
+              <p class="testimonial-card__tagline">{{ block.settings.testimonial_tagline }}</p>
+            {%- endunless -%}
+
+            {%- if section.settings.show_quote_icon -%}
+              {%- comment -%} Closing quote — bottom-right {%- endcomment -%}
+              <div class="testimonial-card__quote-icon testimonial-card__quote-icon--close" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45" fill="none">
+                  <g clip-path="url(#clip-close-{{ block.id }})">
+                    <path d="M0 21.115H10.9145C10.728 29.0695 8.47182 29.9725 5.63818 30.2302L4.54545 30.3657V39.1125L5.805 39.045C9.50523 38.8368 13.5961 38.1697 16.3255 34.8004C18.718 31.8468 19.7727 27.0213 19.7727 19.6138V5.8877H0V21.115Z" fill="{{ section.settings.quote_icon_color }}"/>
+                    <path d="M25.2285 5.8877V21.115H35.9974C35.8108 29.0695 33.6276 29.9725 30.794 30.2302L29.774 30.3657V39.1125L30.9608 39.045C34.661 38.8368 38.7885 38.1697 41.5178 34.8004C43.9101 31.8468 45.0012 27.0213 45.0012 19.6138V5.8877H25.2285Z" fill="{{ section.settings.quote_icon_color }}"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip-close-{{ block.id }}">
+                      <rect width="45" height="45" fill="white"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+            {%- endif -%}
+
+            </div>
+
+          </div>
+        {% endfor %}
+      </div>
+
+
+    </div>
+
+    {% comment %} — Footer: dots + mobile arrows — {% endcomment %}
+    <div class="testimonial__footer">
+      <div class="testimonial__dots-wrap"></div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+/* ── Wrapper ── */
+.testimonial-wrapper {
+  position: relative;
+  padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  overflow: hidden;
+}
+
+{% if section.settings.decorative_image != blank %}
+.testimonial_decorative::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  background-image: url({{ section.settings.decorative_image | img_url: 'master' }});
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 270px; height: 271px;
+  z-index: 0;
+}
+{% endif %}
+
+.testimonial__inner {
+    position: relative;
+    z-index: 1;
+    max-width: var(--page-width, 1200px);
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* ── Watermark ── */
+.testimonial__watermark {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(60px, 10vw, 198px);
+  font-weight: 600;
+  font-style: normal;
+  line-height: 1.3;
+  text-transform: capitalize;
+  color: {{ section.settings.watermark_color }};
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Header ── */
+.testimonial__header {
+  margin-bottom: 32px;
+}
+
+.testimonial__eyebrow {
+  font-family: "Instrument Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 25.6px;
+  color: {{ section.settings.eyebrow_color }};
+  text-align: left;
+  margin: 0 0 6px;
+}
+
+.testimonial__heading-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.testimonial__title {
+  margin: 0;
+  text-align: left;
+}
+
+.testimonial__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  color: {{ section.settings.view_all_color }};
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-bottom: 4px;
+}
+.testimonial__view-all:hover { opacity: 0.75; }
+
+/* ── Slider wrap — positions prev/next outside cards ── */
+.testimonial-slider-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.testimonial-slick-slider {
+  min-width: 0;
+  flex: 1;
+}
+
+/* ── Arrows ── */
+.testimonial__btn {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid {{ section.settings.arrow_border_color }};
+  background: {{ section.settings.arrow_bg_color }};
+  color: {{ section.settings.arrow_icon_color }};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  z-index: 5;
+}
+.testimonial__btn:hover {
+  background: {{ section.settings.arrow_bg_hover }};
+}
+.testimonial__btn--mobile { display: none; }
+.testimonial__btn--desktop { display: flex; }
+
+/* ── Card ── */
+.testimonial-card {
+  background: {{ section.settings.card_background }};
+  border-radius: {{ section.settings.card_border_radius }}px;
+  padding: 0;
+  margin: 0 8px;
+  box-shadow: {{ section.settings.card_shadow }};
+  display: flex !important;
+  flex-direction: column;
+  text-align: left;
+  overflow: hidden;
+}
+
+/* ── Card top section (image + author + badge) ── */
+.testimonial-card__top {
+  padding: 20px 20px 0 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  position: relative;
+  min-height: 163px;
+}
+
+.testimonial-card__avatar {
+  width: 109px;
+  height: 163px;
+  aspect-ratio: 109.03 / 163.34;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 0;
+  display: block;
+}
+
+.testimonial-card__avatar--placeholder {
+  width: 109px;
+  height: 163px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.testimonial-card__author-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 4px;
+  padding-top: 4px;
+}
+
+/* Author name — Playfair Display 18px 400 #333 lh 29px (Image 3) */
+.testimonial-card__author-name {
+  font-family: "Playfair Display", var(--font-heading--family, serif);
+  font-size: 18px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 29px;
+  color: #333;
+  display: block;
+}
+
+/* Author role — Instrument Sans 16px 400 lh 25.6px teal (Image 3) */
+.testimonial-card__author-role {
+  font-family: "Instrument Sans", var(--font-body--family, sans-serif);
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 25.6px;
+  color: {{ section.settings.author_role_color }};
+  display: block;
+}
+
+.testimonial-card__stars {
+  display: flex;
+  gap: 3px;
+  margin-top: 6px;
+}
+
+.testimonial-card__badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  flex-shrink: 0;
+}
+.testimonial-card__badge img {
+  width: 80px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ── Card bottom section (quote + text) ── */
+.testimonial-card__body {
+  padding: 30px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
+}
+
+/* ── Quote icon — rotated, bottom-right watermark ── */
+.testimonial-card__quote-icon {
+  pointer-events: none;
+  opacity: 0.18;
+  position: absolute;
+}
+
+/* Testimonial heading — Instrument Sans 24px 600 #333 lh 38.4px (Image 4) */
+.testimonial-card__text-heading {
+  font-family: "Instrument Sans", var(--font-body--family, sans-serif);
+  font-size: 24px;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 38.4px;
+  color: #333;
+  margin: 0 0 0;
+  text-align: left;
+}
+
+/* Body text — Instrument Sans 18px 500 #333 lh 29px (Image 4) */
+.testimonial-card__text {
+  font-family: "Instrument Sans", var(--font-body--family, sans-serif);
+  font-size: 18px;
+  font-weight: 500;
+  font-style: normal;
+  line-height: 29px;
+  color: #333;
+  margin: 0 0 10px;
+  text-align: left;
+}
+
+.testimonial-card__tagline {
+  font-family: "Instrument Sans", var(--font-body--family, sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: {{ section.settings.author_role_color }};
+  margin: auto 0 0;
+  text-align: left;
+}
+
+/* ── Footer (dots + mobile arrows) ── */
+.testimonial__footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.testimonial__dots-wrap .slick-dots {
+  position: static;
+  display: flex !important;
+  gap: 8px;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.testimonial__dots-wrap .slick-dots li button {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: {{ section.settings.dot_color }};
+  opacity: 0.35;
+  border: none;
+  padding: 0;
+  font-size: 0;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.testimonial__dots-wrap .slick-dots li.slick-active button {
+  opacity: 1;
+  background: {{ section.settings.dot_active_color }};
+}
+
+/* Opening quote — top-left */
+.testimonial-card__quote-icon--open {
+  top: 16px;
+  left: 16px;
+}
+
+/* Closing quote — bottom-right */
+.testimonial-card__quote-icon--close {
+  bottom: 16px;
+  right: 16px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1199px) {
+  .testimonial-wrapper { padding-left: 30px; padding-right: 30px; }
+}
+
+@media (max-width: 989px) {
+  .testimonial__watermark { font-size: clamp(48px, 8vw, 120px); }
+}
+
+@media (max-width: 749px) {
+  .testimonial-wrapper { padding: 60px 20px 50px; }
+  .testimonial__watermark { font-size: clamp(36px, 12vw, 80px); white-space: normal; text-align: center; }
+  .testimonial__heading-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .testimonial__title { font-size: 32px !important; }
+  .testimonial-card { margin: 0 4px; }
+  .testimonial-card__text { font-size: 14px; }
+  .testimonial-card__text-heading { font-size: 16px; }
+  .testimonial__btn--desktop { display: none !important; }
+  .testimonial__btn--mobile { display: flex; }
+  .testimonial_decorative::after { width: 143px; height: 144px; }
+}
+
+@media (max-width: 480px) {
+  .testimonial__watermark { font-size: 36px; }
+  .testimonial-card__badge img { width: 56px; }
+}
+</style>
+
+<script>
+$(document).ready(function(){
+  var $slider   = $('.testimonial-slick-slider');
+  var $dotsWrap = $('.testimonial__dots-wrap');
+  var $prevBtns = $('.testimonial__btn--prev');
+  var $nextBtns = $('.testimonial__btn--next');
+
+  $slider.slick({
+    prevArrow: $prevBtns,
+    nextArrow: $nextBtns,
+    appendDots: $dotsWrap,
+    dots: {{ section.settings.show_dots }},
+    infinite: {{ section.settings.infinite_loop }},
+    speed: {{ section.settings.transition_speed }},
+    autoplay: {{ section.settings.autoplay }},
+    autoplaySpeed: {{ section.settings.autoplay_speed }},
+    slidesToShow: {{ section.settings.slides_to_show }},
+    slidesToScroll: {{ section.settings.slides_to_scroll }},
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: {{ section.settings.slides_tablet }}, slidesToScroll: 1 }
+      },
+      {
+        breakpoint: 749,
+        settings: { slidesToShow: {{ section.settings.slides_mobile }}, slidesToScroll: 1 }
+      }
+    ]
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Testimonial Carousel",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "watermark_text",
+      "label": "Background watermark text",
+      "default": "SUMMER STORIES",
+      "info": "Large decorative text shown behind the heading"
+    },
+    {
+      "type": "color",
+      "id": "watermark_color",
+      "label": "Watermark color",
+      "default": "#EFEFEA"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "THE BRAND"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#008081"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Postcards From The Coast"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View All label",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "View All URL"
+    },
+    {
+      "type": "color",
+      "id": "view_all_color",
+      "label": "View All color",
+      "default": "#008081"
+    },
+    {
+      "type": "image_picker",
+      "id": "decorative_image",
+      "label": "Decorative corner image"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_to_show",
+      "label": "Slides to show (desktop)",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "slides_tablet",
+      "label": "Slides to show (tablet)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "slides_mobile",
+      "label": "Slides to show (mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "slides_to_scroll",
+      "label": "Slides to scroll",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite_loop",
+      "label": "Infinite loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed (ms)",
+      "min": 1000,
+      "max": 8000,
+      "step": 500,
+      "default": 3000
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "label": "Transition speed (ms)",
+      "min": 200,
+      "max": 1000,
+      "step": 100,
+      "default": 400
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show arrows",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Card Design"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card padding",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "text",
+      "id": "card_shadow",
+      "label": "Card box shadow",
+      "default": "0 2px 16px rgba(0,0,0,0.08)"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card text color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "range",
+      "id": "card_heading_size",
+      "label": "Card heading font size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "card_text_size",
+      "label": "Card body font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Star & Quote"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#008081"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quote_icon",
+      "label": "Show quote icon",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "quote_icon_color",
+      "label": "Quote icon color",
+      "default": "#008081"
+    },
+    {
+      "type": "header",
+      "content": "Author"
+    },
+    {
+      "type": "color",
+      "id": "author_name_color",
+      "label": "Author name color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "author_role_color",
+      "label": "Author role color",
+      "default": "#008081"
+    },
+    {
+      "type": "header",
+      "content": "Arrows & Dots"
+    },
+    {
+      "type": "color",
+      "id": "arrow_bg_color",
+      "label": "Arrow background",
+      "default": "#262626"
+    },
+    {
+      "type": "color",
+      "id": "arrow_bg_hover",
+      "label": "Arrow background (hover)",
+      "default": "#444444"
+    },
+    {
+      "type": "color",
+      "id": "arrow_border_color",
+      "label": "Arrow border color",
+      "default": "#F5EDDC"
+    },
+    {
+      "type": "color",
+      "id": "arrow_icon_color",
+      "label": "Arrow icon color",
+      "default": "#F5EDDC"
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot color",
+      "default": "#008081"
+    },
+    {
+      "type": "color",
+      "id": "dot_active_color",
+      "label": "Active dot color",
+      "default": "#008081"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 148,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 148,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Avatar image"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author name",
+          "default": "Aanya R."
+        },
+        {
+          "type": "text",
+          "id": "author_role",
+          "label": "Author role / title",
+          "default": "Designer"
+        },
+        {
+          "type": "image_picker",
+          "id": "badge_image",
+          "label": "Badge image (e.g. Amari Approved)"
+        },
+        {
+          "type": "text",
+          "id": "badge_alt",
+          "label": "Badge alt text",
+          "default": "Amari Approved"
+        },
+        {
+          "type": "range",
+          "id": "star_rating",
+          "label": "Star rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "testimonial_heading",
+          "label": "Testimonial headline",
+          "default": "Finally, swimwear that feels comfortable."
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial_text",
+          "label": "Testimonial body text",
+          "default": "No digging, no adjusting every five minutes. Just a flattering fit that lets you enjoy the moment."
+        },
+        {
+          "type": "text",
+          "id": "testimonial_tagline",
+          "label": "Tagline (optional)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial Carousel",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Aanya R.",
+            "author_role": "Designer",
+            "star_rating": 5,
+            "testimonial_heading": "Finally, swimwear that feels comfortable.",
+            "testimonial_text": "No digging, no adjusting every five minutes. Just a flattering fit that lets you enjoy the moment."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Aanya R.",
+            "author_role": "Designer",
+            "star_rating": 5,
+            "testimonial_heading": "Finally, swimwear that feels comfortable.",
+            "testimonial_text": "No digging, no adjusting every five minutes. Just a flattering fit that lets you enjoy the moment."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author_name": "Aanya R.",
+            "author_role": "Designer",
+            "star_rating": 5,
+            "testimonial_heading": "Finally, swimwear that feels comfortable.",
+            "testimonial_text": "No digging, no adjusting every five minutes. Just a flattering fit that lets you enjoy the moment."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

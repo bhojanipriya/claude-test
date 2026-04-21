@@ -1,0 +1,457 @@
+{%- if settings.fallback_collection != blank -%}
+  {%- assign productlist = recommendations.products -%}
+  {%- assign productlist_count = productlist | size -%}
+
+  {%- if productlist_count == 0 and settings.fallback_collection != blank -%}
+    {%- assign productlist = settings.fallback_collection.products -%}
+  {%- endif -%}
+
+  {%- if productlist.size > 0 -%}
+    <div class="mini-cart__recommendations-inner">
+
+      {% if settings.recommendations_title %}
+        <div class="heading-with-arrow-cart">
+          <p class="mini-cart__recommendations-heading h4">{{ settings.recommendations_title }}</p>
+          <div class="arrow-slider-cart"></div>
+        </div>
+      {% endif %}
+
+      <div class="mini-cart__recommendations-list">
+
+        <div class="product-slider">
+          {%- assign count = 0 -%}
+          {%- for product in productlist -%}
+            {%- if count >= 6 -%}{% break %}{%- endif -%}
+
+            {%- assign in_cart = cart.items | where: 'product_id', product.id -%}
+
+            {% if in_cart.size == 0 %}
+              {% assign count = count | plus: 1 %}
+
+              <div class="recommended-product">
+
+                <a href="{{ product.url }}" class="recommended-product__link">
+                  <img 
+                    src="{{ product.featured_image | image_url: width: 300 }}"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    class="recommended-product__image"
+                    loading="lazy"
+                  >
+                  <div class="recommended-product__info">
+                    <h4 class="recommended-product__title">{{ product.title }}</h4>
+                    <p class="recommended-product__price">{{ product.price | money }}</p>
+                     {% if product.available %}
+                      <button 
+                        type="button"
+                        class="cart-drawer-recommendations__btn"
+                        data-variant-id="{{ product.variants.first.id }}">
+                        Add to Cart
+                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                          <path d="M1.21547 11.3137L0 10.0953L8.33468 1.74057H0.868196V0H11.2865V10.4434H9.55015V2.95897L1.21547 11.3137Z" fill="#663700"/>
+                          </svg>
+                      </button>
+                    {% else %}
+                      <span class="sold-out">Sold out</span>
+                    {% endif %}
+                  </div>
+                </a>
+              </div>
+
+            {% endif %}
+          {%- endfor -%}
+        </div>
+
+      </div>
+
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
+
+
+<script>
+/* =====================================================
+   ADD TO CART (RECOMMENDATIONS)
+===================================================== */
+document.addEventListener("click", async (e) => {
+  const btn = e.target.closest(".cart-drawer-recommendations__btn");
+  if (!btn) return;
+
+  e.preventDefault();
+
+  const productCard = btn.closest(".recommended-product");
+  const variantId = btn.dataset.variantId;
+  if (!variantId) return;
+
+  btn.disabled = true;
+  btn.textContent = "Adding...";
+
+  try {
+    const formData = new FormData();
+    formData.append("id", variantId);
+    formData.append("quantity", 1);
+
+    await fetch("/cart/add.js", {
+      method: "POST",
+      body: formData
+    });
+
+    await updateCartBubble();
+    await refreshCartDrawerItems();
+    openCartDrawer();
+
+    if (productCard) productCard.remove();
+
+  } catch (err) {
+    console.error("Add failed", err);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `
+      Add to Cart
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M1.21547 11.3137L0 10.0953L8.33468 1.74057H0.868196V0H11.2865V10.4434H9.55015V2.95897L1.21547 11.3137Z" fill="#663700"/>
+      </svg>
+    `;
+
+    setTimeout(() => {
+      initCartDrawerRecommendations(true);
+    }, 300);
+  }
+
+  
+});
+
+
+/* =====================================================
+   CART BUBBLE
+===================================================== */
+async function updateCartBubble() {
+
+  const res = await fetch("/cart.js");
+  const cart = await res.json();
+
+  const bubble = document.querySelector(".cart-bubble__text-count");
+  if (!bubble) return;
+
+  bubble.innerHTML = `
+    <span aria-hidden="true">${cart.item_count}</span>
+    <span class="visually-hidden">${cart.item_count} items</span>
+  `;
+  bubble.style.display = cart.item_count > 0 ? "block" : "none";
+}
+
+
+/* =====================================================
+   REFRESH CART DRAWER CONTENT
+===================================================== */
+async function refreshCartDrawerItems() {
+  try {
+    destroyCartDrawerSlider();
+
+    // Fetch header section (which also contains the free shipping bar)
+    const res = await fetch("/?sections=header");
+    const data = await res.json();
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(data.header, "text/html");
+
+    // --- Replace cart items ---
+    const newItems = doc.querySelector(".cart-drawer__items");
+    const currentItems = document.querySelector(".cart-drawer__items");
+    if (newItems && currentItems) currentItems.replaceWith(newItems);
+
+    // --- Replace cart footer ---
+    const newFooter = doc.querySelector(".cart-drawer__footer");
+    const currentFooter = document.querySelector(".cart-drawer__footer");
+    if (newFooter && currentFooter) currentFooter.replaceWith(newFooter);
+
+    // --- Replace free shipping bar ---
+    const newShippingBar = doc.querySelector(".cart-total-shipping");
+    const currentShippingBar = document.querySelector(".cart-total-shipping");
+    if (newShippingBar && currentShippingBar) {
+      currentShippingBar.replaceWith(newShippingBar);
+    }
+
+    const drawer = document.querySelector("cart-drawer");
+    if (drawer) drawer.classList.remove("is-empty");
+
+    // Re-initialize cart recommendations slider
+    setTimeout(() => {
+      initCartDrawerRecommendations(true);
+    }, 300);
+
+  } catch (err) {
+    console.error("Cart refresh failed:", err);
+  }
+}
+
+
+
+/* =====================================================
+   OPEN CART DRAWER
+===================================================== */
+function openCartDrawer() {
+  const drawer = document.querySelector("cart-drawer");
+  if (!drawer) return;
+
+  if (typeof drawer.open === "function") {
+    drawer.open();
+  } else {
+    drawer.classList.add("active");
+    document.getElementById("CartDrawer-Overlay")?.classList.add("active");
+  }
+
+  drawer.classList.remove("is-empty");
+
+  setTimeout(() => {
+    fixSlickPosition();
+  }, 300);
+}
+
+
+/* =====================================================
+   SLICK SLIDER HELPERS (FIXED)
+===================================================== */
+function destroyCartDrawerSlider() {
+  if (typeof $ === "undefined" || !$.fn.slick) return;
+
+  const $slider = $('.mini-cart__recommendations-list .product-slider');
+  if ($slider.hasClass("slick-initialized")) {
+    $slider.slick("unslick");
+  }
+}
+
+function initCartDrawerRecommendations(force = false) {
+  if (typeof $ === "undefined" || !$.fn.slick) return;
+
+  const $slider = $('.mini-cart__recommendations-list .product-slider');
+  if (!$slider.length) return;
+
+  if ($slider.hasClass("slick-initialized")) {
+    if (!force) return;
+    $slider.slick("unslick");
+  }
+
+  $slider.slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: true,
+    arrows: false,
+    infinite: false,
+    adaptiveHeight: true
+  });
+
+  setTimeout(() => {
+    $slider.slick("setPosition");
+  }, 50);
+}
+
+function fixSlickPosition() {
+  if (typeof $ === "undefined" || !$.fn.slick) return;
+
+  const $slider = $('.mini-cart__recommendations-list .product-slider');
+  if ($slider.hasClass("slick-initialized")) {
+    $slider.slick("setPosition");
+  } else {
+    initCartDrawerRecommendations(true);
+  }
+}
+
+
+/* =====================================================
+   HEADER CART ICON CLICK
+===================================================== */
+document.addEventListener("click", (e) => {
+  const cartBtn = e.target.closest(
+    '.header__column .button[aria-describedby="cart-bubble-text"]'
+  );
+  if (!cartBtn) return;
+
+  setTimeout(() => {
+    fixSlickPosition();
+  }, 400);
+});
+
+
+/* =====================================================
+   OBSERVE CART DRAWER DOM CHANGES (CRITICAL)
+===================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  initCartDrawerRecommendations();
+
+  const drawer = document.querySelector("cart-drawer");
+  if (!drawer) return;
+
+  const observer = new MutationObserver(() => {
+    const slider = drawer.querySelector(
+      ".mini-cart__recommendations-list .product-slider"
+    );
+    if (slider && !slider.classList.contains("slick-initialized")) {
+      initCartDrawerRecommendations(true);
+    }
+  });
+
+  observer.observe(drawer, {
+    childList: true,
+    subtree: true
+  });
+});
+
+
+</script>
+
+
+
+
+
+
+<style>
+    
+.mini-cart__recommendations-heading{
+  margin-bottom:10px;
+  color:#663700 !important;
+  line-height: 28.8px;
+}
+.mini-cart__recommendations-list .slick-slide {
+  display: block !important;
+  margin
+}
+.mini-cart__recommendations-inner{
+  position: unset;
+  width:100%;
+  height: fit-content;
+  margin-left: 0;
+  margin-top: 16px;
+  padding: 0;
+  margin-bottom: 15px;
+}
+.mini-cart__recommendations-list .slick-track{
+  display: flex;
+}
+.mini-cart__recommendations-list {
+  overflow: hidden; 
+}
+.mini-cart__recommendations-list .slick-track {
+  display: flex !important;      
+  align-items: stretch;          
+}
+.mini-cart__recommendations-list .slick-slide {
+  float: none !important;         
+  height: auto !important;       
+  display: flex !important;      
+}
+.recommended-product {
+  display: flex;
+  align-items: center;
+  border: 1px solid #a8703f; 
+  border-radius: 14px;
+  padding: 15px;
+  margin-bottom: 0;
+  background: #fff;
+  transition: box-shadow 0.2s ease;
+  margin-top: 1px;
+}
+.recommended-product:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.recommended-product__link {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  color: inherit;
+  width: 100%;
+}
+.recommended-product__image {
+  width: 88px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8.87px;
+  flex-shrink: 0;
+}
+.recommended-product__title {
+  font-family: "DM Sans" !important;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500 !important;
+  line-height: 21.6px;
+  color: #663700; 
+  margin: 0;
+  word-break: break-all;
+}
+.recommended-product__price {
+  font-family: "DM Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 21.6px;
+  color: #663700; 
+  margin:5px 0 0 0;
+}
+.recommended-product__info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.cart-drawer-recommendations__btn {
+  font-family: "DM Sans";
+  font-size: 18px;
+line-height: 21.6px;
+  font-weight: 700;
+  color: #663700;
+  text-decoration: none;
+  margin-top: 4px;
+  display: flex;
+  background-color: transparent;
+  border: none;
+  width: max-content;
+  padding: 0;
+  gap:5px;
+  align-items:center;
+    cursor:pointer; 
+}
+.mini-cart__recommendations-list .slick-dots {
+  display: flex !important;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 0 !important;
+  list-style: none;
+  padding: 0;
+  margin:20px 0 0 0 !important;
+}
+.mini-cart__recommendations-list .slick-dots li {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: transparent;
+  border:1px solid #663700; 
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 0;
+  margin-right: 0;
+}
+.mini-cart__recommendations-list .slick-dots li button {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+  border: none;
+}
+.mini-cart__recommendations-list .slick-dots li.slick-active {
+  background: #663700; 
+}
+.mini-cart__recommendations-list .slick-dots li:hover {
+  background: #663700;
+}
+.drawer.is-empty .mini-cart__recommendations-inner{
+  display:none;
+}
+.drawer.is-empty  .drawer__footer,.mini-cart__recommendations-list .swym-wishlist-collections-v2-container{
+  display:none !important;
+}
+.mini-cart__recommendations-list .product-slider:not(.slick-initialized) { 
+    display: -webkit-inline-box; /* or flex, recommended */
+    gap: 20px;
+}
+</style>

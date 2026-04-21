@@ -1,0 +1,52 @@
+{%- doc -%}
+  Renders a slideshow arrow control
+
+  @param {string} action - { 'previous' | 'next' } The action to perform when the arrow is clicked.
+  @param {string} [icon_style] - { 'arrow' | 'chevron' } The style of the icon, defaults to 'arrow'.
+  @param {string} [icon_shape] - { 'none' | 'circle' | 'square' } The shape of the icon background, defaults to 'none'.
+  @param {string} [icon_size] - { 'small' | 'medium' | 'large' } The size of the icon, defaults to 'medium'.
+
+  @example
+  {%- render 'slideshow-arrow', action: 'previous' -%}
+{%- enddoc -%}
+
+{%- liquid
+  assign icon_name = 'arrow'
+  assign style = icon_style | default: 'arrow'
+  assign shape = icon_shape | default: 'none'
+
+  if icon_style contains 'chevron'
+    assign icon_name = 'caret'
+  endif
+
+  if icon_style contains 'large'
+    assign icon_size = 'large'
+  endif
+-%}
+
+<button
+  class="
+    slideshow-control slideshow-control--{{ action }}
+    {% if icon_size %} slideshow-control--{{ icon_size }}{% endif %}
+    {% if shape != 'none' %} slideshow-control--shape-{{ shape }}{% endif %}
+    slideshow-control--style-{{ style }}
+    button button-unstyled button-unstyled--transparent
+    {% if action == 'previous' %} flip-x{% endif %}
+  "
+  {% # theme-check-disable %}
+  aria-label="{{ 'accessibility.slideshow_' | append: action | t }}"
+  {% # theme-check-enable %}
+  on:click="/{{ action }}"
+  ref="{{ action }}"
+>
+  <span class="svg-wrapper icon-{{ icon_name }}">
+    {%- if icon_name == 'caret' -%}
+      {{- 'icon-caret.svg' | inline_asset_content -}}
+    {%- else -%}
+      {% comment %} {{- 'icon-arrow.svg' | inline_asset_content -}} {% endcomment %}
+       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="14" viewBox="0 0 24 14" fill="none">
+        <path d="M13.6803 0.878652C12.5088 -0.292921 10.6093 -0.292921 9.4377 0.878652L0.665371 9.65098C-0.221791 10.5381 -0.22179 11.9765 0.665372 12.8637C1.55253 13.7508 2.99091 13.7508 3.87807 12.8637L11.559 5.18273L19.24 12.8637C20.1271 13.7508 21.5655 13.7508 22.4527 12.8637C23.3398 11.9765 23.3398 10.5381 22.4527 9.65098L13.6803 0.878652Z" fill="white"/>
+        </svg>
+    {%- endif -%}
+  </span>
+</button>

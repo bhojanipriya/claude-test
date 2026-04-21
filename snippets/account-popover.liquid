@@ -1,0 +1,94 @@
+{%- doc -%}
+  Renders the account popover for desktop users, which appears when clicking the account icon. It contains links for account actions like login, logout, and viewing account details.
+
+  @param {object} [settings] - The theme-level settings.
+
+  @param {string} [settings.popover_color_scheme] - The color scheme for the popover panel.
+{%- enddoc -%}
+<anchored-popover-component
+  data-close-on-resize="true"
+  class="account-popover mobile:hidden"
+>
+  {% render 'account-button' with 'account-popover' as popover_id %}
+  <div
+    class="account-popover__panel details-content color-{{ settings.popover_color_scheme }}"
+    id="account-popover"
+    popover="auto"
+    ref="popover"
+  >
+    {% render 'account-actions' %}
+  </div>
+</anchored-popover-component>
+ <a href="#swym-wishlist" class="swym-wishlist header__icon header__icon--wishlist" aria-label="Wishlist">
+        <span class="svg-wrapper">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="21" viewBox="0 0 24 21" fill="none">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M7.66516 0.500001C8.74592 0.49934 9.81093 0.759084 10.7701 1.25725C11.3855 1.57693 11.9458 1.98874 12.4323 2.47655C13.6506 1.25636 15.3364 0.500001 17.1982 0.500001C20.9177 0.500001 23.933 3.51569 23.933 7.23558C23.933 10.498 22.02 13.4973 19.764 15.7758C17.4992 18.0633 14.7327 19.7842 12.7183 20.4536C12.5322 20.5155 12.3312 20.5155 12.1451 20.4536C10.1307 19.7842 7.36424 18.0633 5.09941 15.7758C2.84343 13.4973 0.93042 10.498 0.93042 7.23558C0.93042 3.51591 3.94539 0.500349 7.66452 0.500001M9.93219 2.87082C9.23209 2.50719 8.45469 2.31763 7.66581 2.31818L7.66516 2.31818C4.94977 2.31818 2.74838 4.51985 2.74838 7.23558C2.74838 9.79963 4.27787 12.362 6.3912 14.4965C8.37999 16.5052 10.7485 17.9941 12.4317 18.6266C14.1149 17.9941 16.4834 16.5052 18.4722 14.4965C20.5855 12.362 22.115 9.79963 22.115 7.23558C22.115 4.51985 19.9136 2.31818 17.1982 2.31818C15.5362 2.31818 14.0659 3.14233 13.175 4.40811C13.0046 4.65016 12.7271 4.7941 12.4311 4.79391C12.1352 4.79372 11.8578 4.64944 11.6878 4.40717C11.2345 3.76144 10.6323 3.23445 9.93219 2.87082Z" fill="#4A4A4A"/>
+          </svg>
+        </span>
+      </a>
+{% stylesheet %}
+  .account-popover {
+    --account-popover-min-width: 22rem;
+    --account-actions-max-width: 22rem;
+  }
+
+  .account-popover__summary {
+    padding: 0;
+
+    &:hover {
+      color: var(--color-foreground);
+    }
+  }
+
+  .account-popover__panel {
+    --account-popover-opacity: 0;
+    --account-popover-y: 20px;
+    position-anchor: --account-button-trigger;
+    border-radius: var(--style-border-radius-popover);
+    margin: 0;
+    left: unset;
+    width: max-content;
+    min-width: var(--account-popover-min-width);
+    box-shadow: var(--shadow-popover);
+    border: var(--style-border-popover);
+    background-color: var(--color-background);
+    overflow-y: hidden;
+    opacity: var(--account-popover-opacity);
+    translate: 0 var(--account-popover-y);
+    transition-property: display, opacity, translate;
+    transition-duration: 0.3s;
+    transition-timing-function: var(--ease-out-quad);
+    transition-behavior: allow-discrete;
+    top: calc(anchor(bottom) + var(--header-padding));
+    right: anchor(right);
+
+    &:popover-open {
+      --account-popover-opacity: 1;
+      --account-popover-y: 0px;
+    }
+
+    @supports not (position-anchor: --account-button-trigger) {
+      top: calc(var(--anchor-top) * 1px + var(--minimum-touch-target) + var(--header-padding));
+      right: calc(var(--anchor-right) * 1px);
+    }
+
+    @supports not selector(:popover-open) {
+      &.\:popover-open {
+        --account-popover-opacity: 1;
+        --account-popover-y: 0px;
+      }
+    }
+  }
+
+  @starting-style {
+    .account-popover__panel {
+      --account-popover-opacity: 0.7;
+      --account-popover-y: 20px;
+    }
+
+    .account-popover__panel:popover-open {
+      --account-popover-opacity: 0.7;
+      --account-popover-y: 20px;
+    }
+  }
+{% endstylesheet %}

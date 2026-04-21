@@ -1,0 +1,44 @@
+{% render 'global-count', block: block %}
+{% schema %}
+{
+  "name": "global-count",
+  "tag": null,
+  "settings": [
+        {
+      "type": "text",
+      "id": "stat_number",
+      "label": "Number",
+      "default": "8"
+    },
+    {
+      "type": "text",
+      "id": "stat_suffix",
+      "label": "Suffix (K+, +, M+, etc)",
+      "default": "K+"
+    },
+    {
+      "type": "text",
+      "id": "stat_title",
+      "label": "Title",
+      "default": "Global Customers"
+    },
+    {
+      "type": "range",
+      "id": "custom_width_mobile",
+      "label": "t:settings.custom_width",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "visible_if": "{{ block.settings.width_mobile == \"custom\" }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "global-count",
+      "category": "t:categories.basic"
+    }
+  ]
+}
+{% endschema %}

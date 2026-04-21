@@ -1,0 +1,171 @@
+{% comment %}
+  sections/count-down-timer.liquid
+  ─────────────────────────────────
+  Owns: schema (settings), JavaScript, CSS.
+  Delegates HTML markup to: snippets/count-down-timer.liquid
+
+  How it works:
+    1. This section appears in Customize editor (because of {% schema %})
+    2. It renders the HTML via {% render 'count-down-timer' %}
+    3. It passes section.id and settings values INTO the snippet as variables
+    4. Script + styles live here so they only load once per section instance
+{% endcomment %}
+
+{% render 'count-down-timer',
+  section_id:     section.id,
+  countdown_text: section.settings.countdown_text
+%}
+
+{% schema %}
+{
+  "name": "Count Down Timer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "countdown_text",
+      "label": "Offer Line Text",
+      "default": "Exclusive styles at 30% off, only for three days!"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Count Down Timer"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+(function () {
+  var sectionId = "{{ section.id }}";
+  var timer = document.getElementById("countdown-timer-" + sectionId);
+  if (!timer) return;
+
+  var endTime = new Date(timer.getAttribute("data-endtime")).getTime();
+
+  function updateCountdown() {
+    var now = new Date().getTime();
+    var distance = endTime - now;
+
+    if (distance <= 0) {
+      timer.style.display = "none";
+      clearInterval(interval);
+      return;
+    }
+
+    var days    = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours   = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("days-"    + sectionId).textContent = days;
+    document.getElementById("hours-"   + sectionId).textContent = ("0" + hours).slice(-2);
+    document.getElementById("minutes-" + sectionId).textContent = ("0" + minutes).slice(-2);
+    document.getElementById("seconds-" + sectionId).textContent = ("0" + seconds).slice(-2);
+  }
+
+  updateCountdown();
+  var interval = setInterval(updateCountdown, 1000);
+})();
+</script>
+
+<style>
+.countdown-timer-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.countdown-header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.countdown-label {
+  color: #DC0000;
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: -26px;
+  padding-right: 5px;
+}
+.countdown-offer-text {
+  font-size: 16px;
+  color: #663700;
+  font-weight: 500;
+  margin-top: 6px;
+}
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.countdown-number {
+  background: rgba(220, 0, 38, 0.1);
+  border-radius: 8px;
+  padding: 8px 10px;
+  min-width: 50px;
+  text-align: center;
+  font-size: 18px;
+  color: #DC0000;
+}
+.countdown-text {
+  font-size: 16px;
+  color: #DC0000;
+}
+.countdown-separator {
+  font-weight: bold;
+  font-size: 18px;
+  color: #DC0000;
+  align-self: flex-start;
+  padding-top: 8px;
+}
+main[data-template="product.detail-page-4"] .countdown-timer-wrapper {
+  flex-wrap: wrap;
+  justify-content: center;
+  border: 2px solid #663700;
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 553px;
+  margin: 25px auto 25px 0;
+  width: 100%;
+}
+main[data-template="product.detail-page-4"] .countdown-label {
+  width: 100%;
+  text-align: center;
+  margin-top: 0;
+  color: #663700;
+  font-size: 24px;
+  font-weight: 700;
+}
+main[data-template="product.detail-page-4"] .countdown-number {
+  background: #B4610033;
+  color: #663700;
+}
+main[data-template="product.detail-page-4"] .countdown-text { color: #663700; }
+main[data-template="product.detail-page-4"] .countdown-separator { color: #663700; }
+@media screen and (max-width: 989px) and (min-width: 750px) {
+  .countdown-label  { font-size: 16px !important; padding-right: 0 !important; letter-spacing: -0.3px; }
+  .countdown-number { padding: 8px 10px; min-width: 45px; font-size: 16px; }
+}
+@media (max-width: 749px) {
+  main[data-template="product.detail-page-4"] .countdown-timer-wrapper { padding: 20px; }
+}
+@media (max-width: 520px) {
+  .countdown-label  { font-size: 16px; }
+  .countdown-number { font-size: 16px; min-width: 40px; }
+  .countdown-text   { font-size: 14px; }
+}
+@media (min-width: 428px) and (max-width: 520px) {
+  .countdown-number { width: 50px; padding: 12px 10px; }
+}
+@media (max-width: 420px) {
+  .countdown-label     { font-size: 14px; }
+  .countdown-number    { font-size: 14px; min-width: 40px; }
+  .countdown-text      { font-size: 12px; }
+  .countdown-separator { padding-top: 2px; }
+}
+@media (max-width: 400px) {
+  .countdown-label  { font-size: 12px; margin-top: -18px; }
+  .countdown-number { font-size: 12px; min-width: 35px; }
+  .countdown-text   { font-size: 10px; }
+}
+</style>

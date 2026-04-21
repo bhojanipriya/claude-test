@@ -1,0 +1,186 @@
+<style>
+.features-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  text-align: center;
+  padding: 50px 30px;
+}
+.product-features-section .page-width{
+    max-width: 1780px;
+    padding:0 30px;
+    margin: 0 auto;
+}
+.product-features-section .feature-item {
+    padding: 0 20px;
+    max-width: 25%;
+    width: 100%;
+}
+.product-features-section .feature-item:not(:last-child) {
+    border-right: 1px solid rgb(74 74 74 / 50%);
+}
+.feature-heading {
+    margin: 20px 0 10px 0;
+}
+.features-wrapper {
+    margin: 0 -30px;
+}
+main[data-template="product.detail-page-5"] .features-wrapper{gap: 20px;flex-wrap: nowrap;padding: 0px;margin:0;}
+main[data-template="product.detail-page-5"] .product-features-section .feature-item{
+      border: 0px !important;
+    padding: 30px 15px !important;
+    background: #FBF7F2 !important;
+    border-radius: 10px;
+}
+@media(max-width:1199px){
+  main[data-template="product.detail-page-5"] .features-wrapper{flex-wrap: wrap;}
+  .product-features-section .feature-item {
+    max-width: calc(50% - 10px);
+}
+}
+@media(max-width: 767px){
+  .product-features-section{
+    padding-top: {{ section.settings.padding_top_mobile }}px !important;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px !important;
+  }
+}
+@media(max-width:749px){
+  .product-features-section .feature-item {
+    padding: 0 20px;
+    max-width: 100%;
+  }
+.features-wrapper {
+  margin: 0 0px;
+    row-gap: 30px;
+    padding:20px
+}
+.product-features-section .feature-item:not(:last-child) {
+  border-right: none;
+    border-bottom: 1px solid rgb(74 74 74 / 50%);
+            padding: 20px 0px;
+}
+}
+</style>
+
+{% if product.metafields.custom.product_features_section != blank %}
+
+<div 
+  class="product-features-section"
+  style="color: {{ section.settings.text_color }};
+  padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+  "
+>
+  <div class="page-width">
+    <div class="features-wrapper"
+    style="background: {{ section.settings.bg_color }};">
+
+      {% assign features = product.metafields.custom.product_features_section.value %}
+
+      {% for item in features %}
+        {% assign parts = item | split: '::' %}
+        {% assign icon = parts[0] %}
+        {% assign heading = parts[1] %}
+        {% assign description = parts[2] %}
+
+        <div class="feature-item">
+          
+          {% if icon != blank %}
+            <div class="feature-icon">
+              <img 
+                src="{{ icon }}" 
+                alt="{{ heading }}"
+                style="height: {{ section.settings.icon_size }}px;max-width:auto;"
+              >
+            </div>
+          {% endif %}
+
+          {% if heading != blank %}
+            <h4 class="feature-heading">{{ heading }}</h4>
+          {% endif %}
+
+          {% if description != blank %}
+            <p class="feature-description">{{ description }}</p>
+          {% endif %}
+
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+
+{% endif %}
+{% schema %}
+{
+  "name": "Product Features Section",
+  "settings": [
+    {
+      "type": "color_background",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f8f8f8"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon Size",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "default": 60
+    },
+    {
+  "type": "range",
+  "id": "padding_top_desktop",
+  "label": "Padding Top (Desktop)",
+  "min": 0,
+  "max": 150,
+  "step": 5,
+  "default": 50,
+  "unit": "px"
+},
+{
+  "type": "range",
+  "id": "padding_bottom_desktop",
+  "label": "Padding Bottom (Desktop)",
+  "min": 0,
+  "max": 150,
+  "step": 5,
+  "default": 50,
+  "unit": "px"
+},
+{
+  "type": "range",
+  "id": "padding_top_mobile",
+  "label": "Padding Top (Mobile)",
+  "min": 0,
+  "max": 100,
+  "step": 5,
+  "default": 30,
+  "unit": "px"
+},
+{
+  "type": "range",
+  "id": "padding_bottom_mobile",
+  "label": "Padding Bottom (Mobile)",
+  "min": 0,
+  "max": 100,
+  "step": 5,
+  "default": 30,
+  "unit": "px"
+}
+  ],
+  "presets": [
+    {
+      "name": "Product Features Section"
+    }
+  ]
+}
+{% endschema %}

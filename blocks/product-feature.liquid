@@ -1,0 +1,98 @@
+{% if product.metafields.custom.icon_with_text != blank %}
+    {% assign product_item = product.metafields.custom.icon_with_text.value %}
+        <div class="icon_text_pdp icon_text_pdp_new">
+        {% for item in product_item %}
+            {% assign data = item | split: '::' %}
+            {% assign icon = data[0] %}
+            {% assign heading = data[1] %}
+                <div class="icon-text icon-text-new using_metfield">
+                {% if icon != blank %}
+                    <div class="icon-text__icon">
+                    <img
+                        src="{{ icon |  image_url: 'master' }}"
+                        alt="{{ heading | escape }}"
+                        loading="lazy"
+                    >
+                    </div>
+                {% endif %}
+
+                {% if heading != blank %}
+                    <div class="icon-text__content">
+                    <p class="icon-text__heading">
+                        {{ heading }}
+                    </p>
+                    </div>
+                {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Feature",
+  "tag": null,
+  "presets": [
+    {
+      "name": "Product Feature",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.icon_text_pdp_new .icon-text {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+flex-direction: column;
+max-width: 33.33%;
+}
+.icon_text_pdp_new {
+    display: flex;
+    text-align: center;
+    margin: 0 -48px;
+}
+body .icon_text_pdp_new.icon_text_pdp .icon-text__icon img {
+    width: auto;
+    height: auto;
+}
+.icon_text_pdp_new .icon-text{
+    align-items: center;
+    flex-direction: column;
+    padding: 0 48px;
+    position: relative;
+    gap:20px;
+}
+.icon_text_pdp_new .icon-text:not(:last-of-type)::after {
+    content: "";
+    border: 1px solid rgb(74 74 74 / 30%);
+    left: auto;
+    right: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    height: 83px;
+    margin: auto;
+}
+.icon_text_pdp_new .icon-text__content {
+    max-width: 89%;
+}
+.icon_text_pdp_new .icon-text__heading{        color: #B46100;}
+@media(max-width:1599px) {
+    .icon_text_pdp_new .icon-text{    padding: 0 20px;}
+    .icon_text_pdp_new {margin: 0 -20px;}
+}
+@media(max-width:1199px) {
+    .icon_text_pdp_new .icon-text{gap:10px;}   
+    .icon_text_pdp_new .icon-text__heading { font-size: 16px; line-height: normal;} 
+    body main[data-template="product.detail-page-3"] .product-details { padding-right: 30px !important;}
+    .icon_text_pdp_new .icon-text__content { max-width: 100%;}
+}
+@media(max-width:749px) {
+    .icon_text_pdp_new .icon-text{padding: 0 10px;}
+    .icon_text_pdp_new {margin: 0 -10px;}
+     body main[data-template="product.detail-page-3"] .product-details { padding-right: 0 !important;}
+     body .icon_text_pdp_new.icon_text_pdp .icon-text__icon img{    max-width: 70px;}
+}
+</style>

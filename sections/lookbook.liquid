@@ -1,0 +1,761 @@
+
+{% capture children %}
+  {% content_for 'blocks' %}
+{% endcapture %}
+{% render 'section', section: section, children: children %}
+
+{% comment %}
+  FILE: sections/lookbook-brand.liquid
+  Save to: sections/lookbook-brand.liquid
+{% endcomment %}
+
+{%- liquid
+  assign layout = section.settings.layout
+  assign pt     = section.settings.padding_top
+  assign pb     = section.settings.padding_bottom
+-%}
+
+<section
+  class="lb color-{{ section.settings.color_scheme }} gradient"
+  style="--pt:{{ pt }}px;--pb:{{ pb }}px;"
+  data-layout="{{ layout }}"
+>
+  <div class="lb__wrap page-width">
+
+    {%- comment -%}════════════════════════════════
+      LAYOUT A — Brand Split
+      block[0] = bottom-left small image
+      block[1] = right hero image
+    ════════════════════════════════{%- endcomment -%}
+    {%- if layout == 'brand' -%}
+
+      <div class="lb__brand">
+
+        <div class="lb__brand-left">
+          <div class="lb__content">
+            {%- if section.settings.tagline != blank -%}
+              <p class="lb__tagline caption-with-letter-spacing">{{ section.settings.tagline }}</p>
+            {%- endif -%}
+            {%- if section.settings.heading != blank -%}
+              <{{ section.settings.heading_tag }} class="lb__heading {{ section.settings.heading_size }}">
+                {{- section.settings.heading | newline_to_br -}}
+              </{{ section.settings.heading_tag }}>
+            {%- endif -%}
+            {%- if section.settings.description != blank -%}
+              <div class="lb__desc rte">{{ section.settings.description }}</div>
+            {%- endif -%}
+            {%- if section.settings.button_label != blank -%}
+              <a
+                href="{{ section.settings.button_url | default: '#' }}"
+                class="button{% if section.settings.button_style == 'secondary' %} button--secondary{% endif %}"
+                {% if section.settings.button_url == blank %}aria-disabled="true"{% endif %}
+              >{{ section.settings.button_label }}</a>
+            {%- endif -%}
+          </div>
+
+          {%- comment -%} Block 1 — small bottom-left image + pins {%- endcomment -%}
+          {%- assign block_left = section.blocks[0] -%}
+          <div class="lb__thumb-wrap lb__hs-media-wrap" {% if block_left %}{{ block_left.shopify_attributes }}{% endif %}>
+            {%- if block_left != blank and block_left.settings.image != blank -%}
+              {{
+                block_left.settings.image
+                | image_url: width: 700
+                | image_tag: loading: 'lazy', class: 'lb__thumb',
+                  widths: '300,500,700',
+                  alt: block_left.settings.image.alt | escape
+              }}
+            {%- else -%}
+              <div class="lb__placeholder lb__placeholder--thumb">
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+            {%- endif -%}
+            {%- if block_left != blank -%}
+              {%- for i in (1..5) -%}
+                {%- assign prod_key  = 'product_' | append: i -%}
+                {%- assign pin_x_key = 'pin_x_'   | append: i -%}
+                {%- assign pin_y_key = 'pin_y_'   | append: i -%}
+                {%- assign prod      = block_left.settings[prod_key] -%}
+                {%- if prod != blank -%}
+                  {%- render 'lookbook-pin', prod: prod, x: block_left.settings[pin_x_key], y: block_left.settings[pin_y_key] -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- comment -%} Block 2 — right hero image + pins {%- endcomment -%}
+        {%- assign block_right = section.blocks[1] -%}
+        <div class="lb__brand-right lb__hs-media-wrap" {% if block_right %}{{ block_right.shopify_attributes }}{% endif %}>
+          {%- if block_right != blank and block_right.settings.image != blank -%}
+            {{
+              block_right.settings.image
+              | image_url: width: 1400
+              | image_tag: loading: 'lazy', class: 'lb__hero',
+                widths: '500,800,1000,1400',
+                alt: block_right.settings.image.alt | escape
+            }}
+          {%- else -%}
+            <div class="lb__placeholder lb__placeholder--hero">
+              {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {%- endif -%}
+          {%- if block_right != blank -%}
+            {%- for i in (1..5) -%}
+              {%- assign prod_key  = 'product_' | append: i -%}
+              {%- assign pin_x_key = 'pin_x_'   | append: i -%}
+              {%- assign pin_y_key = 'pin_y_'   | append: i -%}
+              {%- assign prod      = block_right.settings[prod_key] -%}
+              {%- if prod != blank -%}
+                {%- render 'lookbook-pin', prod: prod, x: block_right.settings[pin_x_key], y: block_right.settings[pin_y_key] -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+
+      </div>
+    {%- endif -%}
+
+    {%- comment -%}════════════════════════════════
+      LAYOUT B — Hotspot Grid
+      All blocks rendered as images with pins
+    ════════════════════════════════{%- endcomment -%}
+    {%- if layout == 'hotspot' -%}
+
+      {%- if section.settings.tagline != blank or section.settings.heading != blank -%}
+        <div class="lb__hs-header">
+          {%- if section.settings.tagline != blank -%}
+            <p class="lb__tagline caption-with-letter-spacing">{{ section.settings.tagline }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <{{ section.settings.heading_tag }} class="lb__heading {{ section.settings.heading_size }}">
+              {{- section.settings.heading | newline_to_br -}}
+            </{{ section.settings.heading_tag }}>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div
+        class="lb__hs-grid"
+        style="--hs-gap:{{ section.settings.images_gap }}px;--hs-ratio:{{ section.settings.image_ratio }};"
+      >
+        {%- for block in section.blocks -%}
+          <div class="lb__hs-item" {{ block.shopify_attributes }}>
+            <div class="lb__hs-media-wrap">
+
+              {%- if block.settings.image != blank -%}
+                {{
+                  block.settings.image
+                  | image_url: width: 1400
+                  | image_tag: loading: 'lazy', class: 'lb__hs-media',
+                    widths: '500,800,1000,1400',
+                    alt: block.settings.image.alt | escape
+                }}
+              {%- else -%}
+                <div class="lb__placeholder lb__placeholder--hs">
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                </div>
+              {%- endif -%}
+
+              {%- for i in (1..5) -%}
+                {%- assign prod_key  = 'product_' | append: i -%}
+                {%- assign pin_x_key = 'pin_x_'   | append: i -%}
+                {%- assign pin_y_key = 'pin_y_'   | append: i -%}
+                {%- assign prod      = block.settings[prod_key] -%}
+                {%- if prod != blank -%}
+                  {%- render 'lookbook-pin', prod: prod, x: block.settings[pin_x_key], y: block.settings[pin_y_key] -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+            </div>
+            {%- if block.settings.caption != blank -%}
+              <p class="lb__hs-caption">{{ block.settings.caption }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% stylesheet %}
+/* ============================================================
+   LOOKBOOK — Brand Split + Hotspot Grid | Horizon-compatible
+   ============================================================ */
+
+.lb {
+  padding-top: var(--pt, 60px);
+  padding-bottom: var(--pb, 60px);
+  overflow: hidden;
+}
+.lb .page-width {
+  max-width: var(--page-width, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--page-width-margin, 2rem);
+}
+
+/* Shared typography */
+.lb__tagline {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.5);
+  margin: 0;
+  line-height: 1;
+}
+.lb__heading { margin: 0; word-break: break-word; }
+.lb__desc {
+  font-size: 1.4rem;
+  line-height: 1.75;
+  color: rgba(var(--color-foreground), 0.7);
+  margin: 0;
+}
+
+/* Placeholder */
+.lb__placeholder { background: rgba(var(--color-foreground), 0.04); line-height: 0; }
+.lb__placeholder .placeholder-svg { width: 100%; height: 100%; display: block; }
+.lb__placeholder--thumb { aspect-ratio: 4/3; border-radius: 0.6rem; overflow: hidden; }
+.lb__placeholder--hero  { width: 100%; height: 100%; min-height: 52rem; }
+.lb__placeholder--hs    { width: 100%; aspect-ratio: var(--hs-ratio, 3/4); }
+
+/* ============================================================
+   LAYOUT A — BRAND SPLIT
+   ============================================================ */
+.lb__brand {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.4rem;
+  align-items: stretch;
+  min-height: 52rem;
+}
+.lb__brand-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3.2rem;
+}
+.lb__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.6rem;
+  padding-top: 0.4rem;
+}
+.lb__thumb-wrap {
+  border-radius: 0.6rem;
+  overflow: hidden;
+  line-height: 0;
+  background: rgba(var(--color-foreground), 0.04);
+}
+.lb__thumb {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  aspect-ratio: 4/3;
+}
+.lb__brand-right {
+  border-radius: 0.6rem;
+  overflow: hidden;
+  line-height: 0;
+  background: rgba(var(--color-foreground), 0.04);
+}
+.lb__hero {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+@media screen and (max-width: 989px) {
+  .lb__brand { grid-template-columns: 1fr; min-height: auto; }
+  .lb__brand-right { order: -1; }
+  .lb__hero { aspect-ratio: 3/2; height: auto; }
+}
+@media screen and (max-width: 749px) {
+  .lb__hero  { aspect-ratio: 4/3; }
+  .lb__thumb { aspect-ratio: 16/9; }
+}
+
+/* ============================================================
+   LAYOUT B — HOTSPOT GRID
+   ============================================================ */
+.lb__hs-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 3.2rem;
+}
+.lb__hs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--hs-gap, 20px);
+}
+.lb__hs-item { display: flex; flex-direction: column; gap: 1rem; }
+.lb__hs-media-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  background: rgba(var(--color-foreground), 0.04);
+  line-height: 0;
+}
+.lb__hs-media {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  aspect-ratio: var(--hs-ratio, 3/4);
+  transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.lb__hs-media-wrap:hover .lb__hs-media { transform: scale(1.03); }
+.lb__hs-caption {
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.55);
+  text-align: center;
+  margin: 0;
+}
+
+@media screen and (max-width: 749px) {
+  .lb__hs-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   PIN
+   ============================================================ */
+.lb__pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+.lb__pin-btn {
+  position: relative;
+  z-index: 1;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: rgb(var(--color-background));
+  border: 0.15rem solid rgba(var(--color-foreground), 0.15);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(var(--color-foreground));
+  box-shadow: 0 2px 16px rgba(0,0,0,.18);
+  transition: background .2s, color .2s, transform .2s, border-color .2s;
+}
+.lb__pin-btn:hover,
+.lb__pin--active .lb__pin-btn {
+  background: rgb(var(--color-button));
+  color: rgb(var(--color-button-text));
+  border-color: rgb(var(--color-button));
+  transform: scale(1.12);
+}
+.lb__pin-pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(var(--color-foreground), 0.35);
+  animation: lb-pulse 2.2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes lb-pulse {
+  0%   { transform: scale(.7); opacity: 1; }
+  70%  { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(.7); opacity: 0; }
+}
+
+/* ============================================================
+   POPUP
+   ============================================================ */
+.lb__popup {
+  position: absolute;
+  bottom: calc(100% + 1.4rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: 24rem;
+  background: rgb(var(--color-background));
+  border: 0.1rem solid rgba(var(--color-foreground), 0.1);
+  border-radius: 0.8rem;
+  box-shadow: 0 8px 48px rgba(0,0,0,.16);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .22s ease, transform .22s ease;
+  z-index: 20;
+  overflow: hidden;
+}
+.lb__pin--flip .lb__popup {
+  bottom: auto;
+  top: calc(100% + 1.4rem);
+  transform: translateX(-50%) translateY(-8px);
+}
+.lb__pin--edge-left .lb__popup  { left: auto; right: -1.6rem; transform: translateY(8px); }
+.lb__pin--edge-right .lb__popup { left: -1.6rem; transform: translateY(8px); }
+
+.lb__pin--active .lb__popup { opacity: 1; pointer-events: auto; }
+.lb__pin--active:not(.lb__pin--edge-left):not(.lb__pin--edge-right) .lb__popup               { transform: translateX(-50%) translateY(0); }
+.lb__pin--active.lb__pin--flip:not(.lb__pin--edge-left):not(.lb__pin--edge-right) .lb__popup { transform: translateX(-50%) translateY(0); }
+.lb__pin--active.lb__pin--edge-left .lb__popup,
+.lb__pin--active.lb__pin--edge-right .lb__popup { transform: translateY(0); }
+
+.lb__popup-close {
+  position: absolute;
+  top: .8rem; right: .8rem;
+  width: 2.4rem; height: 2.4rem;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(var(--color-foreground), .07);
+  border: none; cursor: pointer;
+  color: rgb(var(--color-foreground));
+  transition: background .2s;
+  z-index: 2;
+}
+.lb__popup-close:hover { background: rgba(var(--color-foreground), .14); }
+.lb__popup-link {
+  display: flex;
+  gap: 1.2rem;
+  padding: 1.4rem;
+  text-decoration: none;
+  color: rgb(var(--color-foreground));
+  align-items: flex-start;
+}
+.lb__popup-media {
+  width: 8rem; height: 9.6rem;
+  flex-shrink: 0;
+  border-radius: .5rem;
+  overflow: hidden;
+  background: rgba(var(--color-foreground), .05);
+}
+.lb__popup-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lb__popup-body {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: .4rem;
+  padding-right: 2rem;
+}
+.lb__popup-vendor {
+  font-size: 1rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), .5);
+  margin: 0;
+}
+.lb__popup-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0;
+  color: rgb(var(--color-foreground));
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.lb__popup-price {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: .6rem; margin: .2rem 0 0;
+  font-size: 1.3rem;
+}
+.lb__price-now        { font-weight: 700; color: rgb(var(--color-foreground)); }
+.lb__price-now--sale  { color: rgb(var(--color-sale-price, var(--color-foreground))); }
+.lb__price-was        { font-size: 1.1rem; color: rgba(var(--color-foreground), .45); text-decoration: line-through; }
+.lb__popup-cta.button {
+  display: inline-block; margin-top: .8rem;
+  font-size: 1.2rem; padding: .7rem 1.2rem;
+  line-height: 1; width: auto; text-align: center;
+}
+
+@media screen and (max-width: 749px) {
+  .lb__popup { width: 20rem; }
+  .lb__pin-btn { width: 2.8rem; height: 2.8rem; }
+}
+{% endstylesheet %}
+
+<script>
+(function () {
+  function initSection(section) {
+    var pins = section.querySelectorAll('.lb__pin');
+
+    function closeAll(except) {
+      pins.forEach(function(p) {
+        if (p !== except) {
+          p.classList.remove('lb__pin--active');
+          var b = p.querySelector('.lb__pin-btn');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    function setEdge(pin) {
+      var wrap = pin.closest('.lb__hs-media-wrap');
+      if (!wrap) return;
+      var pr = pin.getBoundingClientRect(), wr = wrap.getBoundingClientRect();
+      pin.classList.remove('lb__pin--flip','lb__pin--edge-left','lb__pin--edge-right');
+      if ((pr.top - wr.top) < 180) pin.classList.add('lb__pin--flip');
+      var relL = pr.left - wr.left;
+      if (relL < 130) pin.classList.add('lb__pin--edge-right');
+      else if (wr.right - pr.right < 130) pin.classList.add('lb__pin--edge-left');
+    }
+
+    pins.forEach(function(pin) {
+      var btn   = pin.querySelector('.lb__pin-btn');
+      var close = pin.querySelector('.lb__popup-close');
+
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var open = pin.classList.contains('lb__pin--active');
+        closeAll(pin);
+        if (!open) {
+          setEdge(pin);
+          pin.classList.add('lb__pin--active');
+          btn.setAttribute('aria-expanded', 'true');
+        } else {
+          pin.classList.remove('lb__pin--active');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      if (close) {
+        close.addEventListener('click', function(e) {
+          e.stopPropagation();
+          pin.classList.remove('lb__pin--active');
+          pin.querySelector('.lb__pin-btn').setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    document.addEventListener('click', function() { closeAll(null); });
+    section.addEventListener('click', function(e) { e.stopPropagation(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeAll(null); });
+  }
+
+  function boot() {
+    document.querySelectorAll('.lb').forEach(function(s) { initSection(s); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "scheme-1", "label": "Scheme 1" },
+        { "value": "scheme-2", "label": "Scheme 2" },
+        { "value": "scheme-3", "label": "Scheme 3" },
+        { "value": "scheme-4", "label": "Scheme 4" },
+        { "value": "scheme-5", "label": "Scheme 5" }
+      ],
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        { "value": "page-width", "label": "t:options.page" },
+        { "value": "full-width", "label": "t:options.full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Section layout",
+      "info": "Brand Split: block 1 = small left image, block 2 = right hero. Hotspot Grid: all blocks shown side by side with product pins.",
+      "options": [
+        { "value": "brand",   "label": "Brand Split" },
+        { "value": "hotspot", "label": "Hotspot Grid" }
+      ],
+      "default": "brand"
+    },
+    {
+      "type": "header",
+      "content": "Heading & text"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "The Brand"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Where Comfort Meets Confidence"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading HTML tag",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        { "value": "h0", "label": "Extra large" },
+        { "value": "h1", "label": "Large" },
+        { "value": "h2", "label": "Medium" },
+        { "value": "h3", "label": "Small" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "info": "Brand Split layout only",
+      "default": "<p>At AMARI, we believe swimwear should feel effortless, flattering, and empowering. Every piece is thoughtfully designed with premium fabrics and comfort-first construction.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Read More"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "primary",   "label": "Primary" },
+        { "value": "secondary", "label": "Secondary / outline" }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Hotspot Grid options"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "info": "Hotspot Grid layout only",
+      "options": [
+        { "value": "3/4",  "label": "Portrait 3:4" },
+        { "value": "4/5",  "label": "Portrait 4:5" },
+        { "value": "1/1",  "label": "Square 1:1" },
+        { "value": "4/3",  "label": "Landscape 4:3" },
+        { "value": "16/9", "label": "Landscape 16:9" }
+      ],
+      "default": "3/4"
+    },
+    {
+      "type": "range",
+      "id": "images_gap",
+      "min": 0, "max": 60, "step": 4, "unit": "px",
+      "label": "Gap between images",
+      "info": "Hotspot Grid layout only",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0, "max": 100, "step": 4, "unit": "px",
+      "label": "Padding top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0, "max": 100, "step": 4, "unit": "px",
+      "label": "Padding bottom",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Lookbook image",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Brand Split: block 1 = small left image, block 2 = right hero. Hotspot Grid: add up to 5 product pins per image."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption (optional)",
+          "info": "Hotspot Grid only"
+        },
+        { "type": "header", "content": "Product pin 1" },
+        { "type": "product", "id": "product_1", "label": "Product" },
+        { "type": "range", "id": "pin_x_1", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 28 },
+        { "type": "range", "id": "pin_y_1", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position",   "default": 42 },
+        { "type": "header", "content": "Product pin 2" },
+        { "type": "product", "id": "product_2", "label": "Product" },
+        { "type": "range", "id": "pin_x_2", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 62 },
+        { "type": "range", "id": "pin_y_2", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position",   "default": 60 },
+        { "type": "header", "content": "Product pin 3" },
+        { "type": "product", "id": "product_3", "label": "Product" },
+        { "type": "range", "id": "pin_x_3", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 45 },
+        { "type": "range", "id": "pin_y_3", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position",   "default": 78 },
+        { "type": "header", "content": "Product pin 4" },
+        { "type": "product", "id": "product_4", "label": "Product" },
+        { "type": "range", "id": "pin_x_4", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 20 },
+        { "type": "range", "id": "pin_y_4", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position",   "default": 68 },
+        { "type": "header", "content": "Product pin 5" },
+        { "type": "product", "id": "product_5", "label": "Product" },
+        { "type": "range", "id": "pin_x_5", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Horizontal position", "default": 72 },
+        { "type": "range", "id": "pin_y_5", "min": 5, "max": 95, "step": 1, "unit": "%", "label": "Vertical position",   "default": 28 }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lookbook — Brand Split",
+      "settings": { "layout": "brand" },
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    },
+    {
+      "name": "Lookbook — Hotspot Grid",
+      "settings": { "layout": "hotspot" },
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

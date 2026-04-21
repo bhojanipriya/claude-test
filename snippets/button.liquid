@@ -1,0 +1,80 @@
+{%- doc -%}
+  Intended for use in a block similar to the button block.
+
+  @param {string} link - link to render
+  @param {object} [block] - The block
+
+  @example
+  {% render 'button', link: '/collections/all' %}
+{%- enddoc -%}
+
+{% assign block_settings = block.settings %}
+
+<a
+  {% if link == blank %}
+    role="link"
+    aria-disabled="true"
+  {% else %}
+    href="{{ link }}"
+  {% endif %}
+  class="
+    size-style
+    {{ block_settings.style_class }}
+    {{ block_settings.style_class }}--{{ block.id }}
+    {% if block_settings.add_arrow != false %} add_arrow_btn {% endif %}
+  "
+  style="{% render 'size-style', settings: block_settings %}"
+  {%- if block_settings.open_in_new_tab -%}
+    target="_blank"
+    rel="noopener noreferrer"
+  {%- endif -%}
+  {{ block.shopify_attributes }}
+>
+  {{ block_settings.label }}
+  {% if block_settings.add_arrow != false %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <path d="M1.2184 11.3137L0 10.0953L8.35474 1.74057H0.870285V0H11.3137V10.4434H9.57314V2.95897L1.2184 11.3137Z" fill=""/>
+    </svg>
+  {% endif %}
+</a>
+
+{% stylesheet %}
+  .link {
+    text-decoration: none;
+    text-decoration-color: currentcolor;
+
+    &:hover {
+      color: var(--color-primary-hover);
+      text-decoration-color: transparent;
+    }
+  }
+  .add_arrow_btn.size-style{
+    display: flex;
+    gap: 10px;
+    text-transform: var(--button-text-case-primary);
+    align-items: center;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21.6px;
+    padding: 18.5px 32px;
+    border-radius:var(--style-border-radius-buttons-primary);
+    border-width: var(--style-border-width-primary);
+  }
+  .button.add_arrow_btn svg path{
+    fill:var(--button-color);
+  }
+  a.add_arrow_btn svg path{
+    fill:var(--button-color);
+  }
+  .button.button-secondary.add_arrow_btn svg path{
+    fill:var(--button-color);
+  }
+  .button-secondary svg path{
+    fill:var(--button-color);
+  }
+  @media (max-width: 989px) {
+    .add_arrow_btn.size-style{
+        font-size: 16px;
+    }
+  }
+{% endstylesheet %}

@@ -1,0 +1,19 @@
+{% comment %}
+  Section wrapper for Share Icons
+{% endcomment %}
+
+<div class="share-icons-section">
+  {% render 'share-icons', article: article, block: block %}
+</div>
+
+{% schema %}
+{
+  "name": "Share Icons",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Share Icons"
+    }
+  ]
+}
+{% endschema %}

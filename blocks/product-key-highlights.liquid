@@ -1,0 +1,111 @@
+{% if product.metafields.custom.key_highlights != blank %}
+  {% assign product_data = product.metafields.custom.key_highlights.value %}
+
+  <div class="key-highlights">
+    <h3 class="key-highlights__title">
+      {{ product_data.key_highlights_title }}
+    </h3>
+
+    <div class="key-highlights__list">
+      {% for highlight in product_data.key_highlights_details.value %}
+        {% assign highlight_parts = highlight | split: '::' %}
+        <div class="key-highlights__item">
+          <span class="key-highlights__label">
+            {{ highlight_parts[0] }}
+          </span>
+          <span class="key-highlights__value">
+            {{ highlight_parts[1] }}
+          </span>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+
+
+{% schema %}
+{
+  "name": "Key Highlights",
+  "tag": null,
+  "presets": [
+    {
+      "name": "Key Highlights",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.key-highlights {
+  margin-top: 20px;
+}
+main[data-template="product.detail-page-5"] .key-highlights{margin-bottom:20px}
+
+.key-highlights__title {
+  font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #663700 !important;
+    font-family: 'DM Sans';
+    line-height: 28.8px;
+    font-weight: 700;
+}
+
+.key-highlights__list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
+  row-gap: 20px;
+}
+
+.key-highlights__item {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(74, 74, 74, 0.3);
+      gap: 10px;
+}
+
+.key-highlights__label {
+    color: rgba(74, 74, 74, 0.5);
+    font-size: 18px;
+    line-height: 21.6px;
+    font-weight: 500;
+}
+
+.key-highlights__value {
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(74, 74, 74, 1);
+    line-height: 21.6px;
+}
+main[data-template="product.detail-page-3"] .details-content .jdgm-row-profile {
+    display: flex;
+    align-items: center;
+}
+main[data-template="product.detail-page-3"] .product-information__grid .jdgm-widget .jdgm-rev__body p {
+    font-size: 16px;
+    line-height: 25.6px !important;
+    /* color: red; */
+}
+main[data-template="product.detail-page-3"] span.jdgm-rev__author {
+    color: #663700;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28.8px;
+}
+/* Mobile */
+@media(max-width:749px){
+.key-highlights__title {
+    font-size: 18px;
+    line-height: 21.6px;
+}
+}
+@media (max-width: 427px) {
+  .key-highlights__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>

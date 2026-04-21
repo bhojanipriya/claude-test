@@ -1,0 +1,198 @@
+<section class="fragrance-tabs">
+  <div class="page-width">
+
+    <!-- TAB BUTTONS -->
+    <div class="tabs-nav">
+      {% for block in section.blocks %}
+        <button class="tab-btn {% if forloop.first %}active{% endif %}"
+          data-tab="tab-{{ forloop.index }}">
+          {{ block.settings.title }}
+        </button>
+      {% endfor %}
+    </div>
+
+    <!-- TAB CONTENT -->
+    {% for block in section.blocks %}
+      <div id="tab-{{ forloop.index }}"
+           class="tab-content {% if forloop.first %}active{% endif %}">
+
+        <div class="tab-grid">
+
+          {% for i in (1..3) %}
+            {% assign icon = 'icon_' | append: i %}
+            {% assign heading = 'heading_' | append: i %}
+            {% assign text = 'text_' | append: i %}
+
+            {% if block.settings[heading] != blank %}
+              <div class="step-card">
+
+                {% if block.settings[icon] %}
+                  <img src="{{ block.settings[icon] | image_url: width: 100 }}">
+                {% endif %}
+
+                <span class="step-number">{{ i }}</span>
+                <h4>{{ block.settings[heading] }}</h4>
+                <p>{{ block.settings[text] }}</p>
+
+              </div>
+            {% endif %}
+          {% endfor %}
+
+        </div>
+      </div>
+    {% endfor %}
+
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const btns=document.querySelectorAll('.tab-btn');
+  const tabs=document.querySelectorAll('.tab-content');
+
+  btns.forEach(btn=>{
+    btn.onclick=()=>{
+      btns.forEach(b=>b.classList.remove('active'));
+      tabs.forEach(t=>t.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    }
+  })
+})
+</script>
+
+{% schema %}
+{
+"name":"Fragrance Tabs",
+"blocks":[
+{
+"type":"tab",
+"name":"Tab",
+"settings":[
+{"type":"text","id":"title","label":"Tab title","default":"How to Use"},
+
+{"type":"image_picker","id":"icon_1","label":"Icon 1"},
+{"type":"text","id":"heading_1","label":"Heading 1"},
+{"type":"textarea","id":"text_1","label":"Text 1"},
+
+{"type":"image_picker","id":"icon_2","label":"Icon 2"},
+{"type":"text","id":"heading_2","label":"Heading 2"},
+{"type":"textarea","id":"text_2","label":"Text 2"},
+
+{"type":"image_picker","id":"icon_3","label":"Icon 3"},
+{"type":"text","id":"heading_3","label":"Heading 3"},
+{"type":"textarea","id":"text_3","label":"Text 3"}
+]
+}
+],
+"presets":[{"name":"Fragrance Tabs"}]
+}
+{% endschema %}
+
+<style>
+.fragrance-tabs {
+    padding: 0px 0px 60px 0;
+    max-width: 1720px;
+    margin: 100px auto;
+    border: 1px solid #ccc;
+    padding: 50px;
+    border-radius: 20px;
+}
+
+.tabs-nav{
+  display:flex;
+  gap:12px;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+}
+
+.tab-btn {
+    padding: 18px 32px;
+    border-radius: 10px;
+    border: none;
+    background: #F5EDDC;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21.6px;
+    font-family: 'DM sans';
+        color: #663700;
+}
+
+.tab-btn.active{
+  background:#663700;
+  color:#fff;
+}
+
+.tab-content{ display:none; }
+.tab-content.active{ display:block; }
+
+.tab-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.step-card{
+  background:#FBF7F2;
+  padding:30px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.step-card img{
+  height:48px;
+  margin-bottom:20px;
+}
+
+.step-number{
+  display:inline-block;
+  background:#6b3f06;
+  color:#fff;
+  padding:6px 10px;
+  border-radius:6px;
+      height: 39px;
+    width: 39px;
+}
+.step-card h4{
+margin: 10px 0px;
+color: #663700;
+}
+.step-card p{
+  margin:0;
+  color:#663700;
+}
+@media(max-width:900px){
+  .tab-grid{ grid-template-columns:repeat(2,1fr); }
+}
+
+@media(max-width:749px){
+    /* MOBILE SCROLL CONTAINER */
+.tabs-nav{
+  display:flex;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;
+  gap:10px;
+  flex-wrap: nowrap;
+}
+
+/* hide scrollbar Chrome/Safari */
+.tabs-nav::-webkit-scrollbar{
+  display:none;
+}
+
+/* hide scrollbar Firefox */
+.tabs-nav{
+  scrollbar-width:none;
+}
+
+/* prevent items shrinking */
+.tabs-nav > *{
+  flex:0 0 auto;
+}
+  .tab-grid{ grid-template-columns:1fr; }
+}
+
+</style>

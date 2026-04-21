@@ -1,0 +1,295 @@
+<style>
+.faq-item {
+  border: 1px solid var(--faq-border-color);
+  border-radius: 8px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+  padding:20px;
+}
+
+.faq-item.active {
+  border-color: var(--faq-active-border-color);
+}
+h2.faq-heading {
+    color: var(--faq-heading-color);
+}
+.faq-question {
+  width: 100%;
+  padding:0px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: var(--faq-text-color);
+  text-align: left;
+  font-family: 'DM Sans';
+    font-weight: 500;
+}
+
+.faq-item.active .faq-question {
+  color: var(--faq-active-color);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: 
+    max-height 0.4s ease,
+    opacity 0.3s ease,
+    padding 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 500px; /* adjust if answers are long */
+  opacity: 1;
+  {% comment %} padding: 0 20px 20px; {% endcomment %}
+   padding: 10px 0px 0px;
+}
+
+.faq-icon {
+  font-size: 20px;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(180deg);
+}
+.product-faq-section .page-width{
+    max-width: 1780px;
+    width: 100%;
+    padding: 0px 30px;
+    margin: 0 auto;
+}
+main[data-template="product.detail-page-5"] .product-faq-section .page-width,
+main[data-template="product.detail-page-3"] .product-faq-section .page-width,
+main[data-template="product.detail-page-6"] .product-faq-section .page-width
+{
+    max-width: 1190px;
+}
+main[data-template="product.detail-page-5"] .product-faq-section h2.faq-heading,main[data-template="product.detail-page-3"] .product-faq-section h2.faq-heading,main[data-template="product.detail-page-6"] .product-faq-section h2.faq-heading{text-align: center;}
+.faq-wrapper{display: flex;gap:30px;    align-items: flex-start;}
+main[data-template="product.detail-page-4"] .faq-wrapper img {
+    max-width: 32.66%;
+    width: 100%;
+}
+main[data-template="product.detail-page-4"] .faq-wrapper .all_faqa {
+    max-width: 68.33%;
+    width: 100%;
+}
+@media(max-width:749px){
+  main[data-template="product.detail-page-4"] .faq-wrapper {
+      flex-direction: column-reverse;
+  }
+  main[data-template="product.detail-page-4"] .faq-wrapper .all_faqa,main[data-template="product.detail-page-4"] .faq-wrapper img
+  {
+      max-width: 100%;
+      width: 100%;
+  }
+  h2.faq-heading{
+    text-align: center;
+  }
+}
+</style>
+
+
+
+
+<div class="product-faq-section"
+  style="
+  --faq-heading-color: {{ section.settings.heading_color }};
+    --faq-text-color: {{ section.settings.text_color }};
+    --faq-active-color: {{ section.settings.active_color }};
+    --faq-border-color: {{ section.settings.border_color }};
+    --faq-active-border-color: {{ section.settings.active_border_color }};
+  "
+>
+
+  <div class="page-width">
+
+    {% if section.settings.add_side_img != true %}
+      {% if section.settings.heading != blank %}
+        <h2 class="faq-heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+    {% endif %}
+    <div class="faq-wrapper">
+
+        {% if section.settings.add_side_img != false %}
+            {% if product.metafields.custom.product_faqs_image != blank %}
+                <img src="{{ product.metafields.custom.product_faqs_image | img_url : "master" }}">
+            {% else %}
+                {% if section.settings.img_side != blank %}<img src="{{ section.settings.img_side | img_url : "master" }}">{% endif %}
+            {% endif %}
+        {% endif %}
+
+        <div class="all_faqa">
+           {% if section.settings.add_side_img != false %}
+              {% if section.settings.heading != blank %}
+                <h2 class="faq-heading">{{ section.settings.heading }}</h2>
+              {% endif %}
+            {% endif %}
+            {% assign has_metafield = product.metafields.custom.product_faq %}
+            {% if has_metafield %}
+              <div class="faqs_data">
+                {% assign faq_list = product.metafields.custom.product_faq.value  %}
+                {% for item in faq_list %}            
+                    {% assign faq_parts = item | split: '::' %}
+                    {% assign faq_question = faq_parts[0] %}
+                    {% assign faq_answer = faq_parts[1] %}
+                        <div class="faq-item {% if section.settings.first_open and forloop.first %}active{% endif %}">
+
+                        <button class="faq-question">
+                            <span>{{ faq_question | strip }}</span>
+                            <span class="faq-icon">
+                            {% if section.settings.first_open and forloop.first %}−{% else %}+{% endif %}
+                            </span>
+                        </button>
+
+                        <div class="faq-answer" {% if section.settings.first_open and forloop.first %}style="display:block;"{% endif %}>
+                            {{ faq_answer }}
+                        </div>
+
+                        </div>
+                {% endfor %}
+              </div>
+
+            {% else %} 
+                {% if section.settings.add_side_img != false %}
+                  {% if section.settings.heading != blank %}
+                    <h2 class="faq-heading">{{ section.settings.heading }}</h2>
+                  {% endif %}
+                {% endif %}
+                <div class="faqs_data">
+                  {% for block in section.blocks %}
+                  <div class="faq-item {% if section.settings.first_open and forloop.first %}active{% endif %}" {{ block.shopify_attributes }}>
+                  <button class="faq-question">
+                      <span>{{ block.settings.question }}</span>
+                      <span class="faq-icon">
+                      {% if section.settings.first_open and forloop.first %}−{% else %}+{% endif %}
+                      </span>
+                  </button>
+                  <div class="faq-answer" {% if section.settings.first_open and forloop.first %}style="display:block;"{% endif %}>
+                      {{ block.settings.answer }}
+                  </div>
+                  </div>
+                  {% endfor %}
+                </div>
+        {% endif %}
+        </div>
+    </div>
+  </div>
+</div>
+ 
+
+
+{% schema %}
+{
+  "name": "Product FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "first_open",
+      "label": "Open first FAQ by default",
+      "default": true
+    },
+     {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color"
+    },
+    {
+      "type": "color",
+      "id": "active_color",
+      "label": "Active Question Color"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color"
+    },
+    {
+      "type": "color",
+      "id": "active_border_color",
+      "label": "Active Border Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_side_img",
+      "label": "Add Faqs Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_side",
+      "label": "Add Image"
+    }
+  ],
+   "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product FAQ"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  document.querySelectorAll(".faq-question").forEach(function(button){
+
+    button.addEventListener("click", function(){
+
+      let item = this.closest(".faq-item");
+
+      if(item.classList.contains("active")){
+        item.classList.remove("active");
+        this.querySelector(".faq-icon").textContent = "+";
+      } else {
+
+        document.querySelectorAll(".faq-item").forEach(function(i){
+          i.classList.remove("active");
+          i.querySelector(".faq-icon").textContent = "+";
+        });
+
+        item.classList.add("active");
+        this.querySelector(".faq-icon").textContent = "−";
+      }
+
+    });
+
+  });
+
+});
+</script>

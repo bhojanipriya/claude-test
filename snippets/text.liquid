@@ -1,0 +1,354 @@
+{%- doc -%}
+  Intended for use in a block similar to the text block.
+
+  @param {string} [class] - custom class to define in addition to text-block classes
+  @param {string} [fallback_text] - fallback text if settings.text does not exist
+  @param {object} [block] - The block object
+  @param {string} [width] - width of the text block
+{%- enddoc -%}
+
+{% if block.settings.custom_font_picker %}
+  <style>
+    {{ block.settings.custom_font_picker | font_face: font_display: 'swap' }}
+  </style>
+{% endif %}
+
+{% liquid
+  assign block_settings = block.settings
+  assign plain_text = block_settings.text | strip_newlines | strip_html | strip
+  assign text_width = width | default: block_settings.width
+
+  assign is_custom = false
+  if block_settings.type_preset == 'custom_heading'
+    assign is_custom = true
+  endif
+
+  if block_settings.font_size contains 'heading-lg' or block_settings.font_size contains 'heading-xl'
+    assign type = 'display'
+  elsif block_settings.font_size contains 'heading'
+    assign type = 'heading'
+  else
+    assign type = 'body'
+  endif
+
+  if block_settings.type_preset == 'rte' or block_settings.type_preset == 'paragraph'
+    assign is_rte = true
+  endif
+
+  capture text_block_classes
+    if text_width == '100%'
+      echo 'text-block--align-' | append: block_settings.alignment
+      if block_settings.max_width == 'none'
+        echo ' text-block--full-width '
+      endif
+    endif
+    if block_settings.type_preset == 'custom'
+      echo ' custom-typography '
+      if block_settings.font_size != ''
+        echo ' custom-font-size '
+      endif
+      if block_settings.color != ''
+        echo ' custom-color '
+      endif
+    endif
+    if is_custom
+      echo ' custom-heading-typography '
+      if block_settings.font_size != ''
+        echo ' custom-font-size '
+      endif
+      if block_settings.color != ''
+        echo ' custom-color '
+      endif
+    endif
+    if block_settings.background
+      echo ' text-block--background '
+    endif
+    if is_rte
+      echo ' rte '
+    endif
+  endcapture
+%}
+
+{% capture attributes %}
+  class="{{ class }} spacing-style text-block text-block--{{ block.id }} {{ block_settings.type_preset }} {{ block_settings.custom_class_text }}
+{{ text_block_classes }} {% unless block_settings.hide_desktop != false %} desktop:hidden {% endunless %}
+  "
+
+  style="
+    {% render 'spacing-padding', settings: block_settings %}
+    {% unless is_custom %}
+      {% render 'typography-style', settings: block_settings %}
+    {% endunless %}
+    --width: {{ text_width }};
+    --max-width: var(--max-width--{{ type }}-{{ block_settings.max_width }});
+    {% if text_width == "100%" %}
+      --text-align: {{ block_settings.alignment }};
+    {% endif %}
+    {% if block_settings.background %}
+      --text-background-color: {{ block_settings.background_color | default: 'rgb(255 255 255 / 1.0)' }};
+      --text-corner-radius: {{ block_settings.corner_radius }}px;
+      --text-padding: max(var(--padding-2xs), calc((var(--text-corner-radius) + var(--padding-xs)) * (1 - cos(45deg))));
+    {% endif %}
+    {% if is_custom %}
+      {% if block_settings.custom_font_picker %}
+        --font-family: {{ block_settings.custom_font_picker.family | replace: '"', "'" }}, {{ block_settings.custom_font_picker.fallback_families }};
+        --font-style: {{ block_settings.custom_font_picker.style }};
+        --font-weight: {{ block_settings.font_weight | default: block_settings.custom_font_picker.weight }};
+      {% elsif block_settings.font != blank %}
+        --font-family: {{ block_settings.font }};
+        {% if block_settings.font_weight != blank %}
+          --font-weight: {{ block_settings.font_weight }};
+        {% endif %}
+      {% endif %}
+      {% if block_settings.font_size != blank %}
+        --font-size: {{ block_settings.font_size }};
+      {% endif %}
+      {% if block_settings.line_height != blank %}
+        --line-height: {{ block_settings.line_height }};
+      {% endif %}
+      {% if block_settings.letter_spacing != blank %}
+        --letter-spacing: {{ block_settings.letter_spacing }};
+      {% endif %}
+    {% endif %}
+    {% if block_settings.type_preset == 'custom' %}
+      {% if block_settings.font_weight != blank %}
+        --font-weight: {{ block_settings.font_weight }};
+      {% endif %}
+      {% if block_settings.line_height != blank %}
+        --line-height: {{ block_settings.line_height }};
+      {% endif %}
+      {% if block_settings.letter_spacing != blank %}
+        --letter-spacing: {{ block_settings.letter_spacing }};
+      {% endif %}
+    {% endif %}
+  "
+
+  {{ block.shopify_attributes }}
+{% endcapture %}
+
+{% liquid
+  assign element = 'div'
+  if is_rte
+    assign element = 'rte-formatter'
+  endif
+%}
+
+{% if fallback_text != blank and plain_text == blank %}
+  <div {{ attributes }}>
+    {{ fallback_text }}
+    {% if block.settings.background_img1 != blank %}
+      <img class="left_image" src="{{ block.settings.background_img1 | img_url: '' }}" alt="">
+    {% endif %}
+    {% if block.settings.background_img2 != blank %}
+      <img class="right_image" src="{{ block.settings.background_img2 | img_url: '' }}" alt="">
+    {% endif %}
+  </div>
+{% elsif plain_text != blank %}
+  <{{ element }} {{ attributes }}>
+    {{ block.settings.text }}
+    {% if block.settings.background_img1 != blank %}
+      <img class="left_image" src="{{ block.settings.background_img1 | img_url: '' }}" alt="">
+    {% endif %}
+    {% if block.settings.background_img2 != blank %}
+      <img class="right_image" src="{{ block.settings.background_img2 | img_url: '' }}" alt="">
+    {% endif %}
+  </{{ element }}>
+{% endif %}
+
+{% stylesheet %}
+  :root {
+    --text-align-default: left;
+  }
+
+  [style*='--horizontal-alignment: center'] .text-block {
+    --text-align-default: center;
+  }
+
+  [style*='--horizontal-alignment: flex-end'] .text-block {
+    --text-align-default: right;
+  }
+
+  [style*='--horizontal-alignment: flex-start'] > .text-block {
+    --text-align-default: left;
+  }
+
+  [style*='--horizontal-alignment: center'] > .text-block {
+    --text-align-default: center;
+  }
+
+  [style*='--horizontal-alignment: flex-end'] > .text-block {
+    --text-align-default: right;
+  }
+
+  .text-block {
+    width: var(--width);
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: var(--horizontal-alignment);
+  }
+
+  .text-block > * {
+    width: var(--width);
+    max-width: var(--max-width, 100%);
+    text-align: var(--text-align, var(--text-align-default));
+    text-wrap: var(--text-wrap);
+  }
+
+  .text-block:not(.text-block--full-width).rte,
+  .text-block:not(.text-block--full-width).paragraph {
+    text-wrap: balance;
+    text-wrap: pretty;
+  }
+
+  .text-block:not(.text-block--full-width):is(.h1, .h2, .h3, .h4, .h5, .h6) {
+    text-wrap: balance;
+  }
+
+  .text-block:is(.h1, .h2, .h3, .h4, .h5, .h6) a {
+    text-decoration-color: transparent;
+  }
+
+  .text-block h1,
+  .text-block.h1 > * {
+    margin-block: var(--font-h1--spacing);
+  }
+
+  .text-block h2,
+  .text-block.h2 > * {
+    margin-block: var(--font-h2--spacing);
+  }
+
+  .text-block h3,
+  .text-block.h3 > * {
+    margin-block: var(--font-h3--spacing);
+  }
+
+  .text-block h4,
+  .text-block.h4 > * {
+    margin-block: var(--font-h4--spacing);
+  }
+
+  .text-block h5,
+  .text-block.h5 > * {
+    margin-block: var(--font-h5--spacing);
+  }
+
+  .text-block h6,
+  .text-block.h6 > * {
+    margin-block: var(--font-h6--spacing);
+  }
+
+  .text-block p,
+  .text-block.p > * {
+    margin-block: var(--font-paragraph--spacing);
+  }
+
+  .text-block > *:first-child {
+    margin-block-start: 0;
+  }
+
+  .text-block > *:last-child {
+    margin-block-end: 0;
+  }
+
+  .text-block--align-center,
+  .text-block--align-center > * {
+    margin-inline: auto;
+  }
+
+  .text-block--align-right,
+  .text-block--align-right > * {
+    margin-inline-start: auto;
+  }
+
+  .text-block--background {
+    background-color: var(--text-background-color);
+    border-radius: var(--text-corner-radius);
+    padding-block-start: max(var(--text-padding), var(--padding-block-start, 0));
+    padding-block-end: max(var(--text-padding), var(--padding-block-end, 0));
+    padding-inline-start: max(var(--text-padding), var(--padding-inline-start, 0));
+    padding-inline-end: max(var(--text-padding), var(--padding-inline-end, 0));
+  }
+
+  .custom-color,
+  .custom-color > :is(h1, h2, h3, h4, h5, h6, p, *) {
+    color: var(--color);
+  }
+
+  .custom-typography > * {
+    font-weight: var(--font-weight);
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing);
+  }
+
+  .custom-heading-typography > * {
+    font-family: var(--font-family) !important;
+    font-weight: var(--font-weight) !important;
+    font-style: var(--font-style) !important;
+    font-size: var(--font-size) !important;
+    line-height: var(--line-height);
+    letter-spacing: var(--letter-spacing);
+  }
+{% endstylesheet %}
+
+<style>
+  .collection_text .left_image,
+  .collection_text .right_image {
+    position: absolute;
+    top: 0;
+    height: 100% !important;
+    width: auto;
+    bottom: 0;
+    margin: 0;
+  }
+  .collection_text .left_image {
+    left: 0;
+  }
+  .collection_text .right_image {
+    right: 0;
+  }
+  .collection_text {
+    position: relative;
+    overflow: hidden;
+  }
+  .collection_text h1,
+  .collection_text h2 {
+    margin: 0 auto !important;
+    position: relative;
+    z-index: 1;
+  }
+  .collection_text h1 {
+    z-index: 1;
+  }
+  @media (max-width: 1199px) {
+    .collection_text {
+      padding: 100px 0;
+    }
+  }
+  @media (max-width: 989px) {
+    .collection_text {
+      padding: 80.3px 20px !important;
+    }
+    .collection_text .left_image {
+      left: -42px !important;
+    }
+    .collection_text .right_image {
+      right: -68px !important;
+    }
+  }
+  @media (max-width: 428px) {
+    .collection_text .left_image {
+      width: 65% !important;
+    }
+  }
+  @media (max-width: 390px) {
+    .collection_text h1 {
+      font-size: 30px;
+      letter-spacing: 0;
+    }
+    .collection_text .right_image {
+      right: -80px !important;
+    }
+  }
+</style>

@@ -1,0 +1,308 @@
+
+{%- doc -%}
+  Renders the blog post info text block.
+
+  @param {object} [article] - The article object
+  @param {string} [alignment] - The alignment of the text. Defaults to the block's alignment setting.
+  @param {string} [author] - The author name. Defaults to article.author, placeholder text for onboarding
+  @param {string} [date] - The published date. Defaults to article.published_at, placeholder text for onboarding
+{%- enddoc -%}
+
+{% assign block_settings = block.settings %}
+{% assign alignment = alignment | default: block_settings.alignment %}
+{% assign display_author = author | default: article.author %}
+{% assign display_date = date | default: article.published_at %}
+
+{%- if block_settings.show_date or block_settings.show_author -%}
+  <div
+    class="
+      blog-post-details
+      spacing-style
+      justify-{{ alignment }}
+      {% if block_settings.type_preset != '' %}{{ block_settings.type_preset }}{% endif%}
+    "
+    style="{% render 'spacing-style', settings: block_settings %}"
+  >
+    <div class="blog-date-comment">
+    <div class="blog-post-date-wrapper  {{  block.settings.date_width }}">
+      {% comment %} date-pos-{{ block.settings.date_position }} {% endcomment %}
+
+    {%- if block_settings.show_date -%}
+       {% comment %} <span>{{- display_date | time_tag: format: 'date' -}}</span>  {% endcomment %}
+        {% if block.settings.date_icon != blank %}
+          <img
+            src="{{ block.settings.date_icon | image_url }}"
+            alt="Product date information"
+            width="20"
+            height="20"
+            loading="lazy"
+          >
+        {% endif %}
+        {% if template.name contains 'blog' %}
+    <span>{{ display_date | date: "%-d %B, %Y" }}</span>
+  {% else %}
+    <span>{{ display_date | date: "%B %-d, %Y" }}</span>
+  {% endif %}
+    {%- endif -%}
+    </div>
+
+    <div class="blog-comment-count">
+        {% if blog.comments_enabled? %}
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.9999 20C9.85145 20 2.92383 20 2.92383 20C2.47628 20 2.10314 19.7908 1.92561 19.4403C1.74812 19.0899 1.80027 18.6652 2.06513 18.3043L2.95444 17.0962C1.06879 15.2235 0 12.6752 0 10C0 4.48599 4.48594 0 9.9999 0C15.514 0 20 4.48599 20 10C20 15.5141 15.514 20 9.9999 20ZM9.9999 18.4691C14.6698 18.4691 18.4691 14.6699 18.4691 10C18.4691 5.33014 14.6698 1.53093 9.9999 1.53093C5.33009 1.53093 1.53093 5.33014 1.53093 10C1.53093 12.4671 2.60432 14.8069 4.47588 16.4195L5.01294 16.8822L3.84483 18.4691H9.9999Z" fill="#4A4A4A"/>
+        <path d="M7.33403 10C7.33403 10.5884 6.8571 11.0654 6.26866 11.0654C5.68012 11.0654 5.20308 10.5884 5.20308 10C5.20308 9.41146 5.68012 8.93442 6.26866 8.93442C6.8571 8.93442 7.33403 9.41151 7.33403 10Z" fill="#4A4A4A"/>
+        <path d="M10.0004 11.0654C10.5888 11.0654 11.0658 10.5884 11.0658 10C11.0658 9.41158 10.5888 8.93457 10.0004 8.93457C9.41199 8.93457 8.93498 9.41158 8.93498 10C8.93498 10.5884 9.41199 11.0654 10.0004 11.0654Z" fill="#4A4A4A"/>
+        <path d="M13.7324 11.0655C14.3208 11.0655 14.7978 10.5884 14.7978 10C14.7978 9.41155 14.3208 8.93452 13.7324 8.93452C13.1439 8.93452 12.6669 9.41155 12.6669 10C12.6669 10.5884 13.1439 11.0655 13.7324 11.0655Z" fill="#4A4A4A"/>
+        </svg>
+        
+        <h2 class="h3 c-count">{{- 'blogs.article.comments_heading' | t: count: article.comments_count -}}</h2>
+        {% endif %}
+      </div>
+    
+
+    {%- if block_settings.show_date and block_settings.show_author -%}
+      <span>{{ 'content.blog_details_separator' | t }}</span>
+    {%- endif -%}
+
+    {%- if block_settings.show_author -%}
+      <span>{{ display_author }}</span>
+    {%- endif -%}
+  </div>
+  </div>
+{% endif %}
+
+
+{% stylesheet %}
+  .blog-post-details {
+    display: flex;
+    gap: var(--gap-sm);
+    font-size: var(--font-paragraph-size);
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    white-space: nowrap;
+    flex-wrap: wrap;
+  }
+
+  .blog-post-details > span {
+    text-overflow: clip;
+    overflow: hidden;
+  }
+  
+{% endstylesheet %}
+<style>
+   main[data-template="blog"] .blog-post-item .blog-post-card__content .h4{
+  text-wrap: auto;
+  }
+  main[data-template="blog"] .blog-post-details .blog-post-date-wrapper {
+    position: absolute;
+    bottom: 0;
+        left: 0px;
+    color: {{block.settings.date_color}};
+    background-color: {{block.settings.date_bg}};
+    border-radius: 0px 10px;
+    padding: 14px 15px;
+    font-size: 18px;
+    line-height: 21.6px;
+    font-family: 'DM Sans';
+    font-weight: 500;
+}
+
+main[data-template="blog"] .blog-post-date-wrapper.width-fit {
+  width: fit-content;
+}
+ 
+main[data-template="blog"] .blog-post-date-wrapper.width-half {
+  width: 50%;
+}
+ 
+main[data-template="blog"] .blog-post-date-wrapper.width-full {
+  width: 100%;
+}
+main[data-template="blog"] .date-pos-bottom-left {
+  border-radius:
+    0 {{ block.settings.date_radius }}px 0 {{ block.settings.date_radius }}px;
+}
+ 
+main[data-template="blog"] .date-pos-bottom-right {
+  border-radius:
+    {{ block.settings.date_radius }}px 0 {{ block.settings.date_radius }}px 0 ;
+}
+ 
+main[data-template="blog"] .blog-post-date-wrapper.date-pos-bottom-left {
+  left: 0px;
+}
+ 
+main[data-template="blog"] .blog-post-date-wrapper.date-pos-bottom-right {
+  right: 0px;
+      margin-left: auto;
+}
+@media(max-width:749px){ 
+  main[data-template="blog"] .blog-post-item .blog-post-card__content .h4{
+    padding-bottom:0px;
+  }
+  main[data-template="blog"] .blog-post-card__content-text a
+  {
+   font-size: 16px;line-height: 21.6px;
+  }
+}
+  </style>
+{% schema %}
+{
+  "name": "t:names.details",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Date Label Settings",
+      "info": "This is not working when the layout is set to 'row'."
+    },
+{
+  "type": "select",
+  "id": "date_position",
+  "label": "Blog date position",
+  "default": "bottom-left",
+  "info": "If you select 'Default', the date will appear below the title without background.",
+  "options": [
+    { "value": "default", "label": "Default (below title)" },
+    { "value": "bottom-left", "label": "Bottom Left" },
+    { "value": "bottom-right", "label": "Bottom Right" }
+  ]
+},
+{
+  "type": "color",
+  "id": "date_bg",
+  "label": "Date Background",
+  "default": "#B46100",
+},
+{
+  "type": "color",
+  "id": "date_color",
+  "label": "Date Text Color",
+  "default": "#FFFFFF",
+},
+{
+  "type": "range",
+  "id": "date_radius",
+  "label": "Border Radius",
+  "min": 0,
+  "max": 50,
+  "step": 1,
+  "unit": "px",
+  "default": 10
+},
+{
+  "type": "select",
+  "id": "date_width",
+  "label": "Date Label Width",
+  "options": [
+    { "value": "width-fit", "label": "Fit Content" },
+    { "value": "width-half", "label": "Half Width" },
+    { "value": "width-full", "label": "Full Width" }
+  ],
+  "default": "width-fit"
+},
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "t:settings.show_date",
+      "default": true
+    },
+    {
+  "type": "image_picker",
+  "id": "date_icon",
+  "label": "Date icon (calendar)"
+},
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "t:settings.show_author",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:content.typography"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:settings.preset",
+      "options": [
+        {
+          "value": "",
+          "label": "t:options.default"
+        },
+        {
+          "value": "paragraph",
+          "label": "t:options.paragraph"
+        },
+        {
+          "value": "h1",
+          "label": "t:options.h1"
+        },
+        {
+          "value": "h2",
+          "label": "t:options.h2"
+        },
+        {
+          "value": "h3",
+          "label": "t:options.h3"
+        },
+        {
+          "value": "h4",
+          "label": "t:options.h4"
+        },
+        {
+          "value": "h5",
+          "label": "t:options.h5"
+        },
+        {
+          "value": "h6",
+          "label": "t:options.h6"
+        }
+      ],
+      "default": "",
+      "info": "t:info.edit_presets_in_theme_settings"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "visible_if": "{{ block.settings.show_alignment != false }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_alignment",
+      "label": "t:settings.show_alignment",
+      "default": true,
+      "visible_if": "{{ false }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.details"
+    }
+  ]
+}
+{% endschema %}
