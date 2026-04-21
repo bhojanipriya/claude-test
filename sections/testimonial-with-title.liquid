@@ -1,0 +1,426 @@
+<script src="{{ 'jquery.js' | asset_url }}"></script>
+<script src="{{ 'slick.min.js' | asset_url }}"></script>
+<div class="testimonial-wrapper version-2 {% if section.settings.decorative_image != blank %} testimonial_decorative {% endif %}">
+    <div class="page-width">
+        <div class="testimonial-wrap">
+            <div class="title">
+                {%- unless section.settings.heading == blank -%}
+                    <div class="title-wrapper-with-link title-wrapper--no-top-margin desktop_text">
+                    <h2
+                        id="SectionHeading-{{ section.id }}"
+                        class="testimonial__title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                        {% if settings.animations_reveal_on_scroll %}
+                        data-cascade
+                        {% endif %}
+                    >
+                        {{ section.settings.heading }}
+                    </h2>
+                    </div>
+                {%- endunless -%}
+            </div>
+            <div class="slider">
+                <div class="testimonial-slider {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+                    <div class="quote">
+                      
+                    <svg width="73" height="65" viewBox="0 0 73 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M23.731 0.21715C21.6227 1.01858 18.3325 2.77913 15.9516 4.37956C13.103 6.29438 9.18923 9.94637 7.2402 12.5083C3.73934 17.1099 1.90793 21.7902 0.855562 28.8254C0.147805 33.5561 0.097475 34.7572 0.0321731 48.4883C-0.0372635 63.0917 -0.100568 62.175 1.05659 63.332C2.17312 64.4487 1.51256 64.3985 15.1125 64.3985C28.2477 64.3985 27.7879 64.4253 28.8731 63.5975C29.1503 63.3862 29.5502 62.9186 29.7621 62.5584L30.147 61.9034L30.1857 49.4614L30.2244 37.0193L29.9163 36.3031C29.5546 35.4624 28.5618 34.5253 27.812 34.317C27.5046 34.2318 24.9431 34.1733 21.4854 34.1729L15.6754 34.172L15.6754 33.2755C15.6754 31.2342 16.2574 27.77 16.986 25.4748C17.9545 22.4233 19.4323 19.963 21.573 17.8382C23.3194 16.1046 25.3417 14.7279 28.1846 13.3369C30.2634 12.3199 30.5752 12.0675 31.1464 10.9396C31.2976 10.6409 31.3984 10.1085 31.4034 9.58223C31.4106 8.82043 31.3156 8.51104 30.6134 7.00813C27.9412 1.28919 27.7226 0.926332 26.6064 0.356877C25.7879 -0.0607335 24.6124 -0.117765 23.731 0.21715ZM65.893 0.112644C65.1028 0.258501 61.3874 2.07665 59.3755 3.30197C53.2717 7.01939 48.5072 11.9998 45.7191 17.577C43.6804 21.6551 42.6705 25.7748 41.9593 32.9159C41.7702 34.8136 41.7161 37.6511 41.665 48.3446C41.5945 63.1082 41.5306 62.1733 42.6893 63.332C43.8058 64.4486 43.1461 64.3985 56.7378 64.3985C69.9857 64.3985 69.5213 64.4273 70.5986 63.5394C70.8812 63.3064 71.2786 62.7823 71.4817 62.3746L71.851 61.6335L71.8479 49.293C71.8448 37.1861 71.8392 36.9402 71.5543 36.3107C71.2205 35.5732 70.7114 34.9987 69.9975 34.5541C69.51 34.2505 69.3569 34.2416 63.3696 34.172L57.2408 34.1008L57.2843 32.9601C57.3968 30.014 58.1079 26.5079 59.0957 24.0311C60.1113 21.4843 61.3276 19.6267 63.1735 17.8034C64.8533 16.1441 66.5684 14.9617 69.2605 13.6072C71.8413 12.3087 72.5626 11.7103 72.8548 10.6256C73.2005 9.3417 73.0184 8.69483 71.3168 5.15747C70.3671 3.18334 69.5243 1.62896 69.1992 1.25198C68.3734 0.294289 67.1649 -0.122181 65.893 0.112644Z" fill="#B46100"/>
+                        </svg>
+    
+                    </div>
+                    <div class="slick-slider {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+                        {% for block in section.blocks %}
+                            <div class="testimonial-slide">
+                                <div class="star-rating">
+                                    {% for i in (1..5) %}
+                                        {% if i <= block.settings.star_rating %}
+                                            <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.03727 0.424497C8.97879 0.297766 8.88524 0.190437 8.76768 0.115208C8.65011 0.0399794 8.51346 0 8.37389 0C8.23432 0 8.09767 0.0399794 7.9801 0.115208C7.86254 0.190437 7.76899 0.297766 7.71051 0.424497L5.6137 4.9688L0.644926 5.55839C0.506296 5.57476 0.375257 5.6305 0.267317 5.71902C0.159378 5.80753 0.0790568 5.92512 0.0358601 6.05786C-0.00733666 6.1906 -0.0116006 6.33294 0.0235728 6.46803C0.0587462 6.60312 0.131885 6.7253 0.234332 6.82012L3.90922 10.2174L2.93388 15.127C2.90679 15.2638 2.91945 15.4056 2.97037 15.5355C3.02129 15.6654 3.10833 15.778 3.22121 15.86C3.33409 15.942 3.46809 15.9899 3.60736 15.9982C3.74663 16.0064 3.88535 15.9746 4.00712 15.9065L8.37389 13.462L12.7407 15.9065C12.8625 15.9749 13.0014 16.0069 13.1409 15.9988C13.2804 15.9906 13.4146 15.9426 13.5276 15.8605C13.6407 15.7783 13.7278 15.6655 13.7786 15.5354C13.8295 15.4053 13.842 15.2633 13.8146 15.1263L12.8393 10.2181L16.5134 6.82012C16.6159 6.7253 16.689 6.60312 16.7242 6.46803C16.7594 6.33294 16.7551 6.1906 16.7119 6.05786C16.6687 5.92512 16.5884 5.80753 16.4805 5.71902C16.3725 5.6305 16.2415 5.57476 16.1029 5.55839L11.1333 4.96807L9.03727 0.424497Z" fill="#FFAA01"/>
+                                            </svg>
+                                        {% else %}
+                                            <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill="transparent" stroke="#FFAA01" stroke-width="1" d="M9.03727 0.424497C8.97879 0.297766 8.88524 0.190437 8.76768 0.115208C8.65011 0.0399794 8.51346 0 8.37389 0C8.23432 0 8.09767 0.0399794 7.9801 0.115208C7.86254 0.190437 7.76899 0.297766 7.71051 0.424497L5.6137 4.9688L0.644926 5.55839C0.506296 5.57476 0.375257 5.6305 0.267317 5.71902C0.159378 5.80753 0.0790568 5.92512 0.0358601 6.05786C-0.00733666 6.1906 -0.0116006 6.33294 0.0235728 6.46803C0.0587462 6.60312 0.131885 6.7253 0.234332 6.82012L3.90922 10.2174L2.93388 15.127C2.90679 15.2638 2.91945 15.4056 2.97037 15.5355C3.02129 15.6654 3.10833 15.778 3.22121 15.86C3.33409 15.942 3.46809 15.9899 3.60736 15.9982C3.74663 16.0064 3.88535 15.9746 4.00712 15.9065L8.37389 13.462L12.7407 15.9065C12.8625 15.9749 13.0014 16.0069 13.1409 15.9988C13.2804 15.9906 13.4146 15.9426 13.5276 15.8605C13.6407 15.7783 13.7278 15.6655 13.7786 15.5354C13.8295 15.4053 13.842 15.2633 13.8146 15.1263L12.8393 10.2181L16.5134 6.82012C16.6159 6.7253 16.689 6.60312 16.7242 6.46803C16.7594 6.33294 16.7551 6.1906 16.7119 6.05786C16.6687 5.92512 16.5884 5.80753 16.4805 5.71902C16.3725 5.6305 16.2415 5.57476 16.1029 5.55839L11.1333 4.96807L9.03727 0.424497Z"/>
+                                            </svg>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="title-wrapper-with-link mobile_text">
+                                    <h2 id="SectionHeading-{{ section.id }}" class="testimonial__title {{ section.settings.heading_size }}">
+                                        {{ section.settings.heading }}
+                                    </h2>
+                                </div>
+                                <div class="text">
+                                    {{ block.settings.testimonial_text | truncate: 307 }}
+                                </div>
+                                <div class="author_details">
+                                    {% if block.settings.image != blank %}
+                                        <img src="{{ block.settings.image | img_url: 'master' }}" alt="Featured Image 1" loading="lazy" height="" width="">
+                                    {% else %}
+                                        {{ 'image' | placeholder_svg_tag }}
+                                    {% endif %}
+                                <div class="author_data">
+                                <h4 class="name">{{ block.settings.author_name }}</h4>
+                                <p class="city">{{ block.settings.author_city }}</p>
+                                </div>
+                                </div>
+      
+                                
+                            </div>
+                        {% endfor %}    
+                    </div>
+                   
+                </div>
+                <div class="btn-wrap">
+                    <button class="custom-prev-btn" aria-label="Previous">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20" fill="none">
+                            <path d="M3.37049 9.98295C5.69835 12.382 7.9715 14.7219 10.242 17.0645C10.4473 17.2641 10.6397 17.4774 10.8178 17.7029C11.0236 17.9738 11.1271 18.3125 11.1091 18.6561C11.0911 18.9997 10.9528 19.3249 10.7199 19.5713C10.487 19.8176 10.1754 19.9684 9.84285 19.9956C9.51034 20.0227 9.17959 19.9244 8.91203 19.719C8.75685 19.5972 8.61178 19.4623 8.47826 19.3158C5.88336 16.6394 3.29016 13.9626 0.698722 11.2853C-0.236591 10.3203 -0.232673 9.63352 0.709153 8.66045C3.33185 5.95004 5.95628 3.24186 8.58245 0.535919C9.13087 -0.0285642 9.7249 -0.146836 10.2903 0.179758C10.8309 0.491568 11.15 0.994226 11.0119 1.62322C10.9028 2.02701 10.692 2.39381 10.401 2.68633C8.25418 4.9362 6.08263 7.16188 3.92021 9.39562C3.75347 9.56362 3.59324 9.74238 3.37049 9.98295Z" fill="#F5EDDC"/>
+                        </svg>
+                    </button>
+                    <button class="custom-next-btn" aria-label="Next">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20" fill="none">
+                            <path d="M8.62951 9.98295C6.30165 12.382 4.0285 14.7219 1.75795 17.0645C1.55271 17.2641 1.36035 17.4774 1.18216 17.7029C0.976377 17.9738 0.872888 18.3125 0.890901 18.6561C0.908913 18.9997 1.04722 19.3249 1.28011 19.5713C1.513 19.8176 1.82465 19.9684 2.15715 19.9956C2.48966 20.0227 2.82041 19.9244 3.08797 19.719C3.24315 19.5972 3.38822 19.4623 3.52174 19.3158C6.11664 16.6394 8.70984 13.9626 11.3013 11.2853C12.2366 10.3203 12.2327 9.63352 11.2908 8.66045C8.66815 5.95004 6.04372 3.24186 3.41755 0.535919C2.86913 -0.0285642 2.2751 -0.146836 1.70974 0.179758C1.16914 0.491568 0.849977 0.994226 0.988059 1.62322C1.0972 2.02701 1.30801 2.39381 1.59903 2.68633C3.74582 4.9362 5.91737 7.16188 8.07979 9.39562C8.24653 9.56362 8.40676 9.74238 8.62951 9.98295Z" fill="white"/>
+                        </svg>
+                    </button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+.testimonial-wrapper{
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-top: 135px;
+    padding-bottom: 100px;
+}
+.testimonial_decorative:after {
+    content: '';
+    position: absolute;
+    top:0;
+    background-image: url({{ section.settings.decorative_image | img_url: 'master' }});
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 270px;
+    height: 271px;
+    z-index: 2;
+}
+.testimonial-wrapper .testimonial-background {
+    height: 100%;
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+}
+.testimonial-wrapper .page-width {
+    z-index: 2;
+    position: relative;
+    width: 100%;
+}
+.testimonial-wrapper  h2 {
+    text-align:center;
+    margin: 0 auto;
+    color: #663700;
+}
+.testimonial-slider {
+    margin: 0 auto;
+    max-width: 1428px;
+    border-radius: 10px;
+    background: rgba(245, 237, 220, 0.65);
+    text-align: center;
+    position:relative;
+}
+.testimonial-wrapper.version-2 .quote{
+    position: absolute;
+    top: -35px;
+}
+.testimonial-slider .slick-slider {
+    position: relative;
+}
+.testimonial-slider .testimonial-slide {
+    text-align: left;
+}
+.testimonial-slier .testimonial-slide .name {
+    font-family: 'DMSans-Bold';
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 22px;
+    line-height: 35px; 
+    color:#4A4A4A;
+    text-transform: capitalize;
+}
+.testimonial-wrapper .testimonial-slide img {
+    object-fit: cover;
+    object-position: center center;
+    transition: opacity .4s cubic-bezier(.25,.46,.45,.94);
+    display: block;
+    max-width: 100%;
+    position: relative;
+    top: 0;
+    height: 80px;
+    width: 80px;
+    border-radius: 80px;
+}
+.testimonial-wrapper.version-2 .author_details {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.testimonial-slider .name{
+    color: #4A4A4A;
+    margin-bottom: 0px;
+    font-family: 'DM Sans';
+}
+.testimonial-slider .testimonial-slide .text {
+        font-family: 'DM Sans';
+    font-weight: 500;
+    color: #4A4A4A;
+    margin-bottom: 20px;
+    line-height: 25.6px;
+    letter-spacing:0;
+}
+.testimonial-slider .star-rating {
+    display: flex;
+    height: 17px;
+    margin-bottom: 20px;
+    gap: 3.2px;
+}
+.testimonial-slider  .star-rating svg {
+    width: 16.75px;
+    height: 16px;
+}
+.testimonial-wrapper.version-2 .testimonial-wrap .prev,.testimonial-wrapper.version-2 .testimonial-wrap .next{
+    border-radius: 25px;
+    background-color:#663700;
+    width: 60px;
+    height: 40px;
+}
+.testimonial-wrapper.version-2 .testimonial-wrap .custom-prev-btn {
+    position: absolute;
+    top: calc(50% - 35px);
+    transform: translateY(-50%);
+    background: #663700; 
+    box-shadow: 0px 0px 14px 0px rgba(255, 226, 192, 0.50);
+    border: 1px solid  #F5EDDC;
+    border: none;
+    padding: 10px;
+    border-radius: 25px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+    width: 40px;
+    height: 60px;
+}
+.testimonial-wrapper.version-2 .testimonial-wrap .custom-next-btn {
+    position: absolute;
+    top: calc(50% + 35px);
+    transform: translateY(-50%);
+    background: #663700; 
+    box-shadow: 0px 0px 14px 0px rgba(255, 226, 192, 0.50);
+    border: 1px solid  #F5EDDC;
+    border: none;
+    padding: 10px;
+    border-radius: 25px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+    width: 40px;
+    height: 60px;
+}
+.testimonial-wrapper.version-2 .testimonial-wrap .custom-next-btn svg path{
+    fill: #F5EDDC;
+}
+.testimonial-wrapper.version-2 .testimonial-wrap .custom-prev-btn:hover,.testimonial-wrapper.version-2 .testimonial-wrap .custom-next-btn:hover{
+    background: #fff;
+    border: 1px solid  #F5EDDC; 
+}
+.testimonial-wrapper.version-2 .testimonial-wrap .custom-prev-btn svg,.testimonial-wrapper.version-2 .testimonial-wrap .custom-next-btn svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 0 auto;
+    rotate: 90deg;
+}
+/*home - 2 testimonial*/
+.testimonial-wrapper.version-2 .page-width{
+    max-width:1600px;
+    margin:0 auto;
+    padding:0 50px;
+}
+.version-2 .testimonial-wrap{
+    display:flex;
+    justify-content: space-between;
+}
+.version-2 .testimonial-wrap .title{
+    width: 100%;
+  max-width: 338px;
+    flex-basis: 338px;
+    margin:0;
+    display:flex;
+    align-items: center;
+}
+.version-2 .testimonial-wrap .slider{
+    width: 100%;
+    max-width: 68%;
+    flex-basis: 68%;
+    display: flex;
+    justify-content: space-between;
+}
+.version-2 .testimonial-slider{
+    width:100%;
+    max-width: 91.22%;
+    flex-basis: 91.22%;
+    text-align: left;
+    border-radius:0;
+}
+.version-2 .testimonial-wrap .slider .btn-wrap{
+    max-width: 4%;
+    flex-basis: 4%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+.testimonial-wrapper h2{
+    text-align: left;
+}
+.version-2 .author_data p.city{
+    margin:0;
+    font-weight: 500;
+    font-size:18px;
+    line-height:23px;
+    text-align:left;
+    color:#130C06;
+}
+.version-2 .testimonial-slider{margin: initial;padding: 50px 40px 50px 40px;}
+.version-2 .title-wrapper-with-link.mobile_text{display:none;}
+.testimonial-wrapper .author_details svg{
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+}
+@media(max-width:1440px){
+    .testimonial-wrapper{padding-top:110px;padding-bottom:75px;}
+}
+@media(max-width:989px){
+    .version-2 .testimonial-wrap .title{max-width: 29%;flex-basis: 29%;}
+}
+@media(max-width:749px){
+    .testimonial-wrapper{padding-top:75px;padding-bottom:50px;}
+    .testimonial-slider .testimonial-slide .text{ margin-bottom: 20px;}
+    .testimonial_decorative:after{ width: 143px; height: 144px;}
+    .testimonial-slider .quote svg{width: 52px; height: 46px;}
+    .testimonial-wrapper h2{margin-top:15px;margin-bottom: 20px;}
+    .testimonial-wrapper .title-wrapper-with-link{ margin-bottom: 0;}
+    .testimonial-slider .name{ font-size: 18px; line-height: 21.6px; margin-bottom: 10px;text-align:left;}
+    .testimonial-slider .custom-prev-btn, .testimonial-slider .custom-next-btn{ top: auto; position: relative;bottom: -90px;}
+    .testimonial-slider .custom-prev-btn{ right: 5px; left:auto;}
+    .testimonial-slider .custom-prev-btn{ right: auto; left:5px;}
+    .version-2 .title-wrapper-with-link.mobile_text{display:block;margin:0;}
+    .version-2 .title-wrapper-with-link.desktop_text , .version-2 .testimonial-wrap .title{display:none;}
+    .version-2 .testimonial-wrap .slider {max-width: 100%;flex-basis: 100%;flex-direction: column;}
+    .version-2 .testimonial-slider {max-width: 100%;flex-basis: 100%;text-align: center;}
+    .version-2 .testimonial-slider {padding: 35px 34px 50px;border-radius: 10px;}
+    .testimonial-wrapper.version-2 .quote {position: absolute;top: -23px;left: 50%;transform: translateX(-50%);}
+    .testimonial-slider .testimonial-slide ,.testimonial-wrapper h2 {text-align: center;}
+    .testimonial-wrapper.version-2 .author_details {gap: 10px;justify-content: center;}
+    .version-2 .testimonial-wrap .slider .btn-wrap{justify-content: center;gap: 10px;position: inherit;max-width: 100%;flex-basis: 100%;flex-wrap: nowrap;        flex-direction: row;margin-top:20px;}
+    .testimonial-wrapper.version-2 .testimonial-wrap .custom-prev-btn , .testimonial-wrapper.version-2 .testimonial-wrap .custom-next-btn{position: inherit;transform: none;height:35px;width:53px;}
+    .testimonial-wrapper.version-2 .testimonial-wrap .custom-prev-btn svg, .testimonial-wrapper.version-2 .testimonial-wrap .custom-next-btn svg{rotate: none;}
+    .version-2 .author_data p.city , .testimonial-slider .testimonial-slide .text{font-size:16px;line-height:26px;}
+    .testimonial-wrapper.version-2 .page-width{padding:75px 0px 50px 0px;}
+    .testimonial-slider .star-rating{margin-bottom:0;justify-content: center;}
+    .version-2 .author_data p.city {font-family: 'DMSans-Medium';}
+    .testimonial-wrapper.version-2{ padding: 0px 30px;}
+}
+@media(max-width:480px){
+    .testimonial-wrapper{ min-height: 460px;}
+    .testimonial-wrapper h2{max-width: 220px !important;}
+    .testimonial_decorative:after{  top: -12px;}
+}
+</style>
+<script>
+$(document).ready(function(){
+    $('.testimonial-slider .slick-slider').slick({
+        prevArrow: $('.custom-prev-btn'),
+        nextArrow: $('.custom-next-btn'),
+        dots: false,
+        infinite: true,
+        speed: 400,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+       autoplaySpeed: 3000
+    });
+});
+</script>
+{% schema %}
+{
+"name": "Testimonial with title",
+"settings": [
+    {
+        "type": "inline_richtext",
+        "id": "heading",
+        "default": "What Our Customers Say",
+        "label": "What Our Customers Say"
+    },
+    {
+        "type": "header",
+        "content": "Decorative Image"
+    },
+    {
+        "type": "image_picker",
+        "id":"decorative_image",
+        "label": "Select Image"
+    }
+],
+"blocks": [
+    {
+    "type": "testimonial",
+    "name": "Testimonial",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+        },
+        {
+            "type": "range",
+            "id": "star_rating",
+            "label": "Star Rating",
+            "default": 3,
+            "min": 1,
+            "max": 5,
+            "step": 1
+        },
+        {
+            "type": "textarea",
+            "id": "testimonial_text",
+            "label": "Testimonial Text",
+            "default": "Testimonial Text"
+        },
+        {
+            "type": "text",
+            "id": "author_name",
+            "label": "Author Name",
+            "default": "Author Name"
+        },
+        {
+            "type": "text",
+            "id": "author_city",
+            "label": "Author City",
+            "default": "Author City"
+        }
+    ]
+    }
+],
+"presets": [
+    {
+    "name": "Testimonial with title"
+    }
+]
+}
+{% endschema %}

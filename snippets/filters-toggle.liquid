@@ -1,0 +1,157 @@
+{%- doc -%}
+  Renders the sorting component.
+
+  @param {boolean} enable_filtering - Whether to enable filtering
+  @param {number} padding-block-start - The padding-block-start value
+  @param {number} padding-block-end - The padding-block-end value
+  @param {number} total_active_values - The total number of active values
+  @param {string} section_id - The section ID
+  @param {object} results - The results of the search
+  @param {string} sort_by - The current sort by
+{%- enddoc -%}
+
+{%- assign block_settings = block.settings -%}
+<div
+  class="facets-toggle{% if block_settings.enable_filtering == false %} facets-toggle--no-filters{% endif %}"
+  style="--facets-inner-padding-block: {{ padding-block-start }}px {{ padding-block-end }}px; --facets-inner-padding-inline: var(--padding-lg);"
+>
+  {% if block_settings.enable_filtering %}
+    <div class="facets-toggle__wrapper">
+      <button
+        class="button facets-toggle__button button-unstyled button-unstyled--with-icon"
+        on:click="#filters-drawer/showDialog"
+        type="button"
+      >
+        <span class="svg-wrapper">
+          {% comment %} {{ 'icon-filter.svg' | inline_asset_content }} {% endcomment %}
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="12" viewBox="0 0 15 12" fill="none">
+                <path d="M3.84775 8.5889C4.94538 8.5889 6.04245 8.58428 7.14008 8.59295C7.32235 8.59295 7.40145 8.55135 7.44444 8.36185C7.58736 7.7039 7.94858 7.11475 8.46847 6.69165C8.98836 6.26855 9.63585 6.03678 10.304 6.03463C11.6797 6.02249 12.8621 6.94691 13.1946 8.3214C13.2519 8.54731 13.3344 8.61433 13.5522 8.59353C13.7713 8.5785 13.991 8.57735 14.2102 8.59006C14.4808 8.59757 14.659 8.76339 14.6648 9.00489C14.6705 9.2464 14.4985 9.43359 14.2332 9.44977C13.9849 9.46252 13.7362 9.46252 13.488 9.44977C13.3235 9.44226 13.2519 9.47634 13.2072 9.66527C12.8742 11.0611 11.6991 12.0017 10.3195 12C8.93986 11.9983 7.77631 11.0588 7.44215 9.6566C7.39687 9.46652 7.30459 9.44977 7.14639 9.44977C4.99926 9.45401 2.85214 9.45401 0.70501 9.44977C0.619034 9.44977 0.533057 9.45439 0.44708 9.44977C0.166223 9.42608 -0.0114612 9.23773 0.000575542 8.98756C0.0143318 8.75068 0.194881 8.58717 0.468287 8.58602C1.59573 8.58659 2.72145 8.5889 3.84775 8.5889Z" fill="#4A4A4A"></path>
+                <path d="M10.8177 3.41341C9.72002 3.41341 8.62296 3.41803 7.52532 3.40879C7.34248 3.40879 7.26453 3.45154 7.22097 3.63989C7.07819 4.29791 6.71689 4.88711 6.19682 5.31007C5.67674 5.73302 5.02904 5.9644 4.36081 5.96595C2.98518 5.97808 1.80329 5.05078 1.47142 3.67744C1.4141 3.44634 1.32755 3.38856 1.11203 3.40763C0.892951 3.42188 0.673219 3.42285 0.454024 3.41052C0.185203 3.40243 0.00580063 3.23257 0.0012152 2.99338C-0.00337022 2.75418 0.169154 2.56641 0.435682 2.55081C0.683891 2.53777 0.932605 2.53777 1.18081 2.55081C1.34875 2.5589 1.41525 2.51788 1.45938 2.33242C1.7901 0.940017 2.96856 -0.00173089 4.34877 2.38855e-06C5.72898 0.00173567 6.88738 0.93886 7.22383 2.34513C7.26969 2.53694 7.36483 2.55023 7.52189 2.55023C9.66901 2.54677 11.8161 2.54677 13.9633 2.55023C14.0487 2.55023 14.1352 2.54503 14.2206 2.55023C14.5015 2.57334 14.6792 2.76227 14.666 3.01244C14.6517 3.24932 14.4711 3.41225 14.1971 3.41283C13.0697 3.41514 11.944 3.41283 10.8177 3.41341Z" fill="#4A4A4A"></path>
+                <path d="M8.22683 9.05747C8.22296 8.50037 8.43699 7.96417 8.82257 7.56502C9.20814 7.16587 9.73419 6.93591 10.2868 6.92497C10.8394 6.91403 11.374 7.12298 11.7748 7.50656C12.1756 7.89014 12.4104 8.41745 12.4282 8.97427C12.4372 9.25452 12.3909 9.53379 12.292 9.79586C12.193 10.0579 12.0435 10.2976 11.8519 10.5009C11.6604 10.7043 11.4307 10.8673 11.1762 10.9805C10.9217 11.0937 10.6474 11.1548 10.3693 11.1603C10.0912 11.1658 9.81476 11.1156 9.55604 11.0126C9.29731 10.9095 9.06146 10.7558 8.86215 10.5602C8.66285 10.3645 8.50406 10.131 8.395 9.87303C8.28594 9.61508 8.22878 9.33786 8.22683 9.05747Z" fill="white"></path>
+                <path d="M4.34813 5.10097C3.93162 5.10279 3.52397 4.9798 3.17694 4.74761C2.82991 4.51543 2.55917 4.18452 2.3991 3.79692C2.23903 3.40931 2.19685 2.9825 2.27791 2.57068C2.35898 2.15886 2.55964 1.78062 2.8544 1.48399C3.14916 1.18735 3.52474 0.985714 3.93342 0.904677C4.34211 0.82364 4.76547 0.866862 5.14973 1.02885C5.534 1.19084 5.86184 1.46429 6.09161 1.81447C6.32139 2.16465 6.44273 2.57577 6.44024 2.99561C6.43573 3.55318 6.21376 4.08657 5.82229 4.48052C5.43082 4.87447 4.90129 5.09734 4.34813 5.10097Z" fill="white"></path>
+              </svg>
+        </span>
+
+        {{ 'actions.show_filters' | t }}
+
+        {% if total_active_values > 0 %}
+          <div
+            id="filter-count-bubble-toggle"
+            class="filter-count-bubble"
+            aria-label="{{ 'accessibility.filter_count' | t: count: total_active_values }}"
+          >
+            <span class="filter-count-bubble__background"></span>
+
+            <span
+              ref="cartBubbleText"
+              class="filter-count-bubble__text"
+              aria-hidden="true"
+            >
+              {{ total_active_values }}
+            </span>
+          </div>
+        {% endif %}
+      </button>
+    </div>
+  {% endif %}
+
+  <div class="facets-mobile-wrapper facets-controls-wrapper">
+    {% if block_settings.enable_filtering == false and block_settings.enable_sorting %}
+      {% render 'sorting',
+        results: results,
+        sort_by: sort_by,
+        filter_style: block_settings.filter_style,
+        suffix: 'mobile',
+        section_id: section_id,
+        should_use_select_on_mobile: false
+      %}
+    {% endif %}
+    {% if block_settings.enable_grid_density %}
+      {% render 'grid-density-controls', viewport: 'mobile' %}
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  /* Facets - Toggle */
+  .facets-toggle {
+    --icon-offset: -3px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--minimum-touch-target);
+    margin: var(--facets-margin);
+    padding-block: var(--facets-inner-padding-block);
+    padding-inline: var(--facets-inner-padding-inline);
+
+    @media screen and (min-width: 750px) {
+      display: none;
+    }
+  }
+
+  .facets-toggle__wrapper {
+    margin-left: var(--icon-offset);
+  }
+
+  .facets-toggle__button {
+    box-shadow: none;
+
+    @media screen and (min-width: 750px) {
+      display: none;
+    }
+  }
+
+  /* Filter count */
+  .filter-count-bubble {
+    position: relative;
+    width: 20px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    display: grid;
+    line-height: normal;
+    place-content: center;
+    color: var(--color-foreground);
+    border: var(--icon-stroke-width) solid var(--color-background);
+  }
+
+  .facets-mobile__title-wrapper .h3 {
+    margin-block-end: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--gap-xs);
+  }
+
+  .facets-mobile__title-wrapper .filter-count-bubble {
+    width: 22px;
+    height: 22px;
+  }
+
+  .facets-mobile__title-wrapper .filter-count-bubble__text {
+    font-size: var(--font-size--xs);
+  }
+
+  .filter-count-bubble__background {
+    position: absolute;
+    inset: 0;
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));
+    border-radius: var(--style-border-radius-50);
+  }
+
+  .filter-count-bubble__text {
+    font-size: 11px;
+    font-weight: var(--font-paragraph--weight);
+    aspect-ratio: 1 / 1;
+  }
+
+  .facets-toggle--no-filters {
+    @media screen and (max-width: 749px) {
+      /* stylelint-disable-next-line declaration-no-important */
+      justify-content: unset !important;
+
+      & > .facets-mobile-wrapper {
+        width: 100%;
+      }
+    }
+  }
+{% endstylesheet %}

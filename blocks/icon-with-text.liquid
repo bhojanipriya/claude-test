@@ -1,0 +1,58 @@
+<div
+  class="icon-text icon-text-new"
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.icon != blank %}
+    <div class="icon-text__icon">
+      <img
+        src="{{ block.settings.icon | image_url: width: 32 }}"
+        alt="{{ block.settings.heading | escape }}"
+        loading="lazy"
+      >
+    </div>
+  {% endif %}
+
+  {% if block.settings.heading != blank or block.settings.text != blank %}
+    <div class="icon-text__content">
+      {% if block.settings.heading != blank %}
+        <p class="icon-text__heading">
+          {{ block.settings.heading }}
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Icon with text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "icon",
+      "label": "Icon"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Free Shipping & Returns On orders above $95.00"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Icon with text",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
+<style>
+.icon-text {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+</style>

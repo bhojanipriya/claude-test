@@ -1,0 +1,345 @@
+<section class="hero-custom">
+
+{% if section.settings.bg_image != blank %}
+<div class="hero-bg">
+{{ section.settings.bg_image | image_url: width:2400 | image_tag }}
+</div>
+{% endif %}
+
+{% if section.settings.bg_image == blank and section.settings.bg_video != blank %}
+<video class="hero-video" autoplay muted loop playsinline>
+<source src="{{ section.settings.bg_video }}" type="video/mp4">
+</video>
+{% endif %}
+
+{% if section.settings.gradient %}
+<div class="hero-gradient"></div>
+{% endif %}
+
+<div class="hero-inner page-width">
+
+{% for block in section.blocks %}
+{% case block.type %}
+
+{% when 'text' %}
+
+<div
+class="hero-text {{ block.settings.max_width }} {{ block.settings.custom_class_text }}"
+{{ block.shopify_attributes }}
+style="width:{{ block.settings.width }}; text-align:{{ block.settings.alignment }};"
+>
+
+{% if block.settings.type_preset == 'h1' %}
+<h1 {% render 'typography-styles', block: block %}>{{ block.settings.text }}</h1>
+
+{% elsif block.settings.type_preset == 'h2' %}
+<h2 {% render 'typography-styles', block: block %}>{{ block.settings.text }}</h2>
+
+{% elsif block.settings.type_preset == 'h3' %}
+<h3 {% render 'typography-styles', block: block %}>{{ block.settings.text }}</h3>
+
+{% elsif block.settings.type_preset == 'h4' %}
+<h4 {% render 'typography-styles', block: block %}>{{ block.settings.text }}</h4>
+
+{% elsif block.settings.type_preset == 'h5' %}
+<h5 {% render 'typography-styles', block: block %}>{{ block.settings.text }}</h5>
+
+{% elsif block.settings.type_preset == 'h6' %}
+<h6 {% render 'typography-styles', block: block %}>{{ block.settings.text }}</h6>
+
+{% else %}
+<div class="rte" {% render 'typography-styles', block: block %}>
+{{ block.settings.text }}
+</div>
+{% endif %}
+
+</div>
+
+{% when 'button' %}
+
+<div class="hero-btn-wrap" {{ block.shopify_attributes }}>
+<a
+href="{{ block.settings.link }}"
+class="hero-btn"
+style="
+color:{{ block.settings.text_color }};
+background:{{ block.settings.bg_color }};
+border-radius:{{ block.settings.radius }}px;
+"
+>
+
+{{ block.settings.text }}
+
+{% if block.settings.arrow %}
+<span class="btn-arrow">→</span>
+{% endif %}
+
+</a>
+</div>
+
+{% endcase %}
+{% endfor %}
+
+</div>
+
+</section>
+
+<style>
+
+.hero-custom{
+position:relative;
+min-height:650px;
+display:flex;
+align-items:center;
+overflow:hidden;
+}
+
+.hero-bg img{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.hero-video{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.hero-gradient{
+position:absolute;
+inset:0;
+background:linear-gradient(90deg,rgba(0,128,129,0)0%,#008081 100%);
+z-index:1;
+}
+
+.hero-inner{
+position:relative;
+z-index:2;
+max-width:540px;
+}
+
+.hero-btn{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:12px 22px;
+font-weight:600;
+text-decoration:none;
+}
+
+.btn-arrow{
+font-size:14px;
+}
+
+.hero-text.narrow{
+max-width:420px;
+}
+
+.hero-text.normal{
+max-width:650px;
+}
+
+.hero-text.none{
+max-width:none;
+}
+
+</style>
+
+{% schema %}
+{
+"name":"Hero Custom Media",
+"settings":[
+{
+"type":"image_picker",
+"id":"bg_image",
+"label":"Background Image"
+},
+{
+"type":"text",
+"id":"bg_video",
+"label":"Video URL"
+},
+{
+"type":"checkbox",
+"id":"gradient",
+"label":"Enable Gradient",
+"default":true
+}
+],
+
+"blocks":[
+
+{
+"type":"text",
+"name":"Text",
+"settings":[
+
+{
+"type":"text",
+"id":"custom_class_text",
+"label":"Custom class"
+},
+
+{
+"type":"richtext",
+"id":"text",
+"label":"Text"
+},
+
+{
+"type":"header",
+"content":"Typography"
+},
+
+{
+"type":"select",
+"id":"font_family",
+"label":"Font Family",
+"options":[
+{"value":"var(--font-body--family)","label":"Body"},
+{"value":"var(--font-heading--family)","label":"Heading"},
+{"value":"Arial, sans-serif","label":"Arial"}
+],
+"default":"var(--font-heading--family)"
+},
+
+{
+"type":"select",
+"id":"font_weight",
+"label":"Font Weight",
+"options":[
+{"value":"300","label":"Light"},
+{"value":"400","label":"Regular"},
+{"value":"500","label":"Medium"},
+{"value":"600","label":"Semi Bold"},
+{"value":"700","label":"Bold"}
+],
+"default":"700"
+},
+
+{
+"type":"range",
+"id":"font_size_desktop",
+"label":"Desktop Font Size",
+"min":12,
+"max":72,
+"step":1,
+"default":48
+},
+
+{
+"type":"range",
+"id":"font_size_mobile",
+"label":"Mobile Font Size",
+"min":10,
+"max":48,
+"step":1,
+"default":26
+},
+
+{
+"type":"range",
+"id":"line_height",
+"label":"Line Height",
+"min":10,
+"max":100,
+"step":1,
+"default":56
+},
+
+{
+"type":"range",
+"id":"letter_spacing",
+"label":"Letter Spacing",
+"min":-5,
+"max":10,
+"step":0.5,
+"default":0
+},
+
+{
+"type":"select",
+"id":"text_transform",
+"label":"Text Transform",
+"options":[
+{"value":"none","label":"None"},
+{"value":"uppercase","label":"Uppercase"},
+{"value":"capitalize","label":"Capitalize"}
+],
+"default":"none"
+},
+
+{
+"type":"color",
+"id":"text_color",
+"label":"Text Color",
+"default":"#000000"
+}
+
+]
+},
+
+{
+"type":"button",
+"name":"Button",
+"settings":[
+{
+"type":"text",
+"id":"text",
+"label":"Button Text",
+"default":"Shop Now"
+},
+{
+"type":"url",
+"id":"link",
+"label":"Button Link"
+},
+{
+"type":"color",
+"id":"text_color",
+"label":"Text Color",
+"default":"#ffffff"
+},
+{
+"type":"color",
+"id":"bg_color",
+"label":"Background Color",
+"default":"#0b7f82"
+},
+{
+"type":"range",
+"id":"radius",
+"label":"Border Radius",
+"min":0,
+"max":40,
+"step":2,
+"default":6
+},
+{
+"type":"checkbox",
+"id":"arrow",
+"label":"Show Arrow",
+"default":true
+}
+]
+}
+
+],
+
+"presets":[
+{
+"name":"Hero Custom Media",
+"blocks":[
+{"type":"text"},
+{"type":"text"},
+{"type":"button"}
+]
+}
+]
+}
+{% endschema %}

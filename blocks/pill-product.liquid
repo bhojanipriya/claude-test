@@ -1,0 +1,241 @@
+<style>
+.custom-product-pill {
+  margin: 0;
+  border: 2px solid;
+  {% comment %} max-width: 100%; {% endcomment %}
+  width: 100%;
+  background: transparent;
+  transition: transform 0.2s ease, border-radius 0.3s ease;
+  overflow: hidden;
+}
+
+.pill-wrapper-link {
+  text-decoration: none;
+  display: block;
+  padding: 35px 40px 35px 45px;
+  color: inherit;
+}
+
+.pill-price{line-height:normal;}
+
+.pill-container {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  justify-content: space-between;
+}
+
+.pill-container.flex-reverse{
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  justify-content: flex-end;
+}
+
+.pill-container.flex-reverse .pill-wrapper-link {;
+  padding: 34px 34px 35px 40px;
+}
+
+.pill-container.flex-reverse .pill-image img {;
+  max-width: 145px;
+  max-height: 178px;
+  width:100%;
+}
+
+.pill-container.flex-reverse .pill-info{
+    max-width: 206px;
+    width: 100%;
+}
+
+.pill-container.flex-reverse {
+  flex-direction: row-reverse;
+}
+
+.pill-image img {
+  max-width: 213px;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  max-height: 178px;
+}
+
+.pill-info {
+  max-width:190px;
+  width:100%;
+}
+
+.pill-rating {
+  margin-bottom: 0;
+  display: flex;
+  gap: 3px;
+}
+
+.star-icon {
+  color: #E0E0E0;
+  line-height: 0;
+}
+
+.star-icon.is-active {
+  color: #FFAA01;
+}
+
+.star-icon svg {
+  width: 17px;
+  height: 16px;
+}
+
+.pill-title {
+font-family: 'DM Sans';
+font-weight: 700;
+font-size: 24px;
+line-height: 28.8px;
+letter-spacing: 0;
+color: #4A4A4A;
+margin: 10px 0;
+}
+
+.price-current {
+  font-weight: 500;;
+font-size: 18px;
+line-height: 21.6px;
+letter-spacing: 0;
+color: #663700;
+}
+
+.price-compare {
+  text-decoration: line-through;
+  color: #4A4A4A;
+  margin-left: 10px;
+font-weight: 500;
+font-size: 18px;
+line-height: 21.6px;
+letter-spacing: 0;
+}
+
+
+</style>
+
+
+
+
+{%- assign product_ref = block.settings.product_select -%}
+
+{%- comment -%} Determine border radius based on layout {%- endcomment -%}
+{%- capture dynamic_radius -%}
+  {%- if block.settings.layout == 'left' -%}
+    border-radius: 277px 277px 0 277px;
+  {%- else -%}
+    border-radius: 0 277px 277px 277px;
+  {%- endif -%}
+{%- endcapture -%}
+
+<div class="custom-product-pill" 
+     style="border-color: {{ block.settings.border_color }}; {{ dynamic_radius }}" 
+     {{ block.shopify_attributes }}>
+  
+  {%- if product_ref != blank -%}
+    <a href="{{ product_ref.url }}" class="pill-wrapper-link">
+  {%- else -%}
+    <div class="pill-wrapper-link">
+  {%- endif -%}
+
+    <div class="pill-container {% if block.settings.layout == 'right' %}flex-reverse{% endif %}">
+      
+      <div class="pill-image">
+        {%- if block.settings.custom_image != blank -%}
+          <img src="{{ block.settings.custom_image | image_url: width: 300 }}" alt="{{ product_ref.title | escape }}" loading="lazy">
+        {%- elsif product_ref.featured_image != blank -%}
+          <img src="{{ product_ref.featured_image | image_url: width: 300 }}" alt="{{ product_ref.title | escape }}" loading="lazy">
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+
+      <div class="pill-info">
+        {%- if block.settings.show_rating -%}
+          <div class="pill-rating">
+            {%- for i in (1..5) -%}
+              <span class="star-icon {% if i <= block.settings.star_rating %}is-active{% endif %}">
+                <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M9.03727 0.424497C8.97879 0.297766 8.88524 0.190437 8.76768 0.115208C8.65011 0.0399794 8.51346 0 8.37389 0C8.23432 0 8.09767 0.0399794 7.9801 0.115208C7.86254 0.190437 7.76899 0.297766 7.71051 0.424497L5.6137 4.9688L0.644926 5.55839C0.506296 5.57476 0.375257 5.6305 0.267317 5.71902C0.159378 5.80753 0.0790568 5.92512 0.0358601 6.05786C-0.00733666 6.1906 -0.0116006 6.33294 0.0235728 6.46803C0.0587462 6.60312 0.131885 6.7253 0.234332 6.82012L3.90922 10.2174L2.93388 15.127C2.90679 15.2638 2.91945 15.4056 2.97037 15.5355C3.02129 15.6654 3.10833 15.778 3.22121 15.8605C3.33409 15.942 3.46809 15.9899 3.60736 15.9982C3.74663 16.0064 3.88535 15.9746 4.00712 15.9065L8.37389 13.462L12.7407 15.9065C12.8625 15.9749 13.0014 16.0069 13.1409 15.9988C13.2804 15.9906 13.4146 15.9426 13.5276 15.8605C13.6407 15.7783 13.7278 15.6655 13.7786 15.5354C13.8295 15.4053 13.842 15.2633 13.8146 15.1263L12.8393 10.2181L16.5134 6.82012C16.6159 6.7253 16.689 6.60312 16.7242 6.46803C16.7594 6.33294 16.7551 6.1906 16.7119 6.05786C16.6687 5.92512 16.5884 5.80753 16.4805 5.71902C16.3725 5.6305 16.2415 5.57476 16.1029 5.55839L11.1333 4.96807L9.03727 0.424497Z" fill="currentColor"/>
+                </svg>
+              </span>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        <h3 class="pill-title">
+          {{ product_ref.title | default: "Select a Product" }}
+        </h3>
+
+        <div class="pill-price">
+          <span class="price-current">{{ product_ref.price | default: 0 | money }}</span>
+          {%- if product_ref.compare_at_price > product_ref.price -%}
+            <span class="price-compare">{{ product_ref.compare_at_price | money }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+
+  {%- if product_ref != blank -%}
+    </a>
+  {%- else -%}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Product Pill Card",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product_select",
+      "label": "Select Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_image",
+      "label": "Custom Block Image",
+      "info": "Overrides product featured image if uploaded."
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "range",
+      "id": "star_rating",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "label": "Star Rating",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show Stars",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#C28E40"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Pill Card"
+    }
+  ]
+}
+{% endschema %}
+

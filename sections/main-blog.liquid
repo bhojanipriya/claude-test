@@ -1,0 +1,799 @@
+{% assign layout_type = section.settings.layout_type %}
+{% assign row_style = section.settings.row_style %}
+{% assign column_type = section.settings.column_type %}
+{% assign sidebar_position = section.settings.sidebar_position %}
+
+{% assign desktop_columns = section.settings.desktop_columns %}
+{% if layout_type == 'column' and column_type == 'sidebar' %}
+  {% assign desktop_columns = '2' %}
+{% endif %}
+
+<script
+  src="{{ 'blog-posts-list.js' | asset_url }}"
+  type="module"
+  fetchpriority="low"
+></script>
+
+<blog-posts-list section-id="{{ section.id }}">
+  <div class="section-background color-{{ section.settings.color_scheme }}"></div>
+
+  <div
+    class="
+      section
+      section--page-width
+      color-{{ section.settings.color_scheme }}
+      blog-posts
+      spacing-style
+      size-style
+      layout-{{ layout_type }}
+      {% if layout_type == 'row' %}row-{{ row_style }}{% endif %}
+      {% if layout_type == 'column' and column_type == 'sidebar' %}
+        has-sidebar sidebar-{{ sidebar_position }}
+      {% endif %}
+    "
+    style="{% render 'spacing-style', settings: section.settings %}"
+  >
+
+    {% content_for 'blocks' %}
+
+    {%- paginate blog.articles by section.settings.blog_show_per_page -%}
+
+      {% if layout_type == 'column' and column_type == 'sidebar' %}
+        <div class="blog-with-sidebar sidebar-{{ sidebar_position }}">
+      {% endif %}
+
+      <div
+        ref="grid"
+        class="blog-posts-container columns-{{ desktop_columns }}"
+        data-last-page="{{ paginate.pages }}"
+      >
+        {% for article in blog.articles %}
+          <div
+            class="blog-post-item"
+            ref="cards[]"
+            data-page="{{ paginate.current_page }}"
+          >
+            {% content_for 'block',
+              id: 'static-blog-post-card',
+              type: '_blog-post-card',
+              article: article
+            %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if layout_type == 'column' and column_type == 'sidebar' %}
+<aside class="blog-sidebar sidebar-{{ sidebar_position }}">
+  {% comment %} {% for block in section.blocks %} {% endcomment %}
+    {% comment %} {% if block.type == 'blog-sidebar' %} {% endcomment %}
+      {% content_for 'block',
+              id: 'blog-side',
+              type: 'blog-sidebar'
+            %}
+    {% comment %} {% endif %} {% endcomment %}
+  {% comment %} {% endfor %} {% endcomment %}
+</aside>
+        </div>
+      {% endif %}
+
+      {% if paginate.pages > 1 %}
+        <div class="pagination-wrapper">
+          <nav class="pagination">
+            <ul class="pagination__list list-unstyled">
+              {% if paginate.previous %}
+                <li><a href="{{ paginate.previous.url }}" class="pagination-prev">
+<svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1.68524 4.99148C2.84918 6.19101 3.98575 7.36097 5.12102 8.53227C5.22365 8.63206 5.31983 8.73869 5.40892 8.85147C5.51181 8.98689 5.56356 9.15624 5.55455 9.32805C5.54554 9.49987 5.47639 9.66247 5.35995 9.78565C5.2435 9.90882 5.08768 9.9842 4.92142 9.99778C4.75517 10.0114 4.5898 9.96222 4.45602 9.85948C4.37843 9.7986 4.30589 9.73116 4.23913 9.65788C2.94168 8.31969 1.64508 6.98128 0.349361 5.64265C-0.118296 5.16015 -0.116337 4.81676 0.354577 4.33023C1.66593 2.97502 2.97814 1.62093 4.29123 0.26796C4.56544 -0.0142821 4.86245 -0.0734181 5.14513 0.089879C5.41543 0.245784 5.57501 0.497113 5.50597 0.811611C5.4514 1.01351 5.34599 1.1969 5.20048 1.34317C4.12709 2.4681 3.04132 3.58094 1.9601 4.69781C1.87673 4.78181 1.79662 4.87119 1.68524 4.99148Z" fill="#B46100" fill-opacity="0.4"/>
+</svg>
+</a></li>
+              {% endif %}
+
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <li><a href="{{ part.url }}">{{ part.title }}</a></li>
+                {% else %}
+                  <li class="active">{{ part.title }}</li>
+                {% endif %}
+              {% endfor %}
+
+              {% if paginate.next %}
+                <li><a href="{{ paginate.next.url }}" class="pagination-next">
+<svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M3.8703 4.99148C2.70637 6.191 1.56979 7.36096 0.434519 8.53227C0.331896 8.63206 0.235716 8.73869 0.14662 8.85147C0.0437307 8.98689 -0.0080142 9.15624 0.000992298 9.32805C0.00999832 9.49987 0.0791521 9.66247 0.195597 9.78564C0.312041 9.90882 0.467865 9.9842 0.634117 9.99778C0.80037 10.0114 0.965747 9.96222 1.09953 9.85948C1.17712 9.79859 1.24965 9.73116 1.31641 9.65788C2.61386 8.31969 3.91046 6.98128 5.20618 5.64265C5.67384 5.16015 5.67188 4.81676 5.20097 4.33023C3.88962 2.97502 2.5774 1.62093 1.26432 0.26796C0.990105 -0.0142821 0.69309 -0.0734181 0.410412 0.089879C0.14011 0.245784 -0.0194697 0.497113 0.0495715 0.811611C0.104142 1.01351 0.209548 1.1969 0.355059 1.34317C1.42845 2.4681 2.51423 3.58094 3.59544 4.69781C3.67881 4.78181 3.75892 4.87119 3.8703 4.99148Z" fill="#B46100" fill-opacity="0.4"/>
+</svg>
+</a></li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      {% endif %}
+
+    {%- endpaginate -%}
+
+  </div>
+</blog-posts-list>
+
+{% stylesheet %}
+.blog-posts .blog-comment-count, .featured-blog-posts-card .blog-comment-count{
+  display: none;
+}
+  /**
+   * Blog posts page layout
+   */
+   /*   --page-width: calc(var(--page-content-width) + (var(--page-margin) * 2)); Remove from .blog-posts*/
+  .blog-posts {
+    --page-content-width: var(--narrow-page-width);
+ 
+    --columns-gap: 29px;
+    --rows-gap: 31px;
+  }
+
+  .blog-posts-container {
+    gap: 1rem;
+    width: 100%;
+    column-gap: var(--columns-gap);
+    row-gap: var(--rows-gap);
+  }
+.blog-posts-container {
+  display: grid;
+  width: 100%;
+  column-gap: var(--columns-gap);
+  row-gap: var(--rows-gap);
+}
+
+/* Desktop column control */
+.blog-posts-container.columns-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.has-sidebar .blog-posts-container.columns-2{
+  max-width:1164px;
+  width:100%;
+}
+.blog-posts-container.columns-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.blog-posts-container.columns-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width:380px){
+  .blog-post-item{
+    grid-column: span 10 !important;
+  }
+}
+  /**
+   * Apart from the first and second rows in the grid, all remaining blog posts
+   * are arranged in a three-column layout:
+   * +------------+------------+-------------+
+   * |            |            |             |
+   * |  (span 2)  |  (span 2)  |  (span 2)   |
+   * |            |            |             |
+   * +------------+------------+-------------+
+   */
+  .blog-post-item {
+    --blog-post-card-scale: 0.6;
+
+    /* grid-column: span 2; */
+
+    @media screen and (max-width: 749px) {
+      --blog-post-card-scale: 0.5;
+
+      grid-column: span 12;
+    }
+  }
+
+  /**
+   * The second row of blog posts has two columns:
+   * +-------------------+-------------------+
+   * |                   |                   |
+   * |  (column span 3)  |  (column span 3)  |
+   * |                   |                   |
+   * +-------------------+-------------------+
+   */
+  /* .blog-post-item:nth-child(2),
+  .blog-post-item:nth-child(3) {
+    --blog-post-card-scale: 0.8;
+
+    grid-column: span 3;
+
+    @media screen and (max-width: 749px) {
+      --blog-post-card-scale: 0.5;
+
+      grid-column: span 6;
+    }
+  } */
+
+  /**
+   * The first row of blog posts has only one column:
+   * +---------------------------------------+
+   * |                                       |
+   * |           (1 column span 6)           |
+   * |                                       |
+   * +---------------------------------------+
+   */
+  /* .blog-post-item:first-child {
+    --blog-post-card-scale: 1;
+
+    grid-column: span 6;
+  } */
+
+  /**
+   * When there's no image, the blog post item has a border.
+   */
+  .blog-post-item {
+    border: 1px solid rgb(var(--color-foreground-rgb) / var(--opacity-20));
+    padding: 0 1rem 1rem;
+  }
+
+  .blog-post-item:has(.blog-post-card__image-container) {
+    border: none;
+    padding: 0;
+  }
+  .blog-post-card__image-container{position: relative;}
+  @media (max-width:1199px){
+    .blog-posts-container.columns-4 {
+  grid-template-columns: repeat(3, 1fr);
+}
+  }
+  @media(max-width:991px){
+      .blog-posts-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  }
+
+
+
+  /* Base grid */
+.blog-posts-container {
+  display: grid;
+  width: 100%;
+  column-gap: 29px;
+  row-gap: 31px;
+}
+
+.blog-posts-container.columns-2 { grid-template-columns: repeat(2, 1fr); }
+.blog-posts-container.columns-3 { grid-template-columns: repeat(3, 1fr); }
+.blog-posts-container.columns-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* Sidebar layout */
+.blog-with-sidebar {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 29px;
+}
+.blog-with-sidebar.sidebar-left {
+    display: flex;
+    flex-direction: row-reverse;
+}
+.blog-with-sidebar.sidebar-right {
+    display: flex;
+    flex-direction: row;
+}
+.blog-sidebar {
+  position: sticky;
+  top: 120px;
+  max-width:527px;
+  width:100%;
+}
+
+
+.row-zigzag .blog-post-item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+/* Responsive */
+@media (max-width:1024px){
+  .has-sidebar .blog-posts-container.columns-2 {
+    grid-template-columns: repeat(1, 1fr);
+}
+}
+@media (max-width: 991px) {
+  .blog-posts-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .blog-with-sidebar {
+    grid-template-columns: 1fr;
+  }
+}
+@media(max-width:768px){
+  .blog-with-sidebar{
+    flex-direction: column !important;
+    gap:50px;
+  }
+  .blog-sidebar-block, .blog-sidebar, .blog-sidebar-mpp .fbt-wrapper{
+    max-width: 100% !important;
+    width:100%;
+  }
+}
+@media (max-width: 480px) {
+  .blog-posts-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* Classic & ZigZag */
+
+/* =========================
+   ROW LAYOUT (Classic & Zigzag)
+========================= */
+
+/* Each post becomes a horizontal row */
+.layout-row .blog-post-card__image{
+  aspect-ratio: 16 / 12.3456 !important;
+}
+.layout-row .blog-post-item {
+  display: flex;
+  align-items: stretch;
+  gap: 40px;
+  border: none;
+  padding: 0;
+}
+
+.layout-row  .blog-post-details-layout-row .blog-post-date-wrapper{
+  position: static !important;
+  color: #000;
+    background-color: transparent;
+    border-radius: 0px 10px;
+    padding: 0;
+    font-size: 18px;
+    line-height: 21.6px;
+    font-family: 'DM Sans';
+    font-weight: 500;
+}
+.layout-row-date, .layout-row .blog-post-date-wrapper  {
+display: none !important;
+}
+.layout-row  .layout-row-date{
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Image & content split */
+
+
+.layout-row .blog-post-card__image-container {
+flex: 0 0 49.128%;
+}
+
+.layout-row .blog-post-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0px;
+}
+
+/* =========================
+   ZIGZAG STYLE
+========================= */
+
+.layout-row.row-zigzag
+  .blog-post-item:nth-child(even)
+  .blog-post-card {
+  flex-direction: row-reverse;
+}
+.layout-row.row-zigzag .blog-post-item:nth-child(odd) .blog-post-card {
+    flex-direction: row;
+}
+/* =========================
+   CLASSIC STYLE
+========================= */
+
+.layout-row.row-classic .blog-post-card {
+  flex-direction: row;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .layout-row .blog-post-card {
+    flex-direction: column !important;
+    gap: 0px;
+  }
+
+  .layout-row .blog-post-card__image-container {
+    flex: 0 0 auto;
+  }
+}
+
+
+{% endstylesheet %}
+<style>
+.layout-row .blog-post-details{
+display:none;
+}
+.layout-row .blog-post-card {
+  display: flex;
+  gap: {{ section.settings.row_card_gap }}px;
+  width: 100%;
+}
+
+.layout-row .blog-posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: {{ section.settings.row_card_gap }}px;
+}
+.layout-row .blog-post-details-layout-row{
+padding-bottom:{{ section.settings.date_label_space }}px;
+}
+
+  .layout-row .layout-row-date::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background-image: url('{{section.settings.after_icon_image | image_url: width: 32}}');
+  background-repeat: no-repeat;
+  background-size: contain;
+  display:block;
+}
+
+  .layout-row .layout-row-date {
+    color: {{ section.settings.date_text_color }};
+    font-size: {{ section.settings.date_font_size }}px;
+    line-height: {{ section.settings.date_line_height }}px;
+    letter-spacing: {{ section.settings.date_letter_spacing }}px;
+  }
+
+  @media (max-width: 749px) {
+      .layout-row .layout-row-date {
+      font-size: {{ section.settings.date_font_size_mobile }}px;
+      line-height: {{ section.settings.date_line_height_mobile }}px;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "t:names.blog_posts",
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "text"
+    },
+    {
+      "type": "icon"
+    },
+    {
+      "type": "image"
+    },
+    {
+      "type": "button"
+    },
+    {
+      "type": "video"
+    },
+    {
+      "type": "group"
+    },
+    {
+      "type": "spacer"
+    },
+    {
+      "type": "_divider"
+    },
+    {
+      "type": "blog-sidebar"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+     {
+  "type": "range",
+  "id": "blog_show_per_page",
+  "label": "Blogs Per Page",
+  "min": 1,
+  "max": 10,
+  "step": 1,
+  "default": 6
+},
+    {
+  "type": "header",
+  "content": "Layout options"
+},
+{
+  "type": "select",
+  "id": "layout_type",
+  "label": "Layout type",
+  "default": "column",
+  "options": [
+    { "value": "row", "label": "Row" },
+    { "value": "column", "label": "Column" }
+  ]
+},
+{
+  "type": "select",
+  "id": "row_style",
+  "label": "Row style",
+  "default": "classic",
+  "options": [
+    { "value": "classic", "label": "Classic" },
+    { "value": "zigzag", "label": "Zigzag" }
+  ],
+   "visible_if": "{{ section.settings.layout_type == 'row' }}"
+},
+{
+  "type": "select",
+  "id": "column_type",
+  "label": "Column layout",
+  "default": "grid",
+  "options": [
+    { "value": "grid", "label": "Grid only" },
+    { "value": "sidebar", "label": "With sidebar" }
+  ],
+  "visible_if": "{{ section.settings.layout_type == 'column' }}"
+},
+{
+  "type": "select",
+  "id": "sidebar_position",
+  "label": "Sidebar position",
+  "default": "right",
+  "info": "All sidebar settings are available in the block below (i.e., Blog Sidebar).",
+  "options": [
+    { "value": "left", "label": "Left sidebar" },
+    { "value": "right", "label": "Right sidebar" }
+  ],
+   "visible_if": "{{ section.settings.column_type == 'sidebar' and section.settings.layout_type == 'column' }}"
+},
+    {
+  "type": "select",
+  "id": "desktop_columns",
+  "label": "Desktop columns",
+  "default": "3",
+  "options": [
+    { "value": "2", "label": "2 columns" },
+    { "value": "3", "label": "3 columns" },
+    { "value": "4", "label": "4 columns" }
+  ],
+   "visible_if": "{{ section.settings.column_type == 'grid'  and section.settings.layout_type == 'column' }}"
+},
+{
+  "type": "header",
+  "content": "Row Card Settings",
+  "visible_if": "{{ section.settings.layout_type == 'row' }}"
+},
+{
+  "type": "range",
+  "id": "row_card_gap",
+  "label": "Gap between Blog cards & Content",
+  "min": 0,
+  "max": 60,
+  "step": 1,
+  "unit": "px",
+  "default": 30,
+  "visible_if": "{{ section.settings.layout_type == 'row' }}"
+},
+ {
+      "type": "checkbox",
+      "id": "show_date_row",
+      "label": "t:settings.show_date",
+      "default": true,
+      "visible_if": "{{ section.settings.layout_type == 'row' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author_row",
+      "label": "t:settings.show_author",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_type == 'row' }}"
+    },
+    {
+  "type": "range",
+  "id": "date_label_space",
+  "label": "Date Label Bottom Space",
+  "min": 0,
+  "max": 60,
+  "step": 1,
+  "unit": "px",
+  "default": 10,
+  "visible_if": "{{ section.settings.layout_type == 'row' }}"
+},
+ {
+  "type": "image_picker",
+  "id": "after_icon_image",
+  "label": "Date Label Icon",
+  "visible_if": "{{ section.settings.layout_type == 'row' }}"
+},
+{
+  "type": "color",
+  "id": "date_text_color",
+  "label": "Date Text Color",
+  "default": "#4A4A4A",
+  "visible_if": "{{ section.settings.layout_type == 'row' }}"
+},
+{
+  "type": "range",
+  "id": "date_font_size",
+  "label": "Date Font Size (Desktop)",
+  "min": 10,
+  "max": 30,
+  "step": 1,
+  "unit": "px",
+  "default": 16,
+  "visible_if": "{{ section.settings.layout_type == 'row' }}"
+},
+{
+  "type": "range",
+  "id": "date_font_size_mobile",
+  "label": "Date Font Size (Mobile)",
+  "min": 10,
+  "max": 26,
+  "step": 1,
+  "unit": "px",
+  "default": 14,
+  "visible_if": "{{ section.settings.layout_type == 'row' }}"
+},
+{
+  "type": "text",
+  "id": "date_line_height_px",
+  "label": "Date Line Height Desktop",
+  "default": "25.6",
+  "info": "Enter a number only (example: 25.6)",
+  "visible_if": "{{ section.settings.layout_type == 'row' }}"
+},
+{
+  "type": "text",
+  "id": "date_line_height_mobile_px",
+  "label": "Date Line Height Mobile",
+  "default": "22.4",
+  "info": "Enter a number only (example: 22.4)",
+  "visible_if": "{{ section.settings.layout_type == 'row' }}"
+},
+{
+  "type": "range",
+  "id": "date_letter_spacing",
+  "label": "Date Letter Spacing",
+  "min": -1,
+  "max": 5,
+  "step": 0.1,
+  "unit": "px",
+  "default": 0,
+  "visible_if": "{{ section.settings.layout_type == 'row' }}"
+}
+
+  ]
+}
+{% endschema %}
+<style>
+  .pagination-wrapper {
+  margin-top: 0rem;
+}
+.pagination-wrapper nav.pagination {
+    padding: 0;
+    margin: 0;
+}
+@media screen and (min-width: 990px) {
+  .pagination-wrapper {
+    margin-top: 50px;
+  }
+}
+
+.pagination__list {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.pagination__list > li {
+  flex: 1 0 4.5rem;
+  max-width: 45px;
+  height: 45px;
+}
+
+.pagination__list > li:not(:last-child) {
+  margin-right: -1px;
+}
+.paginate_item_opacity{
+  pointer-events: none;
+}
+.paginate_item_opacity svg{
+  opacity: 0.4;
+}
+.pagination__list li:first-child  {
+  border-radius: 5px 0px 0px 5px;
+}
+.pagination__list li:last-child{
+  border-radius: 0px 5px 5px 0px;
+}
+ul.pagination__list li {
+  color: rgb(var(--color-foreground));
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 45px;
+  padding: 0;
+  text-decoration: none;
+  border: 0.82px solid var(--Color-2, rgba(180, 97, 0, 0.40));
+  background: var(--Color-1, #FFF);
+  color: #663700;
+font-family: "DM Sans";
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: 25.6px;
+}
+ul.pagination__list li.active {
+  border: 0.82px solid var(--Color-2, rgba(180, 97, 0, 0.40));
+  background: var(--Primary-Color, #663700);
+  color: #fff;
+  opacity: 1;
+}
+ul.pagination__list li a{
+font-family: "DM Sans";
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: 25.6px;
+padding: 12px 19px;
+}
+ul.pagination__list li:last-child a,ul.pagination__list li:first-child a {
+    padding: 17px 19px;
+}
+.pagination__item--next .icon {
+  margin-left: -0.2rem;
+  transform: rotate(90deg);
+}
+
+.pagination__item--next:hover .icon {
+  transform: rotate(90deg) scale(1.07);
+}
+
+.pagination__item--prev .icon {
+  margin-right: -0.2rem;
+  transform: rotate(-90deg);
+}
+
+.pagination__item--prev:hover .icon {
+  transform: rotate(-90deg) scale(1.07);
+}
+
+.pagination__item-arrow:hover::after {
+  display: none;
+}
+@media(max-width:989px){
+ .pagination-wrapper {
+    margin-top: 30px;
+  }
+}
+</style>

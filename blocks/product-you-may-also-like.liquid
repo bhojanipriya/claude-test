@@ -1,0 +1,365 @@
+{% stylesheet %}
+.image-hotspot-news {
+  position: relative;
+  max-width: 1780px;
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.image-hotspot-news img {
+  width: 100%;
+  display: block;
+}
+
+.hotspot-new-btn {
+  color: #fff;
+  border-radius: 50%;
+  font-size: 18px;
+  line-height: 26px;
+  text-align: center;
+}
+
+.hotspot-new-card img {
+    width: 100px;
+    height: 105px;
+    border-radius: 15px;
+}
+.hotspot-new-card h4 {
+  margin: 8px 0 4px;
+  color: #663700;
+  font-size: 24px;
+}
+.hotspot-new-card span {
+  font-size: 18px;
+  color: #663700;
+}
+.hotspot-new-card .title-price{
+        max-width: 332px;
+    width: 100%;
+}
+button.hotspot-new-add {
+    color: #ffffff;
+    background-color: rgba(74, 74, 74, 1);
+    border-radius: 10px;
+    border: 1px solid rgba(74, 74, 74, 1);
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21.6px;
+    padding: 18.5px 32px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+button.hotspot-new-add svg {
+    margin-left: 10px;
+}
+.mobile-hotspot-new-card {
+  display: none;
+}
+.hotspot-new-card button.button.button.quick-add__button {
+    display: block !important;
+}
+.hotspot-new-card quick-add-component.quick-add {
+    position: unset;
+    width: 100%;
+}
+.hotspot-new-card button.button.quick-add__button-new{
+    position: relative;    
+    background: #4A4A4A;
+    max-width: 122px;
+    height: 52px;
+    width: 100%;
+    min-width: 122px;
+  }
+.quick-add-new {background:transparent;}
+.hotspot-new-card span{padding:0;}
+.image-hotspot-news .product_all_hotspot-new .hotspot-new:last-child .hotspot-new-card {
+    right: 0;
+    left: auto;
+}
+.mobile-hotspot-new-card.hotspot-new-card h4 {
+    margin: 0;
+    color: #663700;
+}
+.mobile-hotspot-new-card .title-price span {
+    color: #663700;
+    padding-top: 10px !important;
+    display: block;
+    font-family: 'DM Sans';
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 21.6px;
+    letter-spacing: 0;
+}
+.mobile-hotspot-new-card  img {
+    width: 70px;
+    height: 70px;
+    border-radius: 7px;
+}
+.mobile-hotspot-new-card{        gap: 15px !important;}
+.mobile-hotspot-new-card .quick-add-new{    width: 100%;}
+.hotspot-new-card.mobile-hotspot-new-card button.button.quick-add__button-new{
+  min-width: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 58px;
+}
+.hotspot-new-card .quick-add__button-new span{
+  color: #fff;
+}
+.hotspot-new-card.mobile-hotspot-new-card span.add-to-cart-text__content{
+  font-size: 16px;
+  line-height: 21.6px;
+  letter-spacing: 0;
+}
+.hotspot-new-card span.add-to-cart-icon svg ,.hotspot-new-card span.add-to-cart-icon {
+    width: 11px;
+    height: 11px;
+}
+.hotspot-new {
+    border: 2px solid #663700;
+    padding: 30px;
+    border-radius: 20px;
+    /* display: flex; */
+    margin: 0px 10px!important;
+}
+.hotspot-new-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.product_all_hotspot-new .slick-dots {
+    display: flex !important;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 0 !important;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0 0 !important;
+}
+.product_all_hotspot-new .slick-dots li.slick-active {
+    border: 1px solid #663700;  
+  background: #663700;
+}
+.product_all_hotspot-new .slick-dots li {
+  list-style: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #D9D9D9;
+    border: 1px solid #D9D9D9;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 0;
+    margin-right: 0;
+}
+.product_all_hotspot-new .slick-dots li button {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    border: none;
+}
+.product_all_hotspot-new {
+    margin-top: 25px;
+     margin-left: -10px;
+}
+/* Mobile */
+@media(max-width:1460px){main[data-template="product.detail-page-4"] .hotspot-new{padding: 15px;}}
+@media(max-width:1199px){
+main[data-template="product.detail-page-4"] .hotspot-new{padding: 15px;}
+main[data-template="product.detail-page-4"] .hotspot-new-card h4 {
+    font-size: 22px;
+}
+    .hotspot-new-btn {
+    width: 25px;
+  }
+  .hotspot-new-card {
+      padding: 10px;
+      /* width: 579px; */
+  }
+  .hotspot-new-card img {
+      width: 76px;
+      height: 78px;
+  }
+  button.hotspot-new-add {
+      padding: 11px 26px;
+  }
+}
+@media screen and (max-width: 1199px) and (min-width: 749px) {
+  .image-hotspot-news img {
+    aspect-ratio: 1 / 0.6;
+    object-fit: cover;
+  }
+  .hotspot-new-card {
+        width: 420px;
+    }
+  main[data-template="product.detail-page-4"] .hotspot-new-card {
+        width: auto;
+    }
+    main[data-template="product.detail-page-4"] .hotspot-new-card button.button.quick-add__button-new{
+    min-width: 100%;
+  }
+  main[data-template="product.detail-page-4"] .hotspot-new-card {
+      flex-wrap: wrap;
+  }
+  main[data-template="product.detail-page-4"] .hotspot-new {
+      padding: 10px;
+  }
+  main[data-template="product.detail-page-4"] .hotspot-new-card .quick-add-new {
+      background: transparent;
+      width: 100%;
+  }
+  main[data-template="product.detail-page-4"] .hotspot-new-card .title-price{width: calc(90% - 78px);}
+}
+
+@media(max-width:749px){
+  .hotspot-new {
+    display: none;
+  }
+  
+
+    .mobile-hotspot-new-card {
+        display: flex;
+        position: static;
+        margin-top: 16px;
+        width: 100%;
+        background: #fff;
+        border: 2px solid #663700;
+        padding: 30px;
+        flex-wrap: wrap;
+    }
+    .mobile-hotspot-new-card form,.mobile-hotspot-new-card form button.hotspot-new-add {
+    width: 100%;
+}
+.hotspot-new-card .title-price {
+    width: calc(100% - 96px);
+    max-width: 100%;
+}
+.image-hotspot-news > img {
+    border-radius: 5px;
+}
+main[data-template="product.detail-page-4"] .hotspot-new-card button.button.quick-add__button-new{
+            min-width: 100%;
+  }
+main[data-template="product.detail-page-4"] .hotspot-new-card {
+    flex-wrap: wrap;
+}
+main[data-template="product.detail-page-4"] .hotspot-new {
+    padding: 10px;
+}
+main[data-template="product.detail-page-4"] .hotspot-new-card .quick-add-new {
+    background: transparent;
+    width: 100%;
+}
+}
+{% endstylesheet %}
+<div class="image-hotspot-news">  
+  {% if product.metafields.custom.product_you_may_also_like != blank %}
+      <div class="product_all_hotspot-new">
+        {% assign hotspot-new_items = product.metafields.custom.product_you_may_also_like.value %}
+        {% for hotspot-new_product in hotspot-new_items %}
+
+          {% if hotspot-new_product != blank %}
+            <div class="hotspot-new">
+              <div class="hotspot-new-card">
+                <img
+                  src="{{ hotspot-new_product.featured_image | img_url: "master"}}"
+                  alt="{{ hotspot-new_product.title }}"
+                >
+
+                <div class="title-price">
+                  <h4>{{ hotspot-new_product.title }}</h4>
+                  <span>{{ hotspot-new_product.price | money }}</span>
+                </div>
+
+                {% render 'quick-add-new', product: hotspot-new_product, section_id: section.id %}
+              </div>
+            </div>
+          {% endif %}
+
+        {% endfor %}
+      </div> 
+  {% else %}
+      <div class="product_all_hotspot-new">
+            {% assign block_products = block.settings.product %}
+            {% for block_product in block_products %}
+              {% if block_product != blank %}
+
+                <div class="hotspot-new">
+                  <div class="hotspot-new-card">
+                    <img
+                      src="{{ block_product.featured_image | img_url: 'master' }}"
+                      alt="{{ block_product.title }}"
+                    >
+
+                    <div class="title-price">
+                      <h4>{{ block_product.title }}</h4>
+                      <span>{{ block_product.price | money }}</span>
+                    </div>
+
+                    {% render 'quick-add-new',
+                      product: block_product,
+                      section_id: section.id
+                    %}
+                  </div>
+                  </div>
+      
+                {% endif %}
+            {% endfor %}
+      </div>
+  {% endif %}
+</div>
+
+
+
+{% schema %}
+{
+  "name": "Product You May Also Like",
+  "tag": null,
+  "settings": [
+     {
+        "type": "product_list",
+        "id": "product",
+        "label": "Select product"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product You May Also Like",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  $('.product_all_hotspot-new').slick({
+    slidesToShow: 1.23,
+    slidesToScroll: 1,
+    arrows: false,
+    dots: true,
+    infinite: false,
+    adaptiveHeight: true,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 1
+        }
+      },
+      {
+        breakpoint: 749,
+        settings: {
+          slidesToShow: 1,
+          arrows: false,
+          dots: true
+        }
+      }
+    ]
+  });
+});
+</script>

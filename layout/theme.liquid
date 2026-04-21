@@ -1,36 +1,300 @@
 <!doctype html>
-<html lang="{{ request.locale.iso_code }}">
+<html
+  class="no-js{% if request.design_mode %} shopify-design-mode{% endif %}"
+  lang="{{ request.locale.iso_code }}"
+>
   <head>
-    {% # Inlined CSS Variables %}
-    {% render 'css-variables' %}
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
 
-    {% comment %}
-      Font preloading:
-      1. Preconnect to font CDN for faster connection
-      2. Preload only the critical font variant (base weight)
-      3. Additional variants load on-demand via @font-face
-    {% endcomment %}
-    {% unless settings.type_primary_font.system? %}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {% comment %} This a way to wait for main content to load when navigating to a new page so that the view transitions can work consistently {% endcomment %}
+    <link
+      rel="expect"
+      href="#MainContent"
+      blocking="render"
+      id="view-transition-render-blocker"
+    >
+    {% comment %} {{ index.css | asset_url | stylesheet_tag }} {% endcomment %}
+    {%- render 'meta-tags' -%}
+    {%- render 'stylesheets' -%}
+    {%- render 'fonts' -%}
+    {%- render 'scripts' -%}
+    {%- render 'theme-styles-variables' -%}
+    {%- render 'color-schemes' -%}
+{% comment %} {% section 'product-list' %} {% endcomment %}
 
-      {% comment %} Preload the base font variant for initial page render {% endcomment %}
-      {{ settings.type_primary_font | font_url | preload_tag: as: 'font', crossorigin: 'anonymous' }}
-    {% endunless %}
+    {% if request.design_mode %}
+      {%- render 'theme-editor' -%}
+    {% endif %}
+ {% if settings.purchase_code != blank %}
+{% comment %} <link rel="stylesheet" href="https://rainbow-caramel-cee97c.netlify.app/.netlify/functions/protect-css?key={{ settings.purchase_code }}"> {% endcomment %}
 
-    {% # Load and preload the critical CSS %}
-    {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
+{% endif %}
 
-    {% # Social, title, etc. %}
-    {% render 'meta-tags' %}
+    {% if request.design_mode %}
+      {%- render 'theme-editor' -%}
+      {% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentCode = "{{ settings.purchase_code | escape }}";
+        const lastCode = localStorage.getItem("validatedPurchaseCode");
+         if (!currentCode) {
+        showMessage(
+          '⚠️ Theme license is not added!',
+          '#ffdddd',
+          '#990000'
+        );
+        return;
+      }
 
+      if (currentCode === lastCode) {
+        console.log("🔁 Purchase code unchanged, skipping validation.");
+        return;
+      }
+
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href =
+        'https://deft-pavlova-f14eb6.netlify.app/.netlify/functions/protect-css?key=' +
+        encodeURIComponent(currentCode);
+
+      link.onload = function () {
+        showMessage(
+          '✅ Theme license key is valid!',
+          '#d4edda',
+          '#155724'
+        );
+        localStorage.setItem("validatedPurchaseCode", currentCode);
+      };
+
+      link.onerror = function () {
+        showMessage(
+          '❌ Invalid license key or domain not authorized.',
+          '#f8d7da',
+          '#721c24'
+        );
+        localStorage.removeItem("validatedPurchaseCode");
+      };
+
+      document.head.appendChild(link);
+
+      function showMessage(text, bg, color) {
+        const msg = document.createElement('div');
+        msg.textContent = text;
+        msg.style.cssText = `
+          background:${bg};
+          color:${color};
+          padding:10px;
+          text-align:center;
+          font-weight:bold;
+          position:fixed;
+          top:0;
+          left:0;
+          width:100%;
+          z-index:9999;
+        `;
+        document.body.prepend(msg);
+        setTimeout(() => msg.remove(), 5000);
+      }
+    });
+</script> {% endcomment %}
+    {% endif %}
     {{ content_for_header }}
+    <link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
+/>
+{{ 'index.css' | asset_url | stylesheet_tag }}
   </head>
 
-  <body>
-    {% sections 'header-group' %}
+  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
+    {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
+    <div id="header-group">
+      {% sections 'header-group' %}
+    </div>
 
-    {{ content_for_layout }}
+    <script
+      src="{{ 'critical.js' | asset_url }}"
+      type="module"
+      async
+      blocking="render"
+    ></script>
+
+    <main
+      id="MainContent"
+      class="content-for-layout"
+      role="main"
+      data-page-transition-enabled="{{ settings.page_transition_enabled }}"
+      data-product-transition="{{ settings.transition_to_main_product }}"
+      data-template="{{ template }}"
+    >
+      {{ content_for_layout }}
+    </main>
 
     {% sections 'footer-group' %}
+
+    {% render 'search-modal' %}
+
+    {% if settings.quick_add or settings.mobile_quick_add %}
+      {% render 'quick-add-modal' %}
+    {% endif %}
+    <script src="{{ 'jquery.js' | asset_url }}"></script>
+    <script src="{{ 'slick.min.js' | asset_url }}"></script>
+    <script>
+      $(document).ready(function () {
+          function initExclusiveSlider() {
+            const $slider = $('.exclusive_products-wrapper .group-block-content').first();
+
+
+            if ($(window).width() <= 749) {
+              if (!$slider.hasClass('slick-initialized')) {
+                $slider.slick({
+                  slidesToShow: 1,
+                  slidesToScroll: 1,
+                  arrows: false,
+                  dots: true,
+                  infinite: false
+                });
+              }
+            } else {
+              if ($slider.hasClass('slick-initialized')) {
+                $slider.slick('unslick'); // destroy slider on desktop
+              }
+            }
+          }
+
+          // Run on load
+          initExclusiveSlider();
+
+          // Run on resize
+          $(window).on('resize', function () {
+            initExclusiveSlider();
+          });
+        });
+    </script>
+        <!-- jQuery -->
+{% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> {% endcomment %}
+    <script>
+$(document).ready(function () {
+  function initExclusiveSlider() {
+    const $slider = $('.testimonial-wrapper .group-block-content').first();
+
+    // ALWAYS initialize slider on all devices
+    if (!$slider.hasClass('slick-initialized')) {
+      $slider.slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: true,
+        dots: false,
+        infinite: false
+      });
+    }
+  }
+
+  // Run on load
+  initExclusiveSlider();
+
+  // Run on resize
+  $(window).on('resize', function () {
+    initExclusiveSlider();
+  });
+});
+</script>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const homeMenuLink = document.querySelector('.menu-list__link[href="/"]');
+    const currentPath = window.location.pathname;
+    const homeRelatedPages = [
+      '/pages/home-2'
+    ];
+
+    if (homeRelatedPages.includes(currentPath) && homeMenuLink) {
+      homeMenuLink.classList.add('menu-list__link--active');
+      homeMenuLink.setAttribute('aria-current', 'page');
+    }
+  });
+</script>
+  {% render 'swym-custom' %}
+  <style>
+      .mobile_heading{display: none !important;}
+      .home2-unlock-ture-beauty .stat-number {font-size: 48px;line-height: 57.6px;}
+      .menu-list__list-item a.menu-list__link.menu-list__link--active {
+            {% comment %} color: #663700!important; {% endcomment %}
+        }
+        .menu-list__link .menu-list__link-title{font-weight: 500!important;}
+        .menu-list__list-item:hover a.menu-list__link {
+            {% comment %} color: #663700 !important; {% endcomment %}
+        }
+        .swym-wishlist-collections-v2-container button{right:20px;}
+        main[data-template="product.detail-page-4"] .swym-wishlist-collections-v2-container button {
+        box-shadow: 0px 4px 10px 0px #00000026;
+        background: #fff;
+        /* color: red; */
+        height: 45px !important;
+        width: 45px !important;
+        bottom: 0px !important;
+        top: calc(100% - 192px)!important;
+        opacity:0;
+    }
+main[data-template="product.detail-page-4"] .product-card:hover .swym-wishlist-collections-v2-container button{opacity:1;}
+main[data-template="product.detail-page-4"] product-card:focus-within .quick-add__button, main[data-template="product.detail-page-4"] .card-gallery:hover .quick-add__button {
+    box-shadow: 0px 4px 10px 0px #00000026; 
+    height: 45px !important;
+    width: 45px !important;
+    bottom: 0px !important;
+    border-radius: 10px;
+    right: 7px;
+    font-size: 0;
+    overflow: hidden;
+}
+main[data-template="product.detail-page-4"] product-card .quick-add__button span.add-to-cart-text{gap:0;}
+        @media(max-width:991px){
+          .home2-unlock-ture-beauty .stat-number {
+              font-size: 32px;
+              line-height:normal;
+              height:auto;
+          }
+        }
+        @media(max-width:749px){
+           .swym-wishlist-collections-v2-container button{right:15px;}
+            .homepage-banner-2 .homebanner2-image-text .icon-text {max-width: 250px;}
+           accordion-custom .details-content{padding-bottom:23px !important;}
+           .footer-column.footer-info {margin: 0;}
+          .sub_home_one .mobile-column {gap: 20px;}
+            .mobile_heading{display: block !important;}
+            {% comment %} .h2.mobile_heading h2{
+              font-size: 30px !important;
+              line-height: 39px !important;
+              height: auto;
+            } {% endcomment %}
+          .section-left_decorative:after{display: none;}
+          .stat-number{height: auto !important;}
+          .home2-unlock-ture-beauty .stat-number {
+              font-size: 24px;
+              line-height: 28.8px;
+              height: auto;
+          }
+          .home2-unlock-ture-beauty .globel-text-wrapper {order: -1 !important;}
+          .home2-unlock-ture-beauty .stat-title {margin-top: 28px;}
+          .home1-collection .resource-list.resource-list--grid {padding: 0px !important;} 
+        }
+        @media(max-width:576px){      
+        body .home2collection .resource-list.resource-list--grid .resource-list__item{
+          flex: 0 0 87% !important;
+        }
+          .test_Badge__icon img{
+        max-width: 100px;
+          margin: 0 0 0 auto;
+        }
+          .beauty_our_expertise .add_arrow_btn.size-style {    width: 100%;}
+        }
+  </style>
   </body>
 </html>

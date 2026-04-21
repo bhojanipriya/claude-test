@@ -1,0 +1,60 @@
+{% if product.metafields.custom.fabric
+   or product.metafields.custom.pattern
+   or product.metafields.custom.fit
+   or product.metafields.custom.sleeve
+   or product.metafields.custom.color %}
+
+<div class="product-highlights" {{ block.shopify_attributes }}>
+  <h3 class="product-highlights__title">Key Highlights</h3>
+
+  <ul class="product-highlights__list">
+    {% if product.metafields.custom.fabric %}
+      <li><span>Fabric</span><span>{{ product.metafields.custom.fabric }}</span></li>
+    {% endif %}
+    {% if product.metafields.custom.pattern %}
+      <li><span>Pattern</span><span>{{ product.metafields.custom.pattern }}</span></li>
+    {% endif %}
+    {% if product.metafields.custom.fit %}
+      <li><span>Fit</span><span>{{ product.metafields.custom.fit }}</span></li>
+    {% endif %}
+    {% if product.metafields.custom.sleeve %}
+      <li><span>Sleeve</span><span>{{ product.metafields.custom.sleeve }}</span></li>
+    {% endif %}
+    {% if product.metafields.custom.color %}
+      <li><span>Color</span><span>{{ product.metafields.custom.color }}</span></li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}
+<style>
+    .product-highlights {
+  border: 1px solid rgba(0,0,0,.08);
+  padding: 16px;
+  margin: 20px 0;
+}
+
+.product-highlights__title {
+  font-size: 16px;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.product-highlights__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.product-highlights__list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px dashed rgba(0,0,0,.15);
+  font-size: 14px;
+}
+
+.product-highlights__list li span:last-child {
+  font-weight: 500;
+}
+
+</style>

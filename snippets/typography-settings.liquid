@@ -1,0 +1,105 @@
+{% comment %}
+Reusable typography settings
+Use inside block schema with: {% render 'typography-settings' %}
+{% endcomment %}
+
+{
+"type": "header",
+"content": "Typography"
+},
+{
+"type": "select",
+"id": "font_family",
+"label": "Font family",
+"options": [
+{ "value": "var(--font-body--family)", "label": "Theme Body Font" },
+{ "value": "var(--font-heading--family)", "label": "Theme Heading Font" },
+{ "value": "Arial, sans-serif", "label": "Arial" },
+{ "value": "Helvetica, sans-serif", "label": "Helvetica" },
+{ "value": "'Times New Roman', serif", "label": "Times New Roman" }
+],
+"default": "var(--font-heading--family)"
+},
+{
+"type": "select",
+"id": "font_weight",
+"label": "Font weight",
+"options": [
+{ "value": "300", "label": "Light" },
+{ "value": "400", "label": "Regular" },
+{ "value": "500", "label": "Medium" },
+{ "value": "600", "label": "Semi Bold" },
+{ "value": "700", "label": "Bold" },
+{ "value": "800", "label": "Extra Bold" }
+],
+"default": "700"
+},
+{
+"type": "range",
+"id": "font_size_desktop",
+"label": "Font size desktop",
+"min": 10,
+"max": 150,
+"step": 1,
+"unit": "px",
+"default": 48
+},
+{
+"type": "range",
+"id": "font_size_mobile",
+"label": "Font size mobile",
+"min": 10,
+"max": 100,
+"step": 1,
+"unit": "px",
+"default": 28
+},
+{
+"type": "range",
+"id": "line_height",
+"label": "Line height",
+"min": 10,
+"max": 150,
+"step": 1,
+"unit": "px",
+"default": 56
+},
+{
+"type": "range",
+"id": "letter_spacing",
+"label": "Letter spacing",
+"min": -5,
+"max": 10,
+"step": 0.1,
+"unit": "px",
+"default": 0
+},
+{
+"type": "select",
+"id": "text_transform",
+"label": "Text transform",
+"options": [
+{ "value": "none", "label": "None" },
+{ "value": "uppercase", "label": "Uppercase" },
+{ "value": "lowercase", "label": "Lowercase" },
+{ "value": "capitalize", "label": "Capitalize" }
+],
+"default": "none"
+},
+{
+"type": "select",
+"id": "text_align",
+"label": "Text alignment",
+"options": [
+{ "value": "left", "label": "Left" },
+{ "value": "center", "label": "Center" },
+{ "value": "right", "label": "Right" }
+],
+"default": "center"
+},
+{
+"type": "color",
+"id": "text_color",
+"label": "Text color",
+"default": "#000000"
+}

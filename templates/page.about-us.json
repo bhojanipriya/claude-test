@@ -1,0 +1,1198 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "section_97wtqi": {
+      "type": "section",
+      "blocks": {
+        "text_WtYjb8": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "custom_class_text": "collection_text",
+            "text": "<h1>About Us<\/h1>",
+            "width": "100%",
+            "max_width": "none",
+            "alignment": "center",
+            "type_preset": "h1",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background_img1": "shopify:\/\/shop_images\/Banner_1.png",
+            "background_img2": "shopify:\/\/shop_images\/Image_36.png",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 122,
+            "padding-block-end": 122,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_WtYjb8"
+      ],
+      "name": "t:names.custom_section",
+      "settings": {
+        "custom_class": "",
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "flex-start",
+        "gap": 0,
+        "section_width": "full-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-ea50f55b-962b-48b3-a86b-7d1ddc536e47",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "Title",
+          "settings": {
+            "custom_class_text": "",
+            "text": "<h1>{{ closest.page.title }}<\/h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {},
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "section_8HEK7h": {
+      "type": "section",
+      "blocks": {
+        "group_4z9QKp": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "custom_class": "mobile-top-text",
+            "odd_content_bg": "",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_LkJhEw": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "custom_class_text": "",
+                "text": "<h2>Welcome to Amari - Your Partner in Radiance<\/h2>",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "h2",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground-heading)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_LkJhEw"
+          ]
+        },
+        "image_bcBAqX": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/aboutImages.png",
+            "image_width_percent": 100,
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "group_TV8RUy": {
+          "type": "group",
+          "settings": {
+            "custom_class": "",
+            "odd_content_bg": "",
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 0,
+            "width": "custom",
+            "custom_width": 70,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_HjkYee": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "custom_class_text": "dasktop-title",
+                "text": "<h2>Welcome to Amari - Your Partner in Radiance<\/h2>",
+                "width": "fit-content",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "h2",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground-heading)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_MAimTz": {
+              "type": "text",
+              "settings": {
+                "custom_class_text": "about-Left-text",
+                "text": "<p>Our journey began with a simple yet profound realization: everyone deserves to feel confident in their skin. The inspiration struck when our founder faced their own struggles with skin concerns. They set out on a mission to create a solution that didn’t compromise on quality, safety, or results.<\/p><p>Discover a range of luxurious skincare,  makeup, and haircare products meticulously crafted to cater to diverse beauty needs. We carefully select each ingredient for its efficacy and safety, ensuring that our products not only help you look beautiful but also promote the health and vitality of your skin and hair.<\/p>",
+                "width": "100%",
+                "max_width": "none",
+                "alignment": "left",
+                "type_preset": "paragraph",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 30,
+                "padding-block-end": 50,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "button_3Tcqkh": {
+              "type": "button",
+              "disabled": true,
+              "settings": {
+                "add_arrow": false,
+                "label": "Shop now",
+                "link": "shopify:\/\/collections\/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            },
+            "group_HdHV9q": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "custom_class": "globel-text-wrapper",
+                "odd_content_bg": "",
+                "content_direction": "row",
+                "vertical_on_mobile": false,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 50,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "global_count_iCWjk4": {
+                  "type": "global-count",
+                  "name": "global-count",
+                  "settings": {
+                    "stat_number": "8",
+                    "stat_suffix": "K+",
+                    "stat_title": "Global Customers",
+                    "custom_width_mobile": 100
+                  },
+                  "blocks": {}
+                },
+                "global_count_nMVHrK": {
+                  "type": "global-count",
+                  "name": "global-count",
+                  "settings": {
+                    "stat_number": "12",
+                    "stat_suffix": "K+",
+                    "stat_title": "Products Delivered",
+                    "custom_width_mobile": 100
+                  },
+                  "blocks": {}
+                },
+                "global_count_6RqegL": {
+                  "type": "global-count",
+                  "name": "global-count",
+                  "settings": {
+                    "stat_number": "10",
+                    "stat_suffix": "+",
+                    "stat_title": "Years In Business",
+                    "custom_width_mobile": 100
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "global_count_iCWjk4",
+                "global_count_nMVHrK",
+                "global_count_6RqegL"
+              ]
+            }
+          },
+          "block_order": [
+            "text_HjkYee",
+            "text_MAimTz",
+            "button_3Tcqkh",
+            "group_HdHV9q"
+          ]
+        }
+      },
+      "block_order": [
+        "group_4z9QKp",
+        "image_bcBAqX",
+        "group_TV8RUy"
+      ],
+      "name": "WelcomeToAmari",
+      "settings": {
+        "custom_class": "welcome_amari-section",
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-start",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 84,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 100,
+        "padding-block-end": 100
+      }
+    },
+    "section_Pbybr7": {
+      "type": "section",
+      "blocks": {
+        "group_EjUJz9": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "custom_class": "exclusive_products-wrapper for_about",
+            "odd_content_bg": "",
+            "content_direction": "row",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "group_mb6FyG": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "custom_class": "mobile-slide",
+                "odd_content_bg": "",
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 24,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-1",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "solid",
+                "border_width": 2,
+                "border_opacity": 40,
+                "border_radius": 100,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 21,
+                "padding-block-end": 21,
+                "padding-inline-start": 50,
+                "padding-inline-end": 50
+              },
+              "blocks": {
+                "image_AAkcki": {
+                  "type": "image",
+                  "name": "t:names.image",
+                  "settings": {
+                    "image": "shopify:\/\/shop_images\/p1Icon_dbf4dd1b-6314-4e5a-8471-c7e8e724b77a.png",
+                    "image_width_percent": 1,
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_rH6RqV": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "custom_class_text": "",
+                    "text": "<p>Perfect for Oily & Acne Prone Skin<\/p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "image_AAkcki",
+                "text_rH6RqV"
+              ]
+            },
+            "group_THFRLG": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "custom_class": "mobile-slide",
+                "odd_content_bg": "",
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 24,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-1",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "solid",
+                "border_width": 2,
+                "border_opacity": 40,
+                "border_radius": 100,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 21,
+                "padding-block-end": 21,
+                "padding-inline-start": 50,
+                "padding-inline-end": 50
+              },
+              "blocks": {
+                "image_9Gkare": {
+                  "type": "image",
+                  "name": "t:names.image",
+                  "settings": {
+                    "image": "shopify:\/\/shop_images\/workEfficiently.svg",
+                    "image_width_percent": 1,
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_TNhzmy": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "custom_class_text": "",
+                    "text": "<p>Works Efficiently for Skin Nourishment<\/p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "image_9Gkare",
+                "text_TNhzmy"
+              ]
+            },
+            "group_UteUdB": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "custom_class": "mobile-slide",
+                "odd_content_bg": "",
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 24,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-1",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "solid",
+                "border_width": 2,
+                "border_opacity": 40,
+                "border_radius": 100,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 21,
+                "padding-block-end": 21,
+                "padding-inline-start": 50,
+                "padding-inline-end": 50
+              },
+              "blocks": {
+                "image_AHbfXL": {
+                  "type": "image",
+                  "name": "t:names.image",
+                  "settings": {
+                    "image": "shopify:\/\/shop_images\/infections.svg",
+                    "image_width_percent": 1,
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_fzjard": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "custom_class_text": "",
+                    "text": "<p>Effective in Fighting Infections<\/p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "image_AHbfXL",
+                "text_fzjard"
+              ]
+            },
+            "group_U8xy8C": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "custom_class": "mobile-slide",
+                "odd_content_bg": "",
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 24,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-1",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "solid",
+                "border_width": 2,
+                "border_opacity": 40,
+                "border_radius": 100,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 21,
+                "padding-block-end": 21,
+                "padding-inline-start": 50,
+                "padding-inline-end": 50
+              },
+              "blocks": {
+                "image_pBE98P": {
+                  "type": "image",
+                  "name": "t:names.image",
+                  "settings": {
+                    "image": "shopify:\/\/shop_images\/antiseptic.svg",
+                    "image_width_percent": 1,
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_NG36cY": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "custom_class_text": "",
+                    "text": "<p>Natural Antiseptic Properties<\/p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "image_pBE98P",
+                "text_NG36cY"
+              ]
+            },
+            "group_g36dFr": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "custom_class": "mobile-slide",
+                "odd_content_bg": "",
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "center",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "custom",
+                "custom_width": 24,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": false,
+                "color_scheme": "scheme-1",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "solid",
+                "border_width": 2,
+                "border_opacity": 40,
+                "border_radius": 100,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "link": "",
+                "open_in_new_tab": false,
+                "placeholder": "",
+                "padding-block-start": 21,
+                "padding-block-end": 21,
+                "padding-inline-start": 50,
+                "padding-inline-end": 50
+              },
+              "blocks": {
+                "image_rcEQez": {
+                  "type": "image",
+                  "name": "t:names.image",
+                  "settings": {
+                    "image": "shopify:\/\/shop_images\/remarkablePower.svg",
+                    "image_width_percent": 1,
+                    "link": "",
+                    "image_ratio": "adapt",
+                    "width": "fill",
+                    "custom_width": 100,
+                    "width_mobile": "fill",
+                    "custom_width_mobile": 100,
+                    "height": "fit",
+                    "border": "none",
+                    "border_width": 1,
+                    "border_opacity": 100,
+                    "border_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "text_9N3nGV": {
+                  "type": "text",
+                  "name": "t:names.text",
+                  "settings": {
+                    "custom_class_text": "",
+                    "text": "<p>Remarkable Cleansing Power<\/p>",
+                    "width": "100%",
+                    "max_width": "normal",
+                    "alignment": "center",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "image_rcEQez",
+                "text_9N3nGV"
+              ]
+            }
+          },
+          "block_order": [
+            "group_mb6FyG",
+            "group_THFRLG",
+            "group_UteUdB",
+            "group_U8xy8C",
+            "group_g36dFr"
+          ]
+        }
+      },
+      "block_order": [
+        "group_EjUJz9"
+      ],
+      "name": "t:names.custom_section",
+      "settings": {
+        "custom_class": "",
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 100
+      }
+    },
+    "our_mission_FHKpVm": {
+      "type": "our-mission",
+      "name": "Mission Section",
+      "settings": {
+        "section_title": "Our Mission",
+        "section_title_color": "#663700",
+        "description": "At Amari, our mission is to empower individuals to embrace their unique beauty with confidence. We are dedicated to crafting high-quality, innovative skincare, makeup, and haircare solutions that not only enhance your outer radiance but also nurture your skin and hair from within. Rooted in a commitment to excellence, safety, and the transformative power of nature, our products are meticulously formulated to cater to diverse beauty needs. With precision and care, we combine science and nature’s finest ingredients to redefine beauty and promote health, vitality, and timeless radiance.",
+        "description_color": "#4a4a4a",
+        "show_sub_description": true,
+        "sub_description": "We envision a world where everyone feels confident and radiant in their own skin. By blending the best of nature and science, we aim to redefine beauty standards and inspire self-love. Our commitment to innovation and quality ensures that every product delivers visible results, empowering you to feel beautiful inside and out.",
+        "sub_description_color": "#ffffff",
+        "sub_description_bg_color": "#663700",
+        "image": "shopify:\/\/shop_images\/ourmisson.webp",
+        "radius_left_right": 280,
+        "radius_top_bottom": 0,
+        "mobile_radius_left_right": 112,
+        "mobile_radius_top_bottom": 6,
+        "image_position": "right"
+      }
+    },
+    "team_section_dynjNY": {
+      "type": "team-section",
+      "blocks": {
+        "member_Y7p9pU": {
+          "type": "member",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/doct1.png",
+            "name": "Dr. Dianne Russell",
+            "position": "Beautician",
+            "facebook": "https:\/\/www.facebook.com\/",
+            "instagram": "https:\/\/www.instagram.com\/accounts\/login\/?hl=en",
+            "twitter": "https:\/\/x.com\/"
+          }
+        },
+        "member_H8EKWb": {
+          "type": "member",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/doct2.png",
+            "name": "Dr. Dianne Russell",
+            "position": "Dermatosurgeon",
+            "facebook": "https:\/\/www.facebook.com\/",
+            "instagram": "https:\/\/www.instagram.com\/accounts\/login\/?hl=en",
+            "twitter": "https:\/\/x.com\/"
+          }
+        },
+        "member_R6UFYE": {
+          "type": "member",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/doct3.png",
+            "name": "Dr. Eleanor Pena",
+            "position": "Dermatosurgeon",
+            "facebook": "https:\/\/www.facebook.com\/",
+            "instagram": "https:\/\/www.instagram.com\/accounts\/login\/?hl=en",
+            "twitter": "https:\/\/x.com\/"
+          }
+        },
+        "member_nC8HWc": {
+          "type": "member",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/doct4.png",
+            "name": "Dr. Dianne Russell",
+            "position": "Cosmetologist",
+            "facebook": "https:\/\/www.facebook.com\/",
+            "instagram": "https:\/\/www.instagram.com\/accounts\/login\/?hl=en",
+            "twitter": "https:\/\/x.com\/"
+          }
+        }
+      },
+      "block_order": [
+        "member_Y7p9pU",
+        "member_H8EKWb",
+        "member_R6UFYE",
+        "member_nC8HWc"
+      ],
+      "name": "Team of Experts",
+      "settings": {
+        "heading": "Team of Skin Care Experts",
+        "heading_color": "#663700",
+        "bg_color": "#ffffff",
+        "name_color": "#663700",
+        "position_color": "#4a4a4a",
+        "hover_overlay": "#f5eddc",
+        "image_radius": 10,
+        "social_bg": "#663700",
+        "social_bg_hover": "#b46100",
+        "columns_desktop": 4,
+        "padding_top": 100,
+        "padding_bottom": 100
+      }
+    },
+    "testimonial_46MaK6": {
+      "type": "testimonial",
+      "blocks": {
+        "testimonial_EkVcBa": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/sliderimg.png",
+            "star_rating": 4,
+            "testimonial_text": "“I struggled with dry and sensitive skin for years. It was a constant battle, but after just two weeks of using this miracle product, my skin felt rejuvenated and hydrated. I can't thank you enough for changing my life. not only resolve my trouble, but it also left my skin smoother and more radiant than ever before”.",
+            "author_name": "Author Name"
+          }
+        },
+        "testimonial_9TEydE": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/sliderimg.png",
+            "star_rating": 5,
+            "testimonial_text": "“I struggled with dry and sensitive skin for years. It was a constant battle, but after just two weeks of using this miracle product, my skin felt rejuvenated and hydrated. I can't thank you enough for changing my life. not only resolve my trouble, but it also left my skin smoother and more radiant than ever before”.",
+            "author_name": "Author Name"
+          }
+        },
+        "testimonial_Em8BVB": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/sliderimg.png",
+            "star_rating": 5,
+            "testimonial_text": "“I struggled with dry and sensitive skin for years. It was a constant battle, but after just two weeks of using this miracle product, my skin felt rejuvenated and hydrated. I can't thank you enough for changing my life. not only resolve my trouble, but it also left my skin smoother and more radiant than ever before”.",
+            "author_name": "Author Name"
+          }
+        },
+        "testimonial_hgBAt6": {
+          "type": "testimonial",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/sliderimg.png",
+            "star_rating": 5,
+            "testimonial_text": "“I struggled with dry and sensitive skin for years. It was a constant battle, but after just two weeks of using this miracle product, my skin felt rejuvenated and hydrated. I can't thank you enough for changing my life. not only resolve my trouble, but it also left my skin smoother and more radiant than ever before”.",
+            "author_name": "Author Name"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_EkVcBa",
+        "testimonial_9TEydE",
+        "testimonial_Em8BVB",
+        "testimonial_hgBAt6"
+      ],
+      "name": "Testimonial With slider",
+      "settings": {
+        "heading": "What Our Customers Say",
+        "decorative_image": "shopify:\/\/shop_images\/imgbefore.png"
+      }
+    }
+  },
+  "order": [
+    "section_97wtqi",
+    "main",
+    "section_8HEK7h",
+    "section_Pbybr7",
+    "our_mission_FHKpVm",
+    "team_section_dynjNY",
+    "testimonial_46MaK6"
+  ]
+}

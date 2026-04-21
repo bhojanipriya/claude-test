@@ -1,0 +1,91 @@
+{%- doc -%}
+  This snippet is used to render the quantity selector for a product.
+  It is used in the product page and the cart page.
+
+  @param {object} product - the product to render the quantity selector for
+  @param {object} [variant] - the specific variant to use (for cart items), if not provided uses selected_or_first_available_variant
+  @param {number} [in_cart_quantity] - the quantity in the cart to set the input value
+  @param {number} [line_index] - the index of the forloop representing the line on which the quantity selector is rendered
+  @param {string} [class] - custom class for the quantity selector, optional
+  @param {boolean} [can_update_quantity] - whether the quantity can be updated, defaults to true
+{%- enddoc -%}
+
+{% liquid
+  if variant
+    assign variant = variant
+  else
+    assign variant = product.selected_or_first_available_variant
+  endif
+  assign component_name = 'quantity-selector-component'
+  if line_index != null
+    assign component_name = 'cart-quantity-selector-component'
+  endif
+%}
+
+<{{ component_name }}
+  class="quantity-selector{% if class %} {{ class }}{% endif %}"
+  data-variant-id="{{ variant.id }}"
+  {% if line_index == null %}
+    {{- block.shopify_attributes -}}
+  {% endif %}
+  ref="quantitySelectors[]"
+>
+  <button
+    class="button quantity-minus button-unstyled"
+    type="button"
+    name="minus"
+    on:click="/decreaseQuantity"
+    ref="minusButton"
+    {% if can_update_quantity == false %}
+      disabled
+    {% endif %}
+  >
+    <span class="visually-hidden">{{ 'accessibility.decrease_quantity' | t }}</span
+    ><span class="svg-wrapper icon-plus">
+      {% comment %} {{- 'icon-minus.svg' | inline_asset_content -}} {% endcomment %}
+       <svg xmlns="http://www.w3.org/2000/svg" width="13" height="2" viewBox="0 0 13 2" fill="none">
+        <path opacity="0.5" d="M5.48571 3.27826e-05H0V1.8286H5.48571L7.31429 1.82861L12.8 1.8286V3.27826e-05H7.31429H5.48571Z" fill="#4A4A4A"/>
+        </svg>
+    </span>
+  </button>
+  <input
+    type="number"
+    name="{% if line_index %}updates[]{% else %}quantity{% endif %}"
+    value="{{ in_cart_quantity | default: variant.quantity_rule.min | default: 1 }}"
+    data-cart-quantity="{{ cart | item_count_for_variant: variant.id }}"
+    min="{{ variant.quantity_rule.min | default: 1 }}"
+    on:blur="/setQuantity"
+    on:focus="/selectInputValue"
+    ref="quantityInput"
+    aria-label="{{ 'accessibility.quantity' | t }}"
+    {% if line_index %}
+      data-cart-line="{{ line_index | plus: 1 }}"
+    {% endif %}
+    {% if variant.quantity_rule.max %}
+      max="{{ variant.quantity_rule.max }}"
+    {% endif %}
+    step="{{ variant.quantity_rule.increment | default: 1 }}"
+    {% if can_update_quantity == false or variant.available == false %}
+      disabled
+    {% endif %}
+    readonly
+  >
+  <button
+    class="button quantity-plus button-unstyled"
+    type="button"
+    name="plus"
+    on:click="/increaseQuantity"
+    ref="plusButton"
+    {% if can_update_quantity == false %}
+      disabled
+    {% endif %}
+  >
+    <span class="visually-hidden">{{ 'accessibility.increase_quantity' | t }}</span
+    ><span class="svg-wrapper icon-plus">
+      {% comment %} {{- 'icon-plus.svg' | inline_asset_content -}} {% endcomment %}
+       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+        <path d="M4.72705 6.30273H0V4.72705H4.72705V0H6.30273V4.72705H11.0298V6.30273H6.30273V11.0298H4.72705V6.30273Z" fill="#4A4A4A"/>
+        </svg>
+    </span>
+  </button>
+</{{ component_name }}>

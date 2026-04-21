@@ -1,0 +1,53 @@
+{% comment %}
+  snippets/count-down-timer.liquid
+  ─────────────────────────────────
+  Pure HTML markup — no schema, no script, no style here.
+  Called from sections/count-down-timer.liquid via:
+    {% render 'count-down-timer', section_id: section.id, countdown_text: section.settings.countdown_text %}
+
+  Variables received:
+    section_id      {String}  — unique ID to avoid duplicate element IDs
+    countdown_text  {String}  — optional offer line text from section settings
+{% endcomment %}
+
+{% if product.metafields.custom.sale_end %}
+  <div
+    id="countdown-timer-{{ section_id }}"
+    class="countdown-timer-wrapper"
+    data-endtime="{{ product.metafields.custom.sale_end | date: '%Y-%m-%dT%H:%M:%S' }}"
+  >
+
+    <div class="countdown-header">
+      <span class="countdown-label">Sale Ends in:</span>
+      {% if countdown_text != blank %}
+        <div class="countdown-offer-text">
+          {{ countdown_text }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="countdown-item">
+      <div class="countdown-number" id="days-{{ section_id }}">00</div>
+      <small class="countdown-text">Days</small>
+    </div>
+    <span class="countdown-separator">:</span>
+
+    <div class="countdown-item">
+      <div class="countdown-number" id="hours-{{ section_id }}">00</div>
+      <small class="countdown-text">Hrs</small>
+    </div>
+    <span class="countdown-separator">:</span>
+
+    <div class="countdown-item">
+      <div class="countdown-number" id="minutes-{{ section_id }}">00</div>
+      <small class="countdown-text">Mins</small>
+    </div>
+    <span class="countdown-separator">:</span>
+
+    <div class="countdown-item">
+      <div class="countdown-number" id="seconds-{{ section_id }}">00</div>
+      <small class="countdown-text">Secs</small>
+    </div>
+
+  </div>
+{% endif %}

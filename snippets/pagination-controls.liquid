@@ -1,0 +1,403 @@
+{%- if paginate.pages > 1 -%}
+  <nav
+    class="pagination"
+    aria-label="{{ 'content.pagination.nav_label' | t }}"
+  >
+    <ul
+      class="pagination__list"
+      role="list"
+    >
+      {% if paginate.current_page > 1 %}
+         <li> <a href="{{ paginate.parts.first.url }}" class="pagination__item">
+          <svg style="transform: rotate(180deg);" xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none">
+          <path d="M0.794922 1.41L5.38492 6L0.794922 10.59L2.20492 12L8.20492 6L2.20492 0L0.794922 1.41ZM11.2049 0H13.2049V12H11.2049V0Z" fill="#663700"/>
+        </svg></a></li>
+        {% endif %}
+      <li class="pagination__item">
+        {%- if paginate.previous -%}
+          <a
+            href="{{ paginate.previous.url }}"
+            aria-label="{{ 'content.pagination.previous' | t }}"
+            class="pagination__link pagination__link--arrow"
+          >
+            {% comment %} {{ 'icon-chevron-left.svg' | inline_asset_content }} {% endcomment %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                <path d="M1.68524 4.99148C2.84918 6.19101 3.98575 7.36097 5.12102 8.53227C5.22365 8.63206 5.31983 8.73869 5.40892 8.85147C5.51181 8.98689 5.56356 9.15624 5.55455 9.32805C5.54554 9.49987 5.47639 9.66247 5.35995 9.78565C5.2435 9.90882 5.08768 9.9842 4.92142 9.99778C4.75517 10.0114 4.5898 9.96222 4.45602 9.85948C4.37843 9.7986 4.30589 9.73116 4.23913 9.65788C2.94168 8.31969 1.64508 6.98128 0.349361 5.64265C-0.118296 5.16015 -0.116337 4.81676 0.354577 4.33023C1.66593 2.97502 2.97814 1.62093 4.29123 0.26796C4.56544 -0.0142821 4.86245 -0.0734181 5.14513 0.089879C5.41543 0.245784 5.57501 0.497113 5.50597 0.811611C5.4514 1.01351 5.34599 1.1969 5.20048 1.34317C4.12709 2.4681 3.04132 3.58094 1.9601 4.69781C1.87673 4.78181 1.79662 4.87119 1.68524 4.99148Z" fill="#B46100" fill-opacity="0.4"/>
+              </svg>
+          </a>
+        {%- else -%}
+          <span
+            aria-label="{{ 'content.pagination.previous' | t }}"
+            class="pagination__link pagination__link--arrow pagination__link--disabled"
+            aria-disabled="true"
+          >
+            {% comment %} {{ 'icon-chevron-left.svg' | inline_asset_content }} {% endcomment %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                <path d="M1.68524 4.99148C2.84918 6.19101 3.98575 7.36097 5.12102 8.53227C5.22365 8.63206 5.31983 8.73869 5.40892 8.85147C5.51181 8.98689 5.56356 9.15624 5.55455 9.32805C5.54554 9.49987 5.47639 9.66247 5.35995 9.78565C5.2435 9.90882 5.08768 9.9842 4.92142 9.99778C4.75517 10.0114 4.5898 9.96222 4.45602 9.85948C4.37843 9.7986 4.30589 9.73116 4.23913 9.65788C2.94168 8.31969 1.64508 6.98128 0.349361 5.64265C-0.118296 5.16015 -0.116337 4.81676 0.354577 4.33023C1.66593 2.97502 2.97814 1.62093 4.29123 0.26796C4.56544 -0.0142821 4.86245 -0.0734181 5.14513 0.089879C5.41543 0.245784 5.57501 0.497113 5.50597 0.811611C5.4514 1.01351 5.34599 1.1969 5.20048 1.34317C4.12709 2.4681 3.04132 3.58094 1.9601 4.69781C1.87673 4.78181 1.79662 4.87119 1.68524 4.99148Z" fill="#B46100" fill-opacity="0.4"/>
+              </svg>
+          </span>
+        {%- endif -%}
+      </li>
+
+      {%- assign current_page = paginate.current_page -%}
+      {%- assign last_visible_page = 0 -%}
+      {%- assign just_saw_ellipsis = false -%}
+
+      {%- for part in paginate.parts -%}
+        {% liquid
+          assign should_hide_on_mobile = false
+          assign is_page_number = false
+          assign page_number = 0
+
+          if part.is_link
+            assign page_number = part.title | plus: 0
+            if page_number > 0
+              assign is_page_number = true
+              assign distance_from_current = page_number | minus: current_page | abs
+              if page_number != 1 and page_number != paginate.pages and distance_from_current > 1
+                assign should_hide_on_mobile = true
+              endif
+            endif
+          elsif part.is_link == false and part.title != '&hellip;'
+            assign is_page_number = true
+            assign page_number = current_page
+          endif
+
+          if part.title == '&hellip;'
+            assign just_saw_ellipsis = true
+          else
+            if is_page_number and should_hide_on_mobile == false
+              assign last_visible_plus_one = last_visible_page | plus: 1
+              if last_visible_page > 0 and page_number > last_visible_plus_one and just_saw_ellipsis == false
+                echo '<li class="pagination__item pagination__item--mobile-only pagination__item--gap">'
+                echo '<span class="pagination__link pagination__link--gap" aria-hidden="true">&hellip;</span>'
+                echo '</li>'
+              endif
+              assign last_visible_page = page_number
+              assign just_saw_ellipsis = false
+            endif
+          endif
+        %}
+
+        {% liquid
+          assign li_classes = 'pagination__item'
+          if should_hide_on_mobile
+            assign li_classes = li_classes | append: ' pagination__item--mobile-hide'
+          endif
+          if part.title == '&hellip;'
+            assign li_classes = li_classes | append: ' pagination__item--gap'
+          endif
+        %}
+      
+
+        <li class="{{ li_classes }}">
+          {%- if part.is_link -%}
+            <a
+              href="{{ part.url }}"
+              aria-label="{{ 'content.pagination.page' | t: page: part.title }}"
+              class="pagination__link pagination__link--page"
+            >
+              {{ part.title }}
+            </a>
+          {%- else -%}
+            {%- if part.title == '&hellip;' -%}
+              <span
+                class="pagination__link pagination__link--gap"
+                aria-hidden="true"
+                >&hellip;</span
+              >
+            {%- else -%}
+              <span
+                class="pagination__link pagination__link--page pagination__link--current"
+                aria-current="page"
+              >
+                {{- part.title -}}
+              </span>
+            {%- endif -%}
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+
+      <li class="pagination__item">
+        {%- if paginate.next -%}
+          <a
+            href="{{ paginate.next.url }}"
+            aria-label="{{ 'content.pagination.next' | t }}"
+            class="pagination__link pagination__link--arrow"
+          >
+            {% comment %} {{ 'icon-chevron-right.svg' | inline_asset_content }} {% endcomment %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                <path d="M3.86944 4.99148C2.70551 6.191 1.56894 7.36096 0.433665 8.53227C0.331042 8.63206 0.234861 8.73869 0.145765 8.85147C0.0428762 8.98689 -0.00886869 9.15624 0.000137806 9.32805C0.00914383 9.49987 0.0782976 9.66247 0.194742 9.78564C0.311187 9.90882 0.46701 9.9842 0.633263 9.99778C0.799515 10.0114 0.964893 9.96222 1.09867 9.85948C1.17626 9.79859 1.2488 9.73116 1.31556 9.65788C2.61301 8.31969 3.90961 6.98128 5.20533 5.64265C5.67298 5.16015 5.67102 4.81676 5.20011 4.33023C3.88876 2.97502 2.57655 1.62093 1.26346 0.26796C0.989251 -0.0142821 0.692236 -0.0734181 0.409558 0.089879C0.139255 0.245784 -0.0203242 0.497113 0.048717 0.811611C0.103287 1.01351 0.208693 1.1969 0.354204 1.34317C1.4276 2.4681 2.51337 3.58094 3.59458 4.69781C3.67795 4.78181 3.75807 4.87119 3.86944 4.99148Z" fill="#B46100" fill-opacity="0.4"/>
+              </svg>
+          </a>
+        {%- else -%}
+          <span
+            aria-label="{{ 'content.pagination.next' | t }}"
+            class="pagination__link pagination__link--arrow pagination__link--disabled"
+            aria-disabled="true"
+          >
+            {% comment %} {{ 'icon-chevron-right.svg' | inline_asset_content }} {% endcomment %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+                <path d="M3.86944 4.99148C2.70551 6.191 1.56894 7.36096 0.433665 8.53227C0.331042 8.63206 0.234861 8.73869 0.145765 8.85147C0.0428762 8.98689 -0.00886869 9.15624 0.000137806 9.32805C0.00914383 9.49987 0.0782976 9.66247 0.194742 9.78564C0.311187 9.90882 0.46701 9.9842 0.633263 9.99778C0.799515 10.0114 0.964893 9.96222 1.09867 9.85948C1.17626 9.79859 1.2488 9.73116 1.31556 9.65788C2.61301 8.31969 3.90961 6.98128 5.20533 5.64265C5.67298 5.16015 5.67102 4.81676 5.20011 4.33023C3.88876 2.97502 2.57655 1.62093 1.26346 0.26796C0.989251 -0.0142821 0.692236 -0.0734181 0.409558 0.089879C0.139255 0.245784 -0.0203242 0.497113 0.048717 0.811611C0.103287 1.01351 0.208693 1.1969 0.354204 1.34317C1.4276 2.4681 2.51337 3.58094 3.59458 4.69781C3.67795 4.78181 3.75807 4.87119 3.86944 4.99148Z" fill="#B46100" fill-opacity="0.4"/>
+              </svg>
+          </span>
+        {%- endif -%}
+      </li>
+       {% if paginate.parts.last.url %}
+          <li> 
+             <a href="{{ paginate.parts.last.url }}" class="pagination__item"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="12" viewBox="0 0 14 12" fill="none">
+            <path d="M0.794922 1.41L5.38492 6L0.794922 10.59L2.20492 12L8.20492 6L2.20492 0L0.794922 1.41ZM11.2049 0H13.2049V12H11.2049V0Z" fill="#663700"/>
+          </svg></a>
+        </li>
+        {% endif %}
+    </ul>
+  </nav>
+{%- endif -%}
+
+{% stylesheet %}
+  .pagination {
+    --pagination-size: 36px;
+    --pagination-inset: 2px;
+    --pagination-radius: 6;
+    display: flex;
+    justify-content: center;
+    padding: var(--padding-xl) var(--padding-sm);
+    margin-top: var(--padding-xl);
+    position: relative;
+  }
+
+  .pagination__list {
+    display: flex;
+    gap: 0;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  .pagination__item {
+    width: var(--pagination-size);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+  }
+
+  .pagination__link {
+    display: grid;
+    place-items: center;
+    color: var(--color-foreground);
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    position: relative;
+    outline-color: var(--color-foreground);
+    -webkit-tap-highlight-color: transparent;
+    font-size: var(--font-size--md);
+    font-weight: var(--font-weight-normal);
+    border-radius: calc(var(--pagination-radius) * 1px);
+    transition: color var(--hover-transition-duration) var(--hover-transition-timing),
+      opacity var(--hover-transition-duration) var(--hover-transition-timing);
+  }
+
+  .pagination__link:focus-visible {
+    outline: 2px solid var(--color-foreground);
+    outline-offset: 2px;
+  }
+
+  .pagination__link--current {
+    color: var(--color-background);
+    font-weight: var(--font-weight-medium);
+    cursor: default;
+  }
+
+  .pagination__link--gap {
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .pagination__link--arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .pagination__link--disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .pagination__link svg {
+    width: 0.5rem;
+    height: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .pagination__item--mobile-only {
+    display: none;
+  }
+
+  /* Fallback for browsers without anchor positioning support */
+  @supports not (anchor-name: --pagination-active) {
+    .pagination__link:not(.pagination__link--gap)::before {
+      content: '';
+      position: absolute;
+      inset: var(--pagination-inset);
+      border-radius: calc(var(--pagination-radius) * 1px);
+      background: rgb(var(--color-foreground-rgb) / var(--opacity-10));
+      z-index: -1;
+      opacity: 0;
+      transition: background var(--hover-transition-duration) var(--hover-transition-timing),
+        opacity var(--hover-transition-duration) var(--hover-transition-timing);
+    }
+
+    .pagination__link[aria-current='page']::before {
+      background: var(--color-foreground);
+      opacity: 1;
+    }
+
+    .pagination__link:hover:not([aria-current='page']):not(.pagination__link--gap):not(
+        .pagination__link--disabled
+      )::before {
+      opacity: 1;
+    }
+  }
+
+  /* Modern approach with anchor positioning */
+  @supports (anchor-name: --pagination-active) {
+    .pagination__list::before {
+      content: '';
+      z-index: -1;
+      position: absolute;
+      width: calc(var(--pagination-size) - (2 * var(--pagination-inset)));
+      aspect-ratio: 1;
+      pointer-events: none;
+      opacity: 0;
+      border-radius: calc(var(--pagination-radius) * 1px);
+      background: rgb(var(--color-foreground-rgb) / var(--opacity-10));
+      transition: left var(--hover-transition-duration) var(--hover-transition-timing),
+        top var(--hover-transition-duration) var(--hover-transition-timing);
+    }
+
+    /* Hide hover indicator on touch devices */
+    @media (hover: none) and (pointer: coarse) {
+      .pagination__list::before {
+        content: unset;
+      }
+    }
+
+    .pagination__list:has(
+        .pagination__link:is(:hover, :focus-visible):not(.pagination__link--gap):not(.pagination__link--disabled)
+      )::before {
+      opacity: 1;
+    }
+
+    /* Style current page directly */
+    .pagination__link[aria-current='page']::before {
+      content: '';
+      position: absolute;
+      inset: var(--pagination-inset);
+      border-radius: calc(var(--pagination-radius) * 1px);
+      background: var(--color-foreground);
+      z-index: -1;
+    }
+
+    .pagination__list
+      .pagination__item:has(
+        .pagination__link:is(:hover, :focus-visible):not(.pagination__link--gap):not(.pagination__link--disabled)
+      ) {
+      anchor-name: --pagination-hover;
+    }
+
+    /* Position hover indicator using anchor */
+    .pagination__list::before {
+      position-anchor: --pagination-hover;
+      left: calc(anchor(left) + var(--pagination-inset));
+      top: calc(anchor(top) + var(--pagination-inset));
+    }
+
+    .pagination__item:has(+ .pagination__item--gap) .pagination__link::after,
+    .pagination__item--gap + .pagination__item .pagination__link::after {
+      position: absolute;
+      content: '';
+      pointer-events: auto;
+    }
+
+    .pagination__item:has(+ .pagination__item--gap) .pagination__link::after {
+      inset: 0 -50% 0 100%;
+    }
+
+    .pagination__item--gap + .pagination__item .pagination__link::after {
+      inset: 0 100% 0 -50%;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .pagination {
+      --pagination-size: 44px;
+      --pagination-inset: 5px;
+      padding: var(--padding-lg) var(--padding-sm);
+    }
+
+    .pagination__link {
+      font-size: var(--font-size--sm);
+    }
+
+    .pagination__item--mobile-hide {
+      display: none;
+    }
+
+    .pagination__item--mobile-only {
+      display: grid;
+    }
+
+    .pagination__item:has(.pagination__link--gap) {
+      width: 45px;
+    }
+  }
+
+  .pagination__list li:first-child .pagination__item,  .pagination__list li.pagination__item:first-child  {
+    border-radius: 5px 0 0 5px;
+    }
+  .pagination__list li:last-child .pagination__item , .pagination__list li.pagination__item:last-child {
+    border-radius: 0 5px 5px 0;
+    }
+
+    .pagination__list>li:not(:last-child) {
+        margin-right: -1px;
+    }
+    .pagination__item {
+    color: rgb(var(--color-foreground));
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 45px;
+    padding: 0;
+    text-decoration: none;
+    border: .82px solid var(--Color-2, rgba(180, 97, 0, .4));
+    background: var(--Color-1, #FFF);
+    color: #663700 !important;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 26px;
+    max-width: 45px;
+  }
+ .pagination__link--current{
+    border: .82px solid var(--Color-2, rgba(180, 97, 0, .4));
+    background: var(--Primary-Color, #663700);
+    color: #fff !important;
+    opacity: 1;
+    border-radius: 0;
+  }
+  nav.pagination {
+    padding: 30px 0 0 0;
+}
+.pagination__list {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+{% endstylesheet %}

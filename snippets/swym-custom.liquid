@@ -1,0 +1,24 @@
+{% comment %} <script defer>
+  function swymCallbackFn(swat){
+    document.addEventListener("swym:collections-loaded", function(){
+      swat.initializeActionButtons("body");
+    })
+  }
+  if(!window.SwymCallbacks){
+    window.SwymCallbacks = [];
+  }
+  window.SwymCallbacks.push(swymCallbackFn);
+</script> {% endcomment %}
+
+<script>
+  function swymCallbackFn(swat) {
+    document.addEventListener('swym:collections-loaded', function () {
+      requestAnimationFrame(() => {
+        swat.initializeActionButtons("body");
+      });
+    });
+  }
+
+  window.SwymCallbacks = window.SwymCallbacks || [];
+  window.SwymCallbacks.push(swymCallbackFn);
+</script>

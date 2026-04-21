@@ -1,0 +1,427 @@
+
+{% assign block_settings = block.settings %}
+
+<accordion-custom
+  {% if block_settings.open_by_default %}
+    open-by-default-on-desktop
+    open-by-default-on-mobile
+  {% endif %}
+>
+  <details
+    class="details"
+    data-testid="accordion-details"
+    {{ block.shopify_attributes }}
+  >
+    <summary class="details__header">
+      {% render 'icon-or-image',
+        icon: block_settings.icon,
+        image_upload: block_settings.image_upload,
+        width: block_settings.width,
+        class_name: 'details__icon'
+      %}
+      <span class="header-title">{{ block_settings.heading }}</span>
+      <span class="svg-wrapper icon-caret icon-animated">
+        {% comment %} {{- 'icon-caret.svg' | inline_asset_content -}} {% endcomment %}
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M4.84286 6.45714H0V4.84286H4.84286V0H6.45714V4.84286H11.3V6.45714H6.45714V11.3H4.84286V6.45714Z" fill="#663700"/>
+        </svg>
+      </span>
+      <span class="svg-wrapper icon-plus">
+        {{- 'icon-plus.svg' | inline_asset_content -}}
+      </span>
+    </summary>
+
+    <div class="details-content">
+      {% content_for 'blocks' %}
+    </div>
+  </details>
+</accordion-custom>
+<script>
+document.querySelectorAll('details').forEach(detail => {
+  const svgWrapper = detail.querySelector('.svg-wrapper');
+
+  const defaultSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+  <path d="M4.84286 6.45714H0V4.84286H4.84286V0H6.45714V4.84286H11.3V6.45714H6.45714V11.3H4.84286V6.45714Z" fill="#663700"/>
+  </svg>`;
+
+  const openSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="2" viewBox="0 0 13 2" fill="none">
+  <path d="M0.000782013 1.04579V1.83008L12.8007 1.83008V1.04579L12.8008 0.784364L12.8007 7.82013e-05L0.000782013 7.82013e-05V0.784364V1.04579Z" fill="#F5EDDC"/>
+  </svg>`;
+
+  // Set initial SVG (important if page loads with <details open>)
+  svgWrapper.innerHTML = detail.open ? openSVG : defaultSVG;
+
+  detail.addEventListener('toggle', () => {
+    svgWrapper.innerHTML = detail.open ? openSVG : defaultSVG;
+  });
+});
+
+</script>
+{% stylesheet %}
+  .details__icon {
+    height: auto;
+    margin-inline-end: var(--margin-xs);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.accordion_row",
+  "tag": null,
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "t:text_defaults.accordion_heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_by_default",
+      "label": "t:settings.open_row_by_default",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:content.icon"
+    },
+    {
+      "type": "select",
+      "id": "icon",
+      "label": "t:settings.icon",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:options.none"
+        },
+        {
+          "value": "apple",
+          "label": "t:options.apple"
+        },
+        {
+          "value": "arrow",
+          "label": "t:options.arrow"
+        },
+        {
+          "value": "banana",
+          "label": "t:options.banana"
+        },
+        {
+          "value": "bottle",
+          "label": "t:options.bottle"
+        },
+        {
+          "value": "box",
+          "label": "t:options.box"
+        },
+        {
+          "value": "carrot",
+          "label": "t:options.carrot"
+        },
+        {
+          "value": "chat_bubble",
+          "label": "t:options.chat_bubble"
+        },
+        {
+          "value": "check_box",
+          "label": "t:options.check_box"
+        },
+        {
+          "value": "clipboard",
+          "label": "t:options.clipboard"
+        },
+        {
+          "value": "dairy",
+          "label": "t:options.dairy"
+        },
+        {
+          "value": "dairy_free",
+          "label": "t:options.dairy_free"
+        },
+        {
+          "value": "dryer",
+          "label": "t:options.dryer"
+        },
+        {
+          "value": "eye",
+          "label": "t:options.eye"
+        },
+        {
+          "value": "fire",
+          "label": "t:options.fire"
+        },
+        {
+          "value": "gluten_free",
+          "label": "t:options.gluten_free"
+        },
+        {
+          "value": "heart",
+          "label": "t:options.heart"
+        },
+        {
+          "value": "iron",
+          "label": "t:options.iron"
+        },
+        {
+          "value": "leaf",
+          "label": "t:options.leaf"
+        },
+        {
+          "value": "leather",
+          "label": "t:options.leather"
+        },
+        {
+          "value": "lightning_bolt",
+          "label": "t:options.lightning_bolt"
+        },
+        {
+          "value": "lipstick",
+          "label": "t:options.lipstick"
+        },
+        {
+          "value": "lock",
+          "label": "t:options.lock"
+        },
+        {
+          "value": "map_pin",
+          "label": "t:options.map_pin"
+        },
+        {
+          "value": "nut_free",
+          "label": "t:options.nut_free"
+        },
+        {
+          "value": "pants",
+          "label": "t:options.pants"
+        },
+        {
+          "value": "paw_print",
+          "label": "t:options.paw_print"
+        },
+        {
+          "value": "pepper",
+          "label": "t:options.pepper"
+        },
+        {
+          "value": "perfume",
+          "label": "t:options.perfume"
+        },
+        {
+          "value": "plane",
+          "label": "t:options.plane"
+        },
+        {
+          "value": "plant",
+          "label": "t:options.plant"
+        },
+        {
+          "value": "price_tag",
+          "label": "t:options.price_tag"
+        },
+        {
+          "value": "question_mark",
+          "label": "t:options.question_mark"
+        },
+        {
+          "value": "recycle",
+          "label": "t:options.recycle"
+        },
+        {
+          "value": "return",
+          "label": "t:options.return"
+        },
+        {
+          "value": "ruler",
+          "label": "t:options.ruler"
+        },
+        {
+          "value": "serving_dish",
+          "label": "t:options.serving_dish"
+        },
+        {
+          "value": "shirt",
+          "label": "t:options.shirt"
+        },
+        {
+          "value": "shoe",
+          "label": "t:options.shoe"
+        },
+        {
+          "value": "silhouette",
+          "label": "t:options.silhouette"
+        },
+        {
+          "value": "bluesky",
+          "label": "t:options.social_bluesky"
+        },
+        {
+          "value": "facebook",
+          "label": "t:options.social_facebook"
+        },
+        {
+          "value": "instagram",
+          "label": "t:options.social_instagram"
+        },
+        {
+          "value": "linkedin",
+          "label": "t:options.social_linkedin"
+        },
+        {
+          "value": "pinterest",
+          "label": "t:options.social_pinterest"
+        },
+        {
+          "value": "snapchat",
+          "label": "t:options.social_snapchat"
+        },
+        {
+          "value": "spotify",
+          "label": "t:options.social_spotify"
+        },
+        {
+          "value": "threads",
+          "label": "t:options.social_threads"
+        },
+        {
+          "value": "tiktok",
+          "label": "t:options.social_tiktok"
+        },
+        {
+          "value": "tumblr",
+          "label": "t:options.social_tumblr"
+        },
+        {
+          "value": "twitter",
+          "label": "t:options.social_twitter"
+        },
+        {
+          "value": "vimeo",
+          "label": "t:options.social_vimeo"
+        },
+        {
+          "value": "youtube",
+          "label": "t:options.social_youtube"
+        },
+        {
+          "value": "whatsapp",
+          "label": "t:options.social_whatsapp"
+        },
+        {
+          "value": "snowflake",
+          "label": "t:options.snowflake"
+        },
+        {
+          "value": "star",
+          "label": "t:options.star"
+        },
+        {
+          "value": "stopwatch",
+          "label": "t:options.stopwatch"
+        },
+        {
+          "value": "truck",
+          "label": "t:options.truck"
+        },
+        {
+          "value": "washing",
+          "label": "t:options.washing"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_upload",
+      "label": "t:settings.image_icon"
+    },
+    {
+      "type": "range",
+      "id": "width",
+      "label": "t:settings.width",
+      "min": 12,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:names.accordion_row",
+      "blocks": {
+        "text-1": {
+          "type": "text",
+          "settings": {
+            "text": "t:html_defaults.work_quickly_to_ship",
+            "width": "100%"
+          }
+        }
+      },
+      "block_order": ["text-1"],
+      "settings": {
+        "heading": "t:text_defaults.when_will_order_arrive"
+      }
+    }
+  ]
+}
+{% endschema %}
+<style>
+  .faq-wrapper accordion-custom details.details[open]{
+     background: #663700;
+  }
+  .faq-wrapper summary.details__header{
+   color: #4A4A4A!important;
+   padding:0px;
+    line-height: 28.8px!important;
+  }
+  .faq-wrapper accordion-custom details.details[open] .details-content p,
+  .faq-wrapper accordion-custom details.details[open] summary.details__header
+  {
+    color: #fff!important;
+  }
+  .faq-wrapper accordion-custom details.details[open] .details-content p{
+   font-size:18px!important;
+   font-weight: 500;
+   line-height: 21.6px;
+  }
+  .faq-wrapper accordion-custom details.details {
+    padding:20px!important;
+    border-radius:0px 0px 10px 10px;
+    border: none !important;
+    border-bottom:1px solid #663700!important;
+    margin-bottom: 20px !important;
+}
+.faq-wrapper accordion-custom details[open] .details-content {
+    padding-top: 20px;
+    padding-bottom: 0;
+}
+.faq-wrapper accordion-custom details.details[open]{
+  border-radius:10px 10px 10px 10px;
+}
+@media(max-width:749px){
+  .faq-wrapper summary .svg-wrapper{
+    width: 10px;
+    height: 10px;
+  }
+  .faq-wrapper span.header-title{
+    width:calc(100% - 10px);
+    padding-right:10px;
+  }
+  .faq-wrapper summary.details__header{
+   font-size:18px!important;
+  }
+  .faq-wrapper accordion-custom details.details[open] .details-content p{font-size:16px!important;line_height:19.2px!important;}
+  .faq-wrapper accordion-custom details.details {
+    margin-bottom: 25px !important;
+  }
+}
+ {% comment %}accordion-custom .details-content p{color: #fff!important;} {% endcomment %}
+</style>

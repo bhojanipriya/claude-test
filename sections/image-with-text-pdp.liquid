@@ -1,0 +1,229 @@
+<section class="amari-about-section">
+
+  <!-- TOP LIGHT BACKGROUND -->
+  <div class="amari-top">
+    <div class="page-width amari-inner">
+
+      <!-- LEFT CONTENT -->
+      <div class="amari-content">
+        <div class="amari-text">
+            {% if section.settings.heading != blank %}
+            <h2>{{ section.settings.heading }}</h2>
+            {% endif %}
+
+            {% if section.settings.description != blank %}
+            <div class="amari-description">
+                {{ section.settings.description }}
+            </div>
+            {% endif %}
+        </div>
+          <div class="amari-ingredients-wrapper">
+             {% if section.blocks.size > 0 %}
+                <h2>{{ section.settings.ingredients_heading }}</h2>
+
+                    <div class="amari-ingredients">
+                        {% for block in section.blocks %}
+                            <div class="ingredient-item" {{ block.shopify_attributes }}>
+                            
+                            {% if block.settings.icon != blank %}
+                                <img 
+                                src="{{ block.settings.icon | image_url: width: 120 }}" 
+                                alt="{{ block.settings.title }}"
+                                loading="lazy"
+                                height=""
+                                width=""
+                                >
+                            {% endif %}
+
+                            <p>{{ block.settings.title }}</p>
+
+                            </div>
+                        {% endfor %}
+                        </div>
+
+            {% endif %}
+            </div>
+        </div>
+
+      <!-- RIGHT IMAGE -->
+      <div class="amari-image-wrapper">
+        {% if section.settings.product_image != blank %}
+            <div class="amari-image">
+            <img 
+                src="{{ section.settings.product_image | image_url: width: 1000 }}"
+                alt="Product Image"
+                loading="lazy"
+                height=""
+                width=""
+            >
+            </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<style>
+.amari-about-section {
+  position: relative;
+  width: 100%;
+      margin-top: 110px;
+}
+
+/* TOP LIGHT GREY */
+.amari-top {
+  position: relative;
+}
+
+/* CONTENT ALIGNMENT */
+.amari-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+      max-width: 1720px;
+    margin: 0 auto;
+    padding: 50px 50px;
+        background: #FBF7F2;
+}
+
+.amari-content {
+  max-width: 861px;
+  z-index: 2;
+}
+
+.amari-content h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #663700;
+    font-family: 'DM sans';
+}
+
+.amari-description {
+  line-height: 1.8;
+}
+.amari-ingredients-wrapper {
+    margin-top: 40px;
+}
+/* IMAGE */
+.amari-image {
+position: absolute;
+        right: 0%;
+    top: -46%;
+    max-width: 694px;
+    height: auto;
+    width: 100%;
+}
+
+.amari-image img {
+  max-height: 700px;
+  width: auto;
+}
+
+/* BOTTOM BEIGE */
+.amari-bottom {
+  background: #e7dfd6;
+  padding: 80px 0;
+}
+
+.amari-bottom h3 {
+  margin-bottom: 30px;
+  font-size: 22px;
+}
+
+.amari-ingredients {
+  display: flex;
+  gap: 60px;
+}
+
+.ingredient-item p {
+  font-size: 15px;
+}
+.ingredient-item img {
+    height: 66px;
+    object-fit: contain;
+}
+/* MOBILE */
+@media(max-width: 1024px){
+  .amari-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .amari-image {
+    position: relative;
+    right: auto;
+    top: auto;
+    margin-top: 40px;
+  }
+
+  .amari-top {
+    padding: 80px 0;
+  }
+
+  .amari-ingredients {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Amari Layered Section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About AMARI"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "ingredients_heading",
+      "label": "Ingredients Heading",
+      "default": "Main Ingredients"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image"
+    }
+  ],
+"blocks": [
+  {
+    "type": "ingredient",
+    "name": "Ingredient",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "icon",
+        "label": "Ingredient Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Ingredient Name",
+        "default": "Ingredient Name"
+      }
+    ]
+  }
+],
+  "presets": [
+    {
+      "name": "Amari Layered Section",
+      "blocks": [
+        { "type": "ingredient" },
+        { "type": "ingredient" },
+        { "type": "ingredient" }
+      ]
+    }
+  ]
+}
+{% endschema %}

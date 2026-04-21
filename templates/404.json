@@ -7,11 +7,151 @@
  * made to this file may be overwritten.
  * ------------------------------------------------------------
  */
- {
+{
   "sections": {
     "main": {
-      "type": "404",
-      "settings": {}
+      "type": "main-404",
+      "blocks": {
+        "text_GqmVFf": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "custom_class_text": "page-titile-error",
+            "text": "<h2>Page not found<\/h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "h2",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground-heading)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 50,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "image_439iaF": {
+          "type": "image",
+          "name": "t:names.image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/404.webp",
+            "image_width_percent": 100,
+            "link": "",
+            "image_ratio": "adapt",
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_Ua9XAW": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "custom_class_text": "error-page-small-title",
+            "text": "<h3>This page has been probably moved somewhere...<\/h3>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "h3",
+            "font": "var(--font-primary--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 70,
+            "padding-block-end": 10,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_m3bx4t": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "custom_class_text": "error-text",
+            "text": "<p>Sorry, but the page you are looking for is not found. Please, make sure you have typed the correct URL.<\/p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 50,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_PAQMwR": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "add_arrow": true,
+            "label": "Go To Home Page",
+            "link": "shopify:\/\/pages\/home-2",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_GqmVFf",
+        "image_439iaF",
+        "text_Ua9XAW",
+        "text_m3bx4t",
+        "button_PAQMwR"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "section_width": "page-width",
+        "section_height": "small",
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 0,
+        "color_scheme": "",
+        "padding-block-start": 100,
+        "padding-block-end": 100
+      }
     }
   },
   "order": [

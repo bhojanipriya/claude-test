@@ -1,0 +1,151 @@
+{%- comment -%}
+  Works both as a child of _product-card (product-list section)
+  and standalone. Tries closest.product first, falls back to product.
+{%- endcomment -%}
+{%- liquid
+  assign _product = closest.product | default: product
+  assign _sale_end = _product.metafields.custom.sale_end
+-%}
+
+{% if _sale_end != blank and _sale_end != nil %}
+  <div
+    id="countdown-timer-{{ block.id }}"
+    class="countdown-timer-block"
+    data-endtime="{{ _sale_end | date: '%Y-%m-%dT%H:%M:%S' }}"
+  >
+    <span class="countdown-label">Sale Ends in:</span>
+
+    <div class="countdown-item">
+      <div class="countdown-number" id="days-{{ block.id }}">00</div>
+      <small class="countdown-text">Days</small>
+    </div>
+    <span class="countdown-separator">:</span>
+
+    <div class="countdown-item">
+      <div class="countdown-number" id="hours-{{ block.id }}">00</div>
+      <small class="countdown-text">Hrs</small>
+    </div>
+    <span class="countdown-separator">:</span>
+
+    <div class="countdown-item">
+      <div class="countdown-number" id="minutes-{{ block.id }}">00</div>
+      <small class="countdown-text">Mins</small>
+    </div>
+    <span class="countdown-separator">:</span>
+
+    <div class="countdown-item">
+      <div class="countdown-number" id="seconds-{{ block.id }}">00</div>
+      <small class="countdown-text">Secs</small>
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Count Down Timer",
+  "tag": null,
+  "presets": [
+    {
+      "name": "Count Down Timer",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+(function () {
+  var timerId = {{ block.id | json }};
+  var wrapper = document.getElementById('countdown-timer-' + timerId);
+  if (!wrapper) return;
+
+  var endTime = new Date(wrapper.getAttribute('data-endtime')).getTime();
+  if (isNaN(endTime)) return;
+
+  var daysEl    = document.getElementById('days-'    + timerId);
+  var hoursEl   = document.getElementById('hours-'   + timerId);
+  var minutesEl = document.getElementById('minutes-' + timerId);
+  var secondsEl = document.getElementById('seconds-' + timerId);
+
+  function pad(n) { return ('0' + n).slice(-2); }
+
+  function updateCountdown() {
+    var distance = endTime - Date.now();
+    if (distance <= 0) {
+      wrapper.style.display = 'none';
+      clearInterval(interval);
+      return;
+    }
+    daysEl.textContent    = Math.floor(distance / 86400000);
+    hoursEl.textContent   = pad(Math.floor((distance % 86400000) / 3600000));
+    minutesEl.textContent = pad(Math.floor((distance % 3600000) / 60000));
+    secondsEl.textContent = pad(Math.floor((distance % 60000) / 1000));
+  }
+
+  updateCountdown();
+  var interval = setInterval(updateCountdown, 1000);
+})();
+</script>
+
+<style>
+.countdown-timer-block {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.countdown-label {
+  color: #DC0000;
+  font-weight: 500;
+  font-size: 18px;
+  margin-top: -26px;
+  padding-right: 5px;
+}
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.countdown-number {
+  background: rgba(220, 0, 38, 0.1);
+  border-radius: 8px;
+  padding: 8px 10px;
+  min-width: 50px;
+  text-align: center;
+  font-size: 18px;
+  color: #DC0000;
+}
+.countdown-text {
+  font-size: 16px;
+  color: #DC0000;
+}
+.countdown-separator {
+  font-weight: bold;
+  font-size: 18px;
+  color: #DC0000;
+  align-self: flex-start;
+  padding-top: 8px;
+}
+@media screen and (max-width: 989px) and (min-width: 750px) {
+  .countdown-label  { font-size: 16px !important; padding-right: 0 !important; letter-spacing: -0.3px; }
+  .countdown-number { padding: 8px 10px; min-width: 45px; font-size: 16px; }
+}
+@media (max-width: 520px) {
+  .countdown-label  { font-size: 16px; }
+  .countdown-number { font-size: 16px; min-width: 40px; }
+  .countdown-text   { font-size: 14px; }
+}
+@media (min-width: 428px) and (max-width: 520px) {
+  .countdown-number { width: 50px; padding: 12px 10px; }
+}
+@media (max-width: 420px) {
+  .countdown-label     { font-size: 14px; }
+  .countdown-number    { font-size: 14px; min-width: 40px; }
+  .countdown-text      { font-size: 12px; }
+  .countdown-separator { padding-top: 2px; }
+}
+@media (max-width: 400px) {
+  .countdown-label  { font-size: 12px; margin-top: -18px; }
+  .countdown-number { font-size: 12px; min-width: 35px; }
+  .countdown-text   { font-size: 10px; }
+}
+</style>

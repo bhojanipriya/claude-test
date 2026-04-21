@@ -1,0 +1,706 @@
+{% liquid
+  assign s = section.settings
+%}
+
+<div
+  class="email-signup-new-section color-{{ s.color_scheme }}{% if s.section_width == 'full-width' %} email-signup-new-section--full{% endif %}"
+  style="
+    background: {{ s.background_gradient }};
+    border-radius: {{ s.border_radius }}px;
+    padding-top: {{ s.padding-block-start }}px;
+    padding-bottom: {{ s.padding-block-end }}px;
+    padding-left: {{ s.padding-inline-start }}px;
+    padding-right: {{ s.padding-inline-end }}px;
+    {% if s.section_height == 'custom' %}min-height: {{ s.section_height_custom }}vh;{% elsif s.section_height == 'small' %}min-height: 30vh;{% elsif s.section_height == 'medium' %}min-height: 50vh;{% elsif s.section_height == 'large' %}min-height: 75vh;{% elsif s.section_height == 'full-screen' %}min-height: 100vh;{% endif %}
+    {% if s.border != 'none' %}border: {{ s.border_width }}px {{ s.border }} rgba(var(--color-foreground), {{ s.border_opacity | divided_by: 100.0 }});{% endif %}
+  "
+>
+  <div class="email-signup-new-wrap{% if s.section_width == 'page-width' %} page-width{% endif %}">
+
+    {% if s.eyebrow != blank %}
+      <p class="email-signup-new__eyebrow">{{ s.eyebrow | escape }}</p>
+    {% endif %}
+
+    {%- form 'customer', class: 'email-signup-new__form', id: 'EmailSignupNewForm' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+
+      <p class="email-signup-new__sentence {{ s.type_preset }}" style="
+        {% if s.text_alignment == 'left' %}text-align: left;{% elsif s.text_alignment == 'right' %}text-align: right;{% else %}text-align: center;{% endif %}
+        {% if s.type_preset == 'custom' %}
+          {% if s.heading_font != blank %}font-family: {{ s.heading_font }};{% endif %}
+          {% if s.font_size != blank %}font-size: {{ s.font_size }};{% endif %}
+          {% if s.line_height != blank %}line-height: {{ s.line_height }};{% endif %}
+          {% if s.letter_spacing != blank %}letter-spacing: {{ s.letter_spacing }};{% endif %}
+          {% if s.case != blank %}text-transform: {{ s.case }};{% endif %}
+          {% if s.wrap != blank %}text-wrap: {{ s.wrap }};{% endif %}
+        {% endif %}
+        {% if s.type_preset != 'rte' and s.color != blank %}color: {{ s.color }};{% endif %}
+      ">
+        {{ s.text_before_name | escape }}
+        <span class="email-signup-new__field-wrap">
+          <input
+            id="EmailSignupNewName-{{ section.id }}"
+            class="email-signup-new__inline-input"
+            style="font-family: {{ s.body_font }};"
+            type="text"
+            name="contact[first_name]"
+            placeholder="{{ s.name_placeholder | escape }}"
+            autocomplete="given-name"
+            required
+          >
+        </span>
+        {{ s.text_between | escape }}
+        <span class="email-signup-new__discount">{{ s.discount_text | escape }}</span>
+        {{ s.text_after_discount | escape }}
+        <span class="email-signup-new__field-wrap">
+          <input
+            id="EmailSignupNewEmail-{{ section.id }}"
+            class="email-signup-new__inline-input email-signup-new__inline-input--email"
+            style="font-family: {{ s.body_font }};"
+            type="email"
+            name="contact[email]"
+            placeholder="{{ s.email_placeholder | escape }}"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            required
+            {% if form.errors %}
+              autofocus
+              aria-invalid="true"
+              aria-describedby="EmailSignupNew-error-{{ section.id }}"
+            {% elsif form.posted_successfully? %}
+              aria-describedby="EmailSignupNew-success-{{ section.id }}"
+            {% endif %}
+          >
+        </span>.
+      </p>
+
+      {%- if form.errors -%}
+        <div
+          id="EmailSignupNew-error-{{ section.id }}"
+          class="email-signup-new__message email-signup-new__message--error"
+          tabindex="-1"
+        >
+          {{ form.errors.translated_fields.email | capitalize }}
+          {{ form.errors.messages.email }}
+        </div>
+      {%- endif -%}
+
+      {%- if form.posted_successfully? -%}
+        <div
+          id="EmailSignupNew-success-{{ section.id }}"
+          class="email-signup-new__message email-signup-new__message--success"
+          tabindex="-1"
+        >
+          {{ 'blocks.email_signup.success' | t }}
+        </div>
+      {%- endif -%}
+
+      <button
+        type="submit"
+        class="email-signup-new__submit {{ s.button_style }}"
+        style="border-radius: {{ s.button_border_radius }}px;"
+        aria-label="{{ 'actions.sign_up' | t }}"
+      >
+        {{ s.button_label | escape }}
+      </button>
+
+    {%- endform -%}
+  </div>
+</div>
+
+{% stylesheet %}
+.email-signup-new-section {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.email-signup-new-section--full {
+  width: 100%;
+}
+
+.email-signup-new-wrap {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.email-signup-new-wrap.page-width {
+  max-width: var(--page-width, 1200px);
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.email-signup-new__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  margin: 0;
+}
+
+.email-signup-new__sentence {
+  color: #FFF;
+  text-align: center;
+  font-family: var(--font-heading--family, "Playfair Display", serif);
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 80px;
+  letter-spacing: 4.8px;
+  margin: 0;
+}
+
+.email-signup-new__field-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  vertical-align: baseline;
+  margin: 0 4px;
+}
+
+.email-signup-new__inline-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid rgba(255,255,255,0.7);
+  color: #FFF;
+  font-family: var(--font-body--family, sans-serif);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 30px;
+  letter-spacing: 2px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: 8%;
+  text-underline-offset: 25%;
+  text-underline-position: from-font;
+  text-transform: uppercase;
+  text-align: center;
+  outline: none;
+  padding: 0 4px 2px;
+  width: 160px;
+  transition: border-color 0.2s;
+  border-radius: 0;
+  text-align: left;
+}
+
+.email-signup-new__inline-input--email {
+  width: 240px;
+}
+
+.email-signup-new__inline-input::placeholder {
+  color: rgba(255,255,255,0.55);
+  font-family: var(--font-body--family, sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.email-signup-new__inline-input:focus {
+  border-bottom-color: #ffffff;
+}
+
+.email-signup-new__discount {
+  color: #F4FFC7;
+  font-family: var(--font-heading--family, "Playfair Display", serif);
+  font-size: 48px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 80px;
+  letter-spacing: 4.8px;
+}
+
+.email-signup-new__sentence > span.email-signup-new__punctuation,
+.email-signup-new__sentence > *:not(.email-signup-new__field-wrap):not(.email-signup-new__discount) {
+  color: #FFF;
+  font-family: var(--font-body--family, "Instrument Sans", sans-serif);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 80px;
+  letter-spacing: 2px;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: 8%;
+  text-underline-offset: 25%;
+  text-underline-position: from-font;
+  text-transform: capitalize;
+}
+
+.email-signup-new__submit {
+  display: block;
+  margin: 8px auto 0;
+  background-color: transparent;
+  color: #ffffff;
+  border: 1.5px solid rgba(255,255,255,0.7);
+  padding: 12px 36px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.email-signup-new__submit.button {
+  background-color: var(--button-background-color, #663700);
+  color: var(--button-color, #fff);
+  border-color: transparent;
+}
+
+.email-signup-new__submit.button-secondary {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1.5px solid #ffffff;
+}
+
+.email-signup-new__submit.button-unstyled {
+  background-color: transparent;
+  color: rgba(255,255,255,0.8);
+  border: none;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.email-signup-new__submit:hover {
+  background-color: rgba(255,255,255,0.12);
+  border-color: #ffffff;
+}
+
+.email-signup-new__message {
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
+
+.email-signup-new__message--error {
+  background-color: rgba(220,53,69,0.2);
+  color: #fff;
+}
+
+.email-signup-new__message--success {
+  background-color: rgba(40,167,69,0.2);
+  color: #fff;
+}
+
+@media (max-width: 749px) {
+  .email-signup-new__sentence {
+    font-size: 20px !important;
+  }
+  .email-signup-new__inline-input {
+    width: 120px;
+  }
+  .email-signup-new__inline-input--email {
+    width: 160px;
+  }
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Email Signup New",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:content.layout"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        { "value": "page-width", "label": "t:options.page" },
+        { "value": "full-width", "label": "t:options.full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "select",
+      "id": "section_height",
+      "label": "t:settings.height",
+      "options": [
+        { "value": "", "label": "t:options.auto" },
+        { "value": "small", "label": "t:options.small" },
+        { "value": "medium", "label": "t:options.medium" },
+        { "value": "large", "label": "t:options.large" },
+        { "value": "full-screen", "label": "t:options.full_screen" },
+        { "value": "custom", "label": "t:options.custom" }
+      ],
+      "default": ""
+    },
+    {
+      "type": "range",
+      "id": "section_height_custom",
+      "label": "t:settings.custom_height",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50,
+      "visible_if": "{{ section.settings.section_height == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "t:settings.alignment",
+      "options": [
+        { "value": "left", "label": "t:options.left" },
+        { "value": "center", "label": "t:options.center" },
+        { "value": "right", "label": "t:options.right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "t:content.appearance"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient / color",
+      "default": "linear-gradient(270deg, #06809C 0%, #21A5A6 100%)"
+    },
+    {
+      "type": "select",
+      "id": "border",
+      "label": "t:settings.borders",
+      "options": [
+        { "value": "none", "label": "t:options.none" },
+        { "value": "solid", "label": "t:options.solid" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "label": "t:settings.border_width",
+      "default": 1,
+      "visible_if": "{{ section.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:settings.border_opacity",
+      "default": 100,
+      "visible_if": "{{ section.settings.border != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "t:settings.border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Eyebrow Label"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Email Signup - Layout 2"
+    },
+    {
+      "type": "header",
+      "content": "Sentence Copy"
+    },
+    {
+      "type": "select",
+      "id": "type_preset",
+      "label": "t:settings.preset",
+      "options": [
+        { "value": "rte", "label": "t:options.default" },
+        { "value": "paragraph", "label": "t:options.paragraph" },
+        { "value": "h1", "label": "t:options.h1" },
+        { "value": "h2", "label": "t:options.h2" },
+        { "value": "h3", "label": "t:options.h3" },
+        { "value": "h4", "label": "t:options.h4" },
+        { "value": "h5", "label": "t:options.h5" },
+        { "value": "h6", "label": "t:options.h6" },
+        { "value": "custom", "label": "t:options.custom" }
+      ],
+      "default": "rte",
+      "info": "t:info.edit_presets_in_theme_settings"
+    },
+    {
+      "type": "header",
+      "content": "Font Families"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font (sentence & discount)",
+      "options": [
+        { "value": "var(--font-heading--family)", "label": "t:options.heading" },
+        { "value": "var(--font-body--family)", "label": "t:options.body" },
+        { "value": "var(--font-subheading--family)", "label": "t:options.subheading" },
+        { "value": "var(--font-accent--family)", "label": "t:options.accent" }
+      ],
+      "default": "var(--font-heading--family)"
+    },
+    {
+      "type": "select",
+      "id": "body_font",
+      "label": "Body font (inputs & small text)",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "t:options.body" },
+        { "value": "var(--font-heading--family)", "label": "t:options.heading" },
+        { "value": "var(--font-subheading--family)", "label": "t:options.subheading" },
+        { "value": "var(--font-accent--family)", "label": "t:options.accent" }
+      ],
+      "default": "var(--font-body--family)"
+    },
+    {
+      "type": "select",
+      "id": "font",
+      "label": "t:settings.font",
+      "options": [
+        { "value": "var(--font-body--family)", "label": "t:options.body" },
+        { "value": "var(--font-subheading--family)", "label": "t:options.subheading" },
+        { "value": "var(--font-heading--family)", "label": "t:options.heading" },
+        { "value": "var(--font-accent--family)", "label": "t:options.accent" }
+      ],
+      "default": "var(--font-body--family)",
+      "visible_if": "{{ section.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "font_size",
+      "label": "t:settings.size",
+      "options": [
+        { "value": "", "label": "t:options.default" },
+        { "value": "0.625rem", "label": "10px" },
+        { "value": "0.75rem", "label": "12px" },
+        { "value": "0.875rem", "label": "14px" },
+        { "value": "1rem", "label": "16px" },
+        { "value": "1.125rem", "label": "18px" },
+        { "value": "1.25rem", "label": "20px" },
+        { "value": "1.5rem", "label": "24px" },
+        { "value": "2rem", "label": "32px" },
+        { "value": "2.5rem", "label": "40px" },
+        { "value": "3rem", "label": "48px" },
+        { "value": "3.5rem", "label": "56px" },
+        { "value": "4.5rem", "label": "72px" },
+        { "value": "5.5rem", "label": "88px" },
+        { "value": "7.5rem", "label": "120px" },
+        { "value": "9.5rem", "label": "152px" },
+        { "value": "11.5rem", "label": "184px" }
+      ],
+      "default": "1rem",
+      "visible_if": "{{ section.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "line_height",
+      "label": "t:settings.line_height",
+      "options": [
+        { "value": "tight", "label": "t:options.tight" },
+        { "value": "normal", "label": "t:options.normal" },
+        { "value": "loose", "label": "t:options.loose" }
+      ],
+      "default": "normal",
+      "visible_if": "{{ section.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "letter_spacing",
+      "label": "t:settings.letter_spacing",
+      "options": [
+        { "value": "tight", "label": "t:options.tight" },
+        { "value": "normal", "label": "t:options.normal" },
+        { "value": "loose", "label": "t:options.loose" }
+      ],
+      "default": "normal",
+      "visible_if": "{{ section.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "case",
+      "label": "t:settings.case",
+      "options": [
+        { "value": "none", "label": "t:options.default" },
+        { "value": "uppercase", "label": "t:options.uppercase" }
+      ],
+      "default": "none",
+      "visible_if": "{{ section.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "wrap",
+      "label": "t:settings.wrap",
+      "options": [
+        { "value": "pretty", "label": "t:options.pretty" },
+        { "value": "balance", "label": "t:options.balance" },
+        { "value": "nowrap", "label": "t:options.none" }
+      ],
+      "visible_if": "{{ section.settings.type_preset == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "color",
+      "label": "t:settings.color",
+      "options": [
+        { "value": "var(--color-foreground)", "label": "t:options.text" },
+        { "value": "var(--color-foreground-heading)", "label": "t:options.heading" },
+        { "value": "var(--color-primary)", "label": "t:options.link" }
+      ],
+      "default": "var(--color-foreground)",
+      "visible_if": "{{ section.settings.type_preset != 'rte' }}"
+    },
+    {
+      "type": "text",
+      "id": "text_before_name",
+      "label": "Text before name field",
+      "default": "I would like to join the Amari club. My name is"
+    },
+    {
+      "type": "text",
+      "id": "name_placeholder",
+      "label": "Name field placeholder",
+      "default": "YOUR NAME"
+    },
+    {
+      "type": "text",
+      "id": "text_between",
+      "label": "Text between name and discount",
+      "default": "and you can get exclusive updates, invites, and"
+    },
+    {
+      "type": "text",
+      "id": "discount_text",
+      "label": "Discount highlight text",
+      "default": "10% off"
+    },
+    {
+      "type": "text",
+      "id": "text_after_discount",
+      "label": "Text after discount",
+      "default": "to your next purchase at your email address"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email field placeholder",
+      "default": "YOUR EMAIL ADDRESS"
+    },
+    {
+      "type": "header",
+      "content": "t:content.submit_button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:settings.label",
+      "default": "Join Now"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "t:settings.style",
+      "options": [
+        { "value": "button", "label": "t:options.primary" },
+        { "value": "button-secondary", "label": "t:options.secondary" },
+        { "value": "button-unstyled", "label": "t:options.link" }
+      ],
+      "default": "button-secondary"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "t:settings.border_radius",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Email Signup New",
+      "category": "t:categories.forms",
+      "settings": {
+        "section_height": "",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    }
+  ]
+}
+{% endschema %}

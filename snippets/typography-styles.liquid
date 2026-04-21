@@ -1,0 +1,19 @@
+{% comment %}
+Apply typography styles
+Usage: {% render 'typography-style', block: block %}
+{% endcomment %}
+
+style="
+font-family: {{ block.settings.font_family }};
+font-weight: {{ block.settings.font_weight }};
+letter-spacing: {{ block.settings.letter_spacing }}px;
+line-height: {{ block.settings.line_height }}px;
+text-transform: {{ block.settings.text_transform }};
+text-align: {{ block.settings.text_align }};
+color: {{ block.settings.text_color }};
+font-size: clamp(
+{{ block.settings.font_size_mobile }}px,
+2vw,
+{{ block.settings.font_size_desktop }}px
+);
+"

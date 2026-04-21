@@ -1,0 +1,290 @@
+{% if product.metafields.custom.testimonials_section != blank %}
+    <div class="testimonial-wrapper {% if section.settings.decorative_image != blank %} testimonial_decorative {% endif %}">
+        <div class="page-width">
+            <div class="testimonial-slider-pdp">
+                <div class="quote">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="98" height="87" viewBox="0 0 98 87" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M31.8581 0.29336C29.0278 1.37606 24.6107 3.75448 21.4144 5.9166C17.5903 8.50343 12.3362 13.4371 9.71972 16.8982C5.01994 23.1147 2.56133 29.4375 1.14856 38.9418C0.198423 45.3328 0.130857 46.9554 0.0431913 65.5055C-0.050025 85.234 -0.135009 83.9957 1.41844 85.5588C2.91734 87.0673 2.03056 86.9995 20.288 86.9995C37.9216 86.9995 37.3043 87.0357 38.7611 85.9174C39.1332 85.632 39.6701 85.0002 39.9546 84.5136L40.4713 83.6287L40.5232 66.8201L40.5753 50.0114L40.1617 49.0439C39.6761 47.9081 38.3433 46.6422 37.3367 46.3608C36.924 46.2456 33.4852 46.1666 28.8434 46.1661L21.0437 46.1649L21.0437 44.9537C21.0437 42.1961 21.825 37.5161 22.8031 34.4153C24.1033 30.2929 26.0872 26.9692 28.961 24.0986C31.3055 21.7566 34.0204 19.8967 37.8368 18.0175C40.6275 16.6436 41.0461 16.3027 41.8129 14.7789C42.016 14.3753 42.1513 13.6561 42.158 12.9452C42.1676 11.916 42.0401 11.498 41.0974 9.46767C37.5101 1.74164 37.2167 1.25143 35.7182 0.482125C34.6193 -0.0820483 33.0414 -0.159095 31.8581 0.29336ZM88.4591 0.152177C87.3983 0.349224 82.4105 2.80546 79.7095 4.46081C71.5155 9.48289 65.1192 16.2112 61.3763 23.7457C58.6394 29.2551 57.2837 34.8206 56.3289 44.468C56.0751 47.0317 56.0024 50.8649 55.9339 65.3113C55.8391 85.2564 55.7534 83.9934 57.3089 85.5588C58.8078 87.0672 57.9222 86.9995 76.1685 86.9995C93.9534 86.9995 93.33 87.0385 94.7762 85.8388C95.1556 85.5241 95.689 84.816 95.9618 84.2654L96.4575 83.2641L96.4533 66.5926C96.4491 50.2368 96.4417 49.9046 96.0592 49.0542C95.6111 48.0578 94.9276 47.2817 93.9693 46.6811C93.3148 46.2708 93.1093 46.2589 85.0716 46.1649L76.8438 46.0686L76.9022 44.5277C77.0532 40.5476 78.0079 35.811 79.334 32.4649C80.6974 29.0244 82.3303 26.5148 84.8082 24.0516C87.0633 21.8099 89.3658 20.2126 92.9799 18.3827C96.4445 16.6286 97.4129 15.8202 97.805 14.3547C98.2692 12.6202 98.0248 11.7463 95.7403 6.96752C94.4654 4.30055 93.334 2.20065 92.8976 1.69137C91.789 0.397571 90.1666 -0.165061 88.4591 0.152177Z" fill="#663700"/>
+                    </svg>
+                </div>
+                {%- unless section.settings.heading == blank -%}
+                    <div class="title-wrapper-with-link title-wrapper--no-top-margin">
+                    <h2
+                        id="SectionHeading-{{ section.id }}"
+                        class="testimonial__title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+                        {% if settings.animations_reveal_on_scroll %}
+                        data-cascade
+                        {% endif %}
+                    >
+                        {{ section.settings.heading }}
+                    </h2>
+                    </div>
+                {%- endunless -%}
+                <div class="slick-slider">
+                    {% for product_testi in product.metafields.custom.testimonials_section.value %}
+                        {% assign val = product_testi | split:'::' %}
+                        {% for value in val %}
+                            <div class="testimonial-slide">
+                                <img src="{{ val[0] }}" alt="Featured Image" loading="lazy" />
+                                <h4 class="name">{{ val[1] }}</h4>
+                                <div class="star-rating">
+                                    <img src="{{ val[2] }}" alt="Star Rating" loading="lazy" />
+                                  </div>
+                                <div class="text">{{ val[3] }}</div>
+                            </div>
+                        {% endfor %}    
+                    {% endfor %}    
+                </div>
+                <div class="btn-wrap">
+                <button class="custom-prev-btn" aria-label="Previous">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20" fill="none">
+                        <path d="M3.37049 9.98295C5.69835 12.382 7.9715 14.7219 10.242 17.0645C10.4473 17.2641 10.6397 17.4774 10.8178 17.7029C11.0236 17.9738 11.1271 18.3125 11.1091 18.6561C11.0911 18.9997 10.9528 19.3249 10.7199 19.5713C10.487 19.8176 10.1754 19.9684 9.84285 19.9956C9.51034 20.0227 9.17959 19.9244 8.91203 19.719C8.75685 19.5972 8.61178 19.4623 8.47826 19.3158C5.88336 16.6394 3.29016 13.9626 0.698722 11.2853C-0.236591 10.3203 -0.232673 9.63352 0.709153 8.66045C3.33185 5.95004 5.95628 3.24186 8.58245 0.535919C9.13087 -0.0285642 9.7249 -0.146836 10.2903 0.179758C10.8309 0.491568 11.15 0.994226 11.0119 1.62322C10.9028 2.02701 10.692 2.39381 10.401 2.68633C8.25418 4.9362 6.08263 7.16188 3.92021 9.39562C3.75347 9.56362 3.59324 9.74238 3.37049 9.98295Z" fill="#F5EDDC"/>
+                    </svg>
+                </button>
+                <button class="custom-next-btn" aria-label="Next">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20" fill="none">
+                        <path d="M8.62951 9.98295C6.30165 12.382 4.0285 14.7219 1.75795 17.0645C1.55271 17.2641 1.36035 17.4774 1.18216 17.7029C0.976377 17.9738 0.872888 18.3125 0.890901 18.6561C0.908913 18.9997 1.04722 19.3249 1.28011 19.5713C1.513 19.8176 1.82465 19.9684 2.15715 19.9956C2.48966 20.0227 2.82041 19.9244 3.08797 19.719C3.24315 19.5972 3.38822 19.4623 3.52174 19.3158C6.11664 16.6394 8.70984 13.9626 11.3013 11.2853C12.2366 10.3203 12.2327 9.63352 11.2908 8.66045C8.66815 5.95004 6.04372 3.24186 3.41755 0.535919C2.86913 -0.0285642 2.2751 -0.146836 1.70974 0.179758C1.16914 0.491568 0.849977 0.994226 0.988059 1.62322C1.0972 2.02701 1.30801 2.39381 1.59903 2.68633C3.74582 4.9362 5.91737 7.16188 8.07979 9.39562C8.24653 9.56362 8.40676 9.74238 8.62951 9.98295Z" fill="white"/>
+                    </svg>
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<style>
+.testimonial-wrapper{
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-top: 165px;
+    padding-bottom: 0;
+}
+.testimonial-wrapper .page-width{
+        padding-left: 30px;
+    padding-right: 30px;
+}
+.testimonial_decorative:after {
+    content: '';
+    position: absolute;
+    top:30px;
+    background-image: url({{ section.settings.decorative_image | img_url: 'master' }});
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 270px;
+    height: 271px;
+    z-index: 2;
+}
+.testimonial-wrapper .testimonial-background {
+    height: 100%;
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+}
+.testimonial-wrapper .title-wrapper-with-link{
+    margin-bottom: 20px;
+}
+.testimonial-wrapper .page-width {
+    z-index: 2;
+    position: relative;
+    width: 100%;
+}
+.testimonial-wrapper  h2 {
+    text-align:center;
+    margin: 0 auto;
+    margin-top:58.2px;
+    color: #663700;
+}
+.testimonial-slider-pdp {
+    margin: 0 auto;
+    max-width: 1428px;
+    border-radius: 10px;
+    background: rgba(245, 237, 220, 0.65);
+    text-align: center;
+    position:relative;
+}
+.testimonial-slider-pdp .quote svg{
+    margin-top: -65px;
+    margin-left: auto;
+    margin-right: auto;
+    display: unset;
+}
+.testimonial-slider-pdp .slick-slider {
+    position: relative;
+}
+.testimonial-slider-pdp .testimonial-slide {
+    text-align: center;
+}
+.testimonial-slier .testimonial-slide .name {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 22px;
+    line-height: 35px; 
+    color:#4A4A4A;
+    text-transform: capitalize;
+}
+.testimonial-wrapper .testimonial-slide > img {
+    object-fit: cover;
+    object-position: center center;
+    transition: opacity .4s cubic-bezier(.25,.46,.45,.94);
+    display: block;
+    max-width: 100%;
+    position: relative;
+    top: 0;
+    margin: 0 auto;
+    height: 80px;
+    width: 80px;
+    margin-bottom: 10px;
+    border-radius: 80px;
+}
+.testimonial-slider-pdp .name{
+    font-size: 24px;
+    line-height: 28.8px;
+    color: #4A4A4A;
+    margin-bottom:1px;
+    font-family: "DM Sans";
+}
+.testimonial-slider-pdp .testimonial-slide .text {
+    font-weight: 500;
+    margin-bottom: 0px;
+    color: #4A4A4A;
+    margin-bottom: 80px;
+    line-height: 25.6px;
+    padding: 0 146px;
+}
+.testimonial-slider-pdp .star-rating {
+    height: 16px;
+    margin-bottom: 30px;
+    text-align: center !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+.testimonial-slider-pdp .star-rating img {
+    height: 100%;
+}
+.testimonial-slider-pdp .prev,.testimonial-slider-pdp .next{
+    border-radius: 25px;
+    background-color:#663700;
+    width: 60px;
+    height: 40px;
+}
+.testimonial-slider-pdp .custom-prev-btn,.testimonial-slider-pdp .custom-next-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #663700; 
+    box-shadow: 0px 0px 14px 0px rgba(255, 226, 192, 0.50);
+    border: 1px solid  #F5EDDC;
+    border: none;
+    padding: 10px;
+    border-radius: 25px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+    width: 60px;
+    height: 40px;
+}
+.testimonial-slider-pdp .custom-next-btn svg path{
+    fill: #F5EDDC;
+}
+.testimonial-slider-pdp .custom-prev-btn:hover,.testimonial-slider-pdp .custom-next-btn:hover{
+    background: #fff;
+    border: 1px solid  #F5EDDC; 
+}
+.testimonial-slider-pdp .custom-prev-btn {
+    left: -20px; 
+}
+.testimonial-slider-pdp .custom-next-btn {
+    right: -20px; 
+}
+.testimonial-slider-pdp .custom-prev-btn svg,.testimonial-slider-pdp .custom-next-btn svg {
+    display: block;
+    width: 11px;
+    height: 20px;
+    margin: 0 auto;
+}
+
+@media(max-width:749px){
+    .testimonial-wrapper{ min-height: 470px;}
+    .testimonial-slider-pdp .testimonial-slide .text{ margin-bottom: 20px;}
+    .testimonial_decorative:after{ width: 143px; height: 144px;}
+    .testimonial-wrapper{ padding-top: 74px;}
+    .testimonial-slider-pdp .quote svg{width: 52px; height: 46px;}
+    .testimonial-wrapper h2{margin-top:27px;margin-bottom: 30px;        max-width: 224px;}
+    .testimonial-wrapper .title-wrapper-with-link{ margin-bottom: 0;}
+    .testimonial-slider-pdp .name{ font-size: 20px; line-height: 26px; margin-bottom: 10px;}
+    .testimonial-slider-pdp .testimonial-slide .text{ padding: 0 34px;font-size: 14px;line-height: 22.4px;}
+    .testimonial-slider-pdp .custom-prev-btn, .testimonial-slider-pdp .custom-next-btn{ position:unset;    transform: unset;width: 53px;height: 35px;padding:4px !important;}
+    .testimonial-slider-pdp .custom-prev-btn{ right: 0; left:auto;}
+    .testimonial-slider-pdp .custom-prev-btn{ right: auto; left:0;}
+    .testimonial-slider-pdp .btn-wrap{position: absolute;width: 100%;margin: 0 auto;gap:10px;justify-content: center;display: flex;        bottom: -58px;}
+    .testimonial-wrapper{padding-bottom: 58px;}
+    .testimonial_decorative:after {top: -12px !important;}
+}
+@media(max-width:480px){
+    .testimonial-wrapper{ min-height: 460px;}
+}
+
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var slider = document.querySelector('.testimonial-slider-pdp .slick-slider');
+
+  if (!slider || typeof window.jQuery === 'undefined' || !jQuery.fn.slick) {
+    return;
+  }
+
+  jQuery(slider).slick({
+    prevArrow: document.querySelector('.custom-prev-btn'),
+    nextArrow: document.querySelector('.custom-next-btn'),
+    dots: false,
+    infinite: true,
+    speed: 300,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000
+  });
+});
+</script>
+
+{% schema %}
+{
+"name": "PDP Testimonial Slider",
+"settings": [
+    {
+        "type": "inline_richtext",
+        "id": "heading",
+        "default": "What Our Customers Say",
+        "label": "What Our Customers Say"
+    },
+    {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Color Scheme",
+        "default": "scheme-1"
+    },
+    {
+        "type": "header",
+        "content": "Decorative Image"
+    },
+    {
+        "type": "image_picker",
+        "id":"decorative_image",
+        "label": "Select Image"
+    }
+],
+"presets": [
+    {
+    "name": "PDP Testimonial Slider"
+    }
+]
+}
+{% endschema %}

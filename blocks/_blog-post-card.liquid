@@ -1,0 +1,140 @@
+
+
+{%- assign block_settings = block.settings -%}
+
+{% capture title %}
+  {% content_for 'block', id: 'heading', type: '_heading', text: article.title %}
+{% endcapture %}
+
+{% capture details %}
+  {% content_for 'block',
+    id: 'blog-post-details',
+    type: '_blog-post-info-text',
+    alignment: block_settings.alignment,
+    article: article
+  %}
+{% endcapture %}
+
+{% capture description %}
+  {% content_for 'block', id: 'content', type: '_blog-post-description', article: article, show_read_more: true %}
+{% endcapture %}
+
+{% assign block_settings = block.settings %}
+{% assign alignment = alignment | default: block_settings.alignment %}
+{% assign display_author = author | default: article.author %}
+{% assign display_date = date | default: article.published_at %}
+
+<div
+  class="blog-post-card"
+  style="--text-align: {{ block_settings.alignment }}"
+>
+  {%- if article.image -%}
+    <div class="blog-post-card__image-container">
+      <a href="{{ article.url }}">
+        {% content_for 'block', id: 'image', type: '_blog-post-image', image: article.image %}
+      </a>
+      {{ details }}
+    </div>
+  {%- endif -%}
+
+  <div class="blog-post-card__content">
+    
+    {%- if block_settings.show_date or block_settings.show_author -%}
+  <div
+    class="
+      blog-post-details-layout-row
+      spacing-style
+      justify-{{ alignment }}
+      {% if block_settings.type_preset != '' %}{{ block_settings.type_preset }}{% endif%}
+    "
+    style="{% render 'spacing-style', settings: block_settings %}"
+  >
+    <div class="layout-row-date">
+      {% comment %} date-pos-{{ block.settings.date_position }} {% endcomment %}
+    {%- if section.settings.show_date_row -%}
+       {% comment %} <span>{{- display_date | time_tag: format: 'date' -}}</span>  {% endcomment %}
+      <span>{{ display_date | date: "%-B %-d, %Y" }}</span> 
+    {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_date_row and section.settings.show_author_row -%}
+      <span>{{ 'content.blog_details_separator' | t }}</span>
+    {%- endif -%} 
+
+     {%- if section.settings.show_author_row -%}
+      <span>{{ display_author }}</span>
+    {%- endif -%} 
+  </div>
+{% endif %}
+
+    <a href="{{ article.url }}">{{ title }}</a>   
+    {{ description }}
+  </div>
+</div>
+
+{% stylesheet %}
+  .blog-post-card {
+    display: flex;
+    flex-direction: column;
+    text-align: var(--text-align);
+  }
+
+  .blog-post-card__content {
+    padding-block-start: 1.25rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-post-item .blog-post-card__image-container,
+  .blog-post-item .blog-post-card__content {
+    width: 100%;
+    position: relative;
+  }
+ 
+
+  .blog-post-card__content a {
+    display: block;
+    text-wrap: pretty;
+    text-decoration: none;
+    /* padding-block-start: 0.75rem; */
+  }
+
+  .blog-post-card__content a:hover,
+  .blog-post-card__content a:hover [style*='--color: var(--color-primary)'] {
+    color: var(--color-primary-hover);
+  }
+
+  .blog-post-card__content a:hover [style*='--color: var(--color-foreground-heading)'] {
+    color: rgb(var(--color-foreground-heading-rgb) / var(--opacity-subdued-text));
+  }
+
+  .blog-post-card__content a:hover [style*='--color: var(--color-foreground)'] {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.blog_post",
+  "settings": [
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "default": "left"
+    },
+     {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "t:settings.show_date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "t:settings.show_author",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

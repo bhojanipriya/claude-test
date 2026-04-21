@@ -1,0 +1,523 @@
+<div class="fbt-outer-wrapper">
+  {%- assign metafield_products = product.metafields.custom.frequently_bought_together.value -%}
+  {%- assign block_products = '' | split: ',' -%}
+
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'fbt_product' and block.settings.product != blank -%}
+      {%- assign block_products = block_products | push: block.settings.product -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- assign fbt_products = metafield_products | concat: block_products -%}
+
+  {% if fbt_products.size > 0 %}
+    <h3>Frequently Bought Together</h3>
+
+    <div class="fbt-wrapper">
+      <div class="fbt-products">
+        {% for fbt_product in fbt_products limit: 2 %}
+          {% assign variant = fbt_product.selected_or_first_available_variant %}
+
+          <div class="fbt-item">
+            {%- assign product_form_id = 'fbt-form-' | append: fbt_product.id -%}
+
+            {% form 'product', fbt_product, id: product_form_id, data-type: 'add-to-cart-form' %}
+              <input type="hidden" name="quantity" value="1">
+
+              <div class="fbt-left">
+                <img
+                  src="{{ fbt_product.featured_image | img_url: '100x' }}"
+                  alt="{{ fbt_product.title }}"
+                >
+              </div>
+
+              <div class="fbt-right">
+                <div class="fbt-info">
+                  <a class="fbt-title" href="{{ fbt_product.url }}">
+                    {{ fbt_product.title }}
+                  </a>
+
+                  {% if fbt_product.variants.size > 1 %}
+                    <select
+                      class="fbt-variant-selector"
+                      name="id"
+                      data-product-id="{{ fbt_product.id }}"
+                    >
+                      {% for v in fbt_product.variants %}
+                        <option
+                          value="{{ v.id }}"
+                          data-price="{{ v.price | divided_by: 100.0 }}"
+                          {% if v.id == variant.id %}selected{% endif %}
+                        >
+                          {{ v.title }} - {{ v.price | money }}
+                        </option>
+                      {% endfor %}
+                    </select>
+                  {% else %}
+                    <input
+                      type="hidden"
+                      name="id"
+                      class="fbt-hidden-variant"
+                      value="{{ variant.id }}"
+                      data-price="{{ variant.price | divided_by: 100.0 }}"
+                    >
+                  {% endif %}
+
+                  <span class="fbt-price">
+                    {{ variant.price | money }}
+                  </span>
+                </div>
+
+                <div class="fbt-action">
+                  <button
+                    type="submit"
+                    class="button add-to-cart-button button"
+                  >
+                    <span class="add-to-cart-text__content">
+                     Add
+                    </span>
+
+                    <span class="svg-wrapper add-to-cart-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                        <path d="M1.2184 11.3137L0 10.0953L8.35474 1.74057H0.870285V0H11.3137V10.4434H9.57314V2.95897L1.2184 11.3137Z" fill="white"/>
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            {% endform %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="total-warp">
+        <div class="fbt-total">
+          <span>Total:</span>
+          <span id="fbt-total-price" data-money>
+            {{ cart.total_price | money }}
+          </span>
+        </div>
+
+        <button id="fbt-add-all" class="fbt-add-all button ">
+          Add All to Cart
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
+            <path d="M2.06117 12.157L0.842773 10.9386L9.19751 2.58383H1.71306V0.843262H12.1565V11.2867H10.4159V3.80223L2.06117 12.157Z" fill="white"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+
+{% comment %}  {% endcomment %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const totalEl = document.getElementById("fbt-total-price");
+  const moneyFormat = {{ shop.money_format | json }};
+  const addAllBtn = document.getElementById("fbt-add-all");
+
+  /* ---------------- Money Format ---------------- */
+  function formatMoney(cents) {
+    let formatted = "";
+
+    if (window.theme && theme.Currency && typeof theme.Currency.formatMoney === "function") {
+      formatted = theme.Currency.formatMoney(cents, moneyFormat);
+    } else {
+      formatted = (cents / 100).toLocaleString("en-IN", {
+        style: "currency",
+        currency: "INR"
+      });
+    }
+
+    // FBT only – force Rs
+    formatted = formatted
+      .replace("₹", "Rs ")
+      .replace("Rs.", "Rs ")
+      .replace("INR", "Rs ");
+
+    return formatted.trim();
+  }
+
+  /* ---------------- Update Total ---------------- */
+  function updateTotal() {
+    let sum = 0;
+
+    document.querySelectorAll(".fbt-variant-selector").forEach(sel => {
+      sum += parseFloat(sel.selectedOptions[0].dataset.price);
+    });
+
+    document.querySelectorAll(".fbt-hidden-variant").forEach(el => {
+      sum += parseFloat(el.dataset.price);
+    });
+
+    if (totalEl) totalEl.textContent = formatMoney(sum * 100);
+  }
+
+  updateTotal();
+
+  /* ---------------- Variant Change ---------------- */
+  document.querySelectorAll(".fbt-variant-selector").forEach(sel => {
+    sel.addEventListener("change", (e) => {
+      const option = e.target.selectedOptions[0];
+      const priceEl = e.target.closest(".fbt-info")?.querySelector(".fbt-price");
+
+      if (priceEl) {
+        priceEl.textContent = formatMoney(option.dataset.price * 100);
+      }
+
+      updateTotal();
+    });
+  });
+
+  /* ---------------- Add Single Product ---------------- */
+    document.querySelectorAll(".fbt-item form").forEach(form => {
+    
+      form.addEventListener("submit", async (e) => {
+
+        e.preventDefault();
+
+          const btn = e.submitter || form.querySelector("button[type='submit']");
+          if (!btn) return;
+
+          btn.disabled = true;
+          btn.textContent = "Adding...";
+
+        const formData = new FormData(form);
+
+        await fetch("/cart/add.js", {
+          method: "POST",
+          body: formData
+        });
+
+        await updateCartBubble();
+        await refreshCartDrawer();
+        window.location.reload();
+        openCartDrawer();
+      });
+    });
+
+  
+
+  /* ---------------- Add All Products ---------------- */
+  addAllBtn?.addEventListener("click", async () => {
+    let items = [];
+     addAllBtn.disabled = true;
+  addAllBtn.textContent = "Adding...";
+
+    document.querySelectorAll(".fbt-variant-selector").forEach(sel => {
+      items.push({ id: sel.value, quantity: 1 });
+    });
+
+    document.querySelectorAll(".fbt-hidden-variant").forEach(el => {
+      items.push({ id: el.value, quantity: 1 });
+    });
+
+    
+    if (!items.length) return;
+
+    await fetch("/cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items })
+    });
+
+    await updateCartBubble();
+    await refreshCartDrawer();
+     window.location.reload();
+    openCartDrawer();
+  });
+
+});
+
+/* ---------------- Update Cart Bubble ---------------- */
+async function updateCartBubble() {
+  const res = await fetch("/cart.js");
+  const cart = await res.json();
+
+  const bubble = document.querySelector(".cart-bubble__text-count");
+  if (!bubble) return;
+
+  bubble.innerHTML = `
+    <span aria-hidden="true">${cart.item_count}</span>
+    <span class="visually-hidden">${cart.item_count} items</span>
+  `;
+  bubble.style.display = cart.item_count > 0 ? "block" : "none";
+}
+
+/* ---------------- Refresh Cart Drawer (Keep Open) ---------------- */
+async function refreshCartDrawer() {
+  try {
+    // Fetch header section where cart drawer lives
+    const res = await fetch("/?sections=header");
+    const data = await res.json();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(data.header, "text/html");
+
+    const newInner = doc.querySelector(".cart-drawer__inner");
+    const currentInner = document.querySelector(".cart-drawer__dialog .cart-drawer__inner");
+
+    if (!newInner || !currentInner) return;
+
+    // Keep drawer open state
+    const drawerDialog = document.querySelector(".cart-drawer__dialog");
+    const wasOpen = drawerDialog?.classList.contains("active");
+
+    // Replace inner content
+    currentInner.innerHTML = newInner.innerHTML;
+
+    // Check if cart is empty
+    const cartItems = currentInner.querySelectorAll(".cart-items__table-row");
+    if (cartItems.length === 0) {
+      drawerDialog?.classList.add("is-empty"); // add class for empty state
+    } else {
+      drawerDialog?.classList.remove("is-empty");
+    }
+
+    // Re-initialize recommendation slider if needed
+    if (typeof initCartDrawerRecommendations === "function") {
+      initCartDrawerRecommendations();
+    }
+
+    // Restore drawer open state
+    if (wasOpen && drawerDialog) {
+      drawerDialog.classList.add("active");
+      document.getElementById("CartDrawer-Overlay")?.classList.add("active");
+    }
+
+  } catch (err) {
+    console.error("Cart drawer refresh failed:", err);
+  }
+}
+
+
+/* ---------------- Open Cart Drawer ---------------- */
+function openCartDrawer() {
+  const cartDrawer = document.querySelector("cart-drawer");
+  if (!cartDrawer) return;
+
+  if (typeof cartDrawer.open === "function") {
+    cartDrawer.open();
+  } else {
+    cartDrawer.classList.add("active");
+    document.getElementById("CartDrawer-Overlay")?.classList.add("active");
+  }
+
+  cartDrawer.classList.remove("is-empty");
+  cartDrawer.classList.remove("cart-drawer--empty");
+}
+</script>
+
+
+
+{% schema %}
+{
+  "name": "Bought Together",
+  "tag": null,
+    "settings": [
+    {
+       "type": "product_list",
+       "id": "fbt_products",
+       "label": "Select 2 Products",
+       "limit": 2
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text"
+    },
+    {
+      "type": "price"
+    },
+    {
+      "type": "variant-picker"
+    },
+    {
+      "type": "buy-buttons"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bought Together",
+      "category": "t:categories.product"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+.fbt-outer-wrapper h3{
+  margin:0 0 16px 0;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 29px; 
+  color:#663700;
+    font-family: 'DM Sans';
+}
+.fbt-wrapper {
+  border: 1px solid #663700;
+  border-radius: 12px;
+  background: #fff;
+}
+.fbt-products {
+  display: flex;
+  padding: 30px;
+  flex-direction: column;
+  gap: 20px;
+}
+.fbt-item form{
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+    gap: 15px;
+}
+.fbt-left{
+  display: flex;
+  max-width:95px;
+  width: 100%;
+}
+.fbt-item img {
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.fbt-info a {
+  font-size: 24px;
+  line-height: 28.8px;
+  margin: 0 0 5px;
+  color:#663700;
+  width:100%;
+  display:block;
+  text-decoration:none;
+  font-weight: 700;
+}
+.fbt-price {
+  color: #663700;
+  font-size: 18px;
+  line-height: 21.6px;
+}
+.fbt-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.fbt-right {
+  flex: 0 100%;
+  width: 100%;      
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap:20px;
+}
+.fbt-add-btn {
+  background: #4A4A4A;
+  color: #fff;
+  padding: 18px 32px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.fbt-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 0 30px 0;
+  color: #663700;
+  font-size: 18px;
+  line-height: 29px;
+  font-weight: 500;
+}
+.total-warp{
+  border-top: 1px solid #663700;
+  padding:20px 30px 30px 30px;
+}
+.fbt-add-all {
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  background: #4A4A4A;
+  color: #fff;
+  padding: 18px 32px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+.fbt-wrapper select {
+  appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff; 
+  border: 2px solid #663700; 
+  border-radius: 8px;
+  padding: 8px 36px 8px 12px; 
+  font-size: 16px;
+  font-weight: 500;
+  color: #4a4a4a;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  width: 100%;
+  max-width: 220px;
+  display: block;
+  margin: 0 0 5px;
+  line-height: 25.6px;
+}
+.fbt-wrapper select:hover,
+.fbt-wrapper select:focus {
+  border-color: #B68654; 
+  box-shadow:none;
+  outline: none;
+}
+.fbt-wrapper select {
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%238B5E3C' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+}
+.color-background-2 .fbt-wrapper select {
+  background-color: #fdf8f4;
+  border-color: #663700;
+  color: #663700;
+}
+.product-information__grid .fbt-products button,.product-information__grid .total-warp button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 28.5px !important;
+    padding-right: 28.5px !important;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 21.6px;
+    text-align: center;
+    height: 59px;
+    background: #4A4A4A !important;
+}
+@media(max-width:1199px){
+  .fbt-right{ align-items: baseline; flex-direction: column;gap: 10px;}
+  .fbt-info p{ margin: 0 0 5px; font-size: 20px; line-height: 26px; }
+  .fbt-wrapper{ max-width: 500px;}
+  .fbt-products{ padding: 20px 20px 30px; gap: 10px;}
+  .total-warp{ padding: 20px;}
+  .fbt-total{  margin: 0px 0 15px 0;font-size:16px;line-height: 21.6px;}
+}
+@media(max-width:600px){
+  .fbt-products{gap:31px;}
+  .fbt-wrapper{width:100%;}
+  .fbt-info a{ font-size: 18px; line-height: 21.6px; margin: 0 0 5px;}
+  .fbt-price{font-size: 16px;line-height: 20px;}
+  .fbt-add-btn{ padding: 12px 20px; font-size: 15px;}
+}
+</style>
+
+
+
+
+
