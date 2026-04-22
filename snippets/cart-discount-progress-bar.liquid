@@ -1,0 +1,207 @@
+{%- doc -%}
+  Renders a tiered discount progress bar in the cart drawer.
+  Merchants configure up to 3 spend thresholds and reward labels in theme settings.
+{%- enddoc -%}
+
+{%- liquid
+  assign cart_total = cart.total_price
+
+  assign tier1_amount = settings.discount_tier_1_threshold
+  assign tier2_amount = settings.discount_tier_2_threshold
+  assign tier3_amount = settings.discount_tier_3_threshold
+
+  assign tier1_label = settings.discount_tier_1_label
+  assign tier2_label = settings.discount_tier_2_label
+  assign tier3_label = settings.discount_tier_3_label
+
+  assign tier1_cents = tier1_amount | times: 100
+  assign tier2_cents = tier2_amount | times: 100
+  assign tier3_cents = tier3_amount | times: 100
+
+  assign tier1_active = false
+  assign tier2_active = false
+  assign tier3_active = false
+  if tier1_amount != blank and tier1_cents > 0
+    assign tier1_active = true
+  endif
+  if tier2_amount != blank and tier2_cents > 0
+    assign tier2_active = true
+  endif
+  if tier3_amount != blank and tier3_cents > 0
+    assign tier3_active = true
+  endif
+
+  assign max_cents = 0
+  if tier3_active and tier3_cents > max_cents
+    assign max_cents = tier3_cents
+  endif
+  if tier2_active and tier2_cents > max_cents
+    assign max_cents = tier2_cents
+  endif
+  if tier1_active and tier1_cents > max_cents
+    assign max_cents = tier1_cents
+  endif
+-%}
+
+{% if max_cents > 0 %}
+  {%- liquid
+    assign progress = cart_total | times: 1.0 | divided_by: max_cents | at_most: 1
+
+    assign next_cents = 0
+    assign next_label = ''
+    assign all_unlocked = true
+
+    if tier1_active and cart_total < tier1_cents
+      assign next_cents = tier1_cents
+      assign next_label = tier1_label
+      assign all_unlocked = false
+    elsif tier2_active and cart_total < tier2_cents
+      assign next_cents = tier2_cents
+      assign next_label = tier2_label
+      assign all_unlocked = false
+    elsif tier3_active and cart_total < tier3_cents
+      assign next_cents = tier3_cents
+      assign next_label = tier3_label
+      assign all_unlocked = false
+    endif
+
+    assign remaining_cents = next_cents | minus: cart_total
+  -%}
+
+  <div class="discount-progress" style="--dp-progress: {{ progress }}">
+    <p class="discount-progress__message">
+      {% if all_unlocked %}
+        You've unlocked all rewards!
+      {% else %}
+        Spend <strong>{{ remaining_cents | money }}</strong> more to get <strong>{{ next_label }}</strong>!
+      {% endif %}
+    </p>
+
+    <div class="discount-progress__track-wrap">
+      <div class="discount-progress__track">
+        <div class="discount-progress__fill"></div>
+      </div>
+      <div class="discount-progress__markers">
+        {% if tier1_active %}
+          {%- assign tier1_pos = tier1_cents | times: 100.0 | divided_by: max_cents -%}
+          {%- assign tier1_done = false -%}
+          {%- if cart_total >= tier1_cents -%}{%- assign tier1_done = true -%}{%- endif -%}
+          <div class="discount-progress__marker{% if tier1_done %} is-done{% endif %}" style="left: {{ tier1_pos }}%">
+            <div class="discount-progress__dot">{% if tier1_done %}✓{% endif %}</div>
+            <span class="discount-progress__label">{{ tier1_label }}</span>
+          </div>
+        {% endif %}
+        {% if tier2_active %}
+          {%- assign tier2_pos = tier2_cents | times: 100.0 | divided_by: max_cents -%}
+          {%- assign tier2_done = false -%}
+          {%- if cart_total >= tier2_cents -%}{%- assign tier2_done = true -%}{%- endif -%}
+          <div class="discount-progress__marker{% if tier2_done %} is-done{% endif %}" style="left: {{ tier2_pos }}%">
+            <div class="discount-progress__dot">{% if tier2_done %}✓{% endif %}</div>
+            <span class="discount-progress__label">{{ tier2_label }}</span>
+          </div>
+        {% endif %}
+        {% if tier3_active %}
+          {%- assign tier3_pos = tier3_cents | times: 100.0 | divided_by: max_cents -%}
+          {%- assign tier3_done = false -%}
+          {%- if cart_total >= tier3_cents -%}{%- assign tier3_done = true -%}{%- endif -%}
+          <div class="discount-progress__marker{% if tier3_done %} is-done{% endif %}" style="left: {{ tier3_pos }}%">
+            <div class="discount-progress__dot">{% if tier3_done %}✓{% endif %}</div>
+            <span class="discount-progress__label">{{ tier3_label }}</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  .discount-progress {
+    padding: 12px 20px 32px;
+    background: #F5EDDC;
+    border-top: 1px solid rgba(102, 55, 0, 0.12);
+  }
+
+  .discount-progress__message {
+    font-size: 13px;
+    font-weight: 500;
+    color: #663700;
+    margin: 0 0 12px;
+    line-height: 1.4;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .discount-progress__message strong {
+    font-weight: 700;
+  }
+
+  .discount-progress__track-wrap {
+    position: relative;
+    padding-bottom: 24px;
+  }
+
+  .discount-progress__track {
+    height: 6px;
+    background: #D9D9D9;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .discount-progress__fill {
+    height: 100%;
+    background: #663700;
+    border-radius: 4px;
+    transform-origin: left;
+    transform: scaleX(var(--dp-progress));
+    transition: transform 0.4s ease;
+  }
+
+  .discount-progress__markers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  .discount-progress__marker {
+    position: absolute;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .discount-progress__dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #D9D9D9;
+    border: 2px solid #F5EDDC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+    color: #fff;
+    margin-top: -6px;
+    transition: background 0.3s ease;
+  }
+
+  .discount-progress__marker.is-done .discount-progress__dot {
+    background: #663700;
+  }
+
+  .discount-progress__label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #9a7a5a;
+    white-space: nowrap;
+    text-align: center;
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1.2;
+  }
+
+  .discount-progress__marker.is-done .discount-progress__label {
+    color: #663700;
+  }
+{% endstylesheet %}
