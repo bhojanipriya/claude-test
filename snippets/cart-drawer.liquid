@@ -207,6 +207,10 @@ document.addEventListener("DOMContentLoaded", function () {
             {% endif %}
           </div>
 
+          {% if settings.cart_show_discount_progress_bar %}
+            {% render 'cart-discount-progress-bar' %}
+          {% endif %}
+
           <div
             class="cart-drawer__content motion-reduce"
             aria-label="{{ 'accessibility.cart' | t }}"
